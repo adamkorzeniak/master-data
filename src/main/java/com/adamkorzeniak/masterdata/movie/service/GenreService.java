@@ -44,11 +44,4 @@ public interface GenreService {
 	 * @return  If genre exists
 	 */
 	boolean isGenreExist(Long id);
-
-	/**
-	 * Returns list of genres which name contains provided string. 
-	 * 
-	 * @return 	List of genres which name contains provided string
-	 */
-	List<Genre> findGenresByName(String name);
 }

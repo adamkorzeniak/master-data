@@ -67,15 +67,15 @@ public class TestGenreService {
 		assertFalse(result.isPresent());
 	}
 	
-	@Test
-	public void FindGenresByName_NameStringFound_ReturnsGenresList() throws Exception {
-		String name = "drama";
-		
-		when(genreRepository.findByNameIgnoreCaseContaining(name)).thenReturn(Arrays.asList(new Genre(), new Genre(), new Genre()));
-
-		List<Genre> genres = genreService.findGenresByName(name);
-		assertEquals(3, genres.size());
-	}
+//	@Test
+//	public void FindGenresByName_NameStringFound_ReturnsGenresList() throws Exception {
+//		String name = "drama";
+//		
+//		when(genreRepository.findByNameIgnoreCaseContaining(name)).thenReturn(Arrays.asList(new Genre(), new Genre(), new Genre()));
+//
+//		List<Genre> genres = genreService.findGenresByName(name);
+//		assertEquals(3, genres.size());
+//	}
 	
 	@Test
 	public void AddGenre_GenreValid_ReturnsCreatedGenre() throws Exception {

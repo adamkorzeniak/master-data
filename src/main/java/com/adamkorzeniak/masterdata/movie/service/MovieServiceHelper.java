@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.adamkorzeniak.masterdata.exception.FieldFilterNotSupportedException;
 import com.adamkorzeniak.masterdata.movie.model.Movie;
 import com.adamkorzeniak.masterdata.movie.model.dto.MovieDTO;
 import com.adamkorzeniak.masterdata.shared.FilterParameter;
@@ -83,24 +84,24 @@ public class MovieServiceHelper {
 		switch (filter.getFunction()) {
 			case SEARCH:
 				if (!Arrays.asList(TITLE_FIELD, DESCRIPTION_FIELD, REVIEW_FIELD, PLOT_SUMMARY_FIELD).contains(filter.getField())) {
-					throw new RuntimeException("Search doesn't support " + filter.getField());
+					throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
 				}
 				break;
 			case MATCH:
 				if (!Arrays.asList(TITLE_FIELD).contains(filter.getField())) {
-					throw new RuntimeException("Match doesn't support " + filter.getField());
+					throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
 				}
 				break;
 			case MIN:
 			case MAX:
 				if (!Arrays.asList(YEAR_FIELD, DURATION_FIELD, RATING_FIELD, WATCH_PRIORITY_FIELD).contains(filter.getField())) {
-					throw new RuntimeException(filter.getFunction() + " doesn't support " + filter.getField());
+					throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
 				}
 				break;
 			case ORDER_ASC:
 			case ORDER_DESC:
 				if (!Arrays.asList(TITLE_FIELD, YEAR_FIELD, DURATION_FIELD, RATING_FIELD, WATCH_PRIORITY_FIELD).contains(filter.getField())) {
-					throw new RuntimeException(filter.getFunction() + " doesn't support " + filter.getField());
+					throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
 				}
 				break;
 		}

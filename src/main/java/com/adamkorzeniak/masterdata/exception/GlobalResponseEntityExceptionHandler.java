@@ -1,8 +1,5 @@
 package com.adamkorzeniak.masterdata.exception;
 
-import javax.validation.ConstraintViolationException;
-
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +13,14 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 	
 	public static final String NOT_FOUND_CODE = "REQ404";
 	public static final String NOT_FOUND_TITLE = "Not Found";
+	public static final String INVALID_QUERY_PARAM_CODE = "REQ001";
+	public static final String INVALID_QUERY_PARAM_TITLE = "Invalid Query Param";
+	public static final String INVALID_QUERY_PARAM_VALUE_CODE = "REQ002";
+	public static final String INVALID_QUERY_PARAM_VALUE_TITLE = "Invalid Query Param Value";
+	public static final String FILTER_NOT_SUPPORTED_CODE = "REQ003";
+	public static final String FILTER_NOT_SUPPORTED_TITLE = "Filter Not Supported";
+	public static final String FIELD_FILTER_NOT_SUPPORTED_CODE = "REQ004";
+	public static final String FIELD_FILTER_NOT_SUPPORTED_TITLE = "Filter Field Not Supported";
 
 	@ExceptionHandler(value = { NotFoundException.class })
 	protected ResponseEntity<Object> notFound(RuntimeException exc, WebRequest request) {
@@ -26,31 +31,39 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 	
-	@ExceptionHandler(value = { IllegalArgumentException.class })
-	protected ResponseEntity<Object> badRequest(RuntimeException exc, WebRequest request) {
+	@ExceptionHandler(value = { InvalidQueryParamException.class })
+	protected ResponseEntity<Object> invalidQueryParamException(RuntimeException exc, WebRequest request) {
 		ExceptionResponse bodyOfResponse = new ExceptionResponse(
-				"REQ000",
-				"Bad Argument",
+				INVALID_QUERY_PARAM_CODE,
+				INVALID_QUERY_PARAM_TITLE,
 				exc.getMessage());
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
-
-	@ExceptionHandler(value = { DataIntegrityViolationException.class })
-	protected ResponseEntity<Object> dataInvalid(RuntimeException exc, WebRequest request) {
+	
+	@ExceptionHandler(value = { InvalidQueryParamValueException.class })
+	protected ResponseEntity<Object> invalidQueryParamValueException(RuntimeException exc, WebRequest request) {
 		ExceptionResponse bodyOfResponse = new ExceptionResponse(
-				"REQ001",
-				"Bad Request",
+				INVALID_QUERY_PARAM_VALUE_CODE,
+				INVALID_QUERY_PARAM_VALUE_TITLE,
 				exc.getMessage());
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
-
-	@ExceptionHandler(value = { ConstraintViolationException.class })
-	protected ResponseEntity<Object> constraintsViolated(RuntimeException exc, WebRequest request) {
+	
+	@ExceptionHandler(value = { FilterNotSupportedException.class })
+	protected ResponseEntity<Object> filterNotSupportedException(RuntimeException exc, WebRequest request) {
 		ExceptionResponse bodyOfResponse = new ExceptionResponse(
-				"REQ002",
-				"Bad Request",
+				FILTER_NOT_SUPPORTED_CODE,
+				FILTER_NOT_SUPPORTED_TITLE,
 				exc.getMessage());
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
-
+	
+	@ExceptionHandler(value = { FieldFilterNotSupportedException.class })
+	protected ResponseEntity<Object> filterFieldNotSupportedException(RuntimeException exc, WebRequest request) {
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(
+				FIELD_FILTER_NOT_SUPPORTED_CODE,
+				FIELD_FILTER_NOT_SUPPORTED_TITLE,
+				exc.getMessage());
+		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
 }

@@ -11,6 +11,8 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.adamkorzeniak.masterdata.exception.FilterNotSupportedException;
+
 public class GenericSpecification<T> implements Specification<T> {
 
     private List<FilterParameter> filters = new ArrayList<>();
@@ -49,7 +51,7 @@ public class GenericSpecification<T> implements Specification<T> {
         			cq.orderBy(cb.desc(root.get(filter.getField())));
         			break;
     			default:
-    				throw new RuntimeException();
+    				throw new FilterNotSupportedException(filter.getFunction());
         	}
         }
 

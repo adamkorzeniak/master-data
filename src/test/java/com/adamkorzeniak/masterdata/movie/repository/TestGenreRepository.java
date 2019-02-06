@@ -83,29 +83,29 @@ public class TestGenreRepository {
 		assertFalse(result.isPresent());
 	}
 	
-	@Test
-	public void FindGenreContainingString_GenresContainString_ReturnsGenresList() throws Exception {
-		populateRepository(comedy, thriller, melodrama, drama);
-		String name = "rama";
-		List<Genre> genres = genreRepository.findByNameIgnoreCaseContaining(name);
-		assertEquals(2, genres.size());
-		for (Genre genre: genres) {
-			if (genre.getId() == melodrama.getId()) {
-				assertEquals("Melodrama", genre.getName());
-			} else if (genre.getId() == drama.getId()) {
-				assertEquals("Drama", genre.getName());
-			} else {
-				fail("Genre with incorrect id retrieved from database");
-			}
-		}
-	}
+//	@Test
+//	public void FindGenreContainingString_GenresContainString_ReturnsGenresList() throws Exception {
+//		populateRepository(comedy, thriller, melodrama, drama);
+//		String name = "rama";
+//		List<Genre> genres = genreRepository.findByNameIgnoreCaseContaining(name);
+//		assertEquals(2, genres.size());
+//		for (Genre genre: genres) {
+//			if (genre.getId() == melodrama.getId()) {
+//				assertEquals("Melodrama", genre.getName());
+//			} else if (genre.getId() == drama.getId()) {
+//				assertEquals("Drama", genre.getName());
+//			} else {
+//				fail("Genre with incorrect id retrieved from database");
+//			}
+//		}
+//	}
 	
-	@Test
-	public void FindGenreContainingString_NoGenreContainString_ReturnsEmptyList() throws Exception {
-		populateRepository(comedy, thriller, melodrama, drama);
-		String name = "dramat";
-		List<Genre> genres = genreRepository.findByNameIgnoreCaseContaining(name);
-		assertEquals(0, genres.size());
-	}
+//	@Test
+//	public void FindGenreContainingString_NoGenreContainString_ReturnsEmptyList() throws Exception {
+//		populateRepository(comedy, thriller, melodrama, drama);
+//		String name = "dramat";
+//		List<Genre> genres = genreRepository.findByNameIgnoreCaseContaining(name);
+//		assertEquals(0, genres.size());
+//	}
 
 }

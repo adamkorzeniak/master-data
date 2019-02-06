@@ -32,11 +32,6 @@ public class GenreServiceImpl implements GenreService {
 	}
 
 	@Override
-	public List<Genre> findGenresByName(String name) {
-		return genreRepository.findByNameIgnoreCaseContaining(name);
-	}
-
-	@Override
 	public Genre addGenre(Genre genre) {
 		genre.setId(-1L);
 		return genreRepository.save(genre);

@@ -8,6 +8,4 @@ import com.adamkorzeniak.masterdata.movie.model.Movie;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long>, JpaSpecificationExecutor<Movie> {
-	
 }
-
