@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import com.adamkorzeniak.masterdata.movie.model.Genre;
-import com.adamkorzeniak.masterdata.movie.model.Movie;
 
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Long>, JpaSpecificationExecutor<Genre> {

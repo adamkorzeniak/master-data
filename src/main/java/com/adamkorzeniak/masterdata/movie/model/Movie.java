@@ -71,35 +71,4 @@ public class Movie {
 			joinColumns=@JoinColumn(name="movie_id"),
 			inverseJoinColumns=@JoinColumn(name="genre_id"))
 	private List<Genre> genres;
-	
-//	@ManyToMany(fetch=FetchType.EAGER)
-//	@JoinTable(
-//			name="MOVIES_roles",
-//			joinColumns=@JoinColumn(name="movie_id"),
-//			inverseJoinColumns=@JoinColumn(name="person_id"))
-//	private List<Role> roles;
-
-//	public void addGenre(Genre genre) {
-//
-//		if (genres == null) {
-//			genres = new ArrayList<>();
-//		}
-//		if (genres.contains(genre)) {
-//			throw new GenreAlreadyInMovieException(
-//					"Movie with id=" + id + " already contains genre with id=" + genre.getId()
-//					+ ". Genre cannot be added to Movie");
-//		}
-//		genres.add(genre);
-//	}
-	
-//	public void removeGenre(Genre genre) {
-//
-//		if (genres == null || !genres.contains(genre)) {
-//			throw new NotFoundGenreInMovieException(
-//					"Movie with id=" + id + " doesn't contain genre with id=" + genre.getId()
-//					+ ". Genre cannot be removed from Movie");
-//		}
-//		genres.remove(genre);
-//	}
-	
 }

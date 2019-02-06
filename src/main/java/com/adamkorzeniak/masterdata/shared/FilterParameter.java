@@ -1,74 +1,86 @@
 package com.adamkorzeniak.masterdata.shared;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 
-@Getter
-public class FilterParameter {
-
+public class FilterParameter implements Serializable {
+	
+	private static final String INVALID_QUERY_PARAM_MESSAGE = "Invalid query param: ";
+	@Getter
 	private Function function;
+	@Getter
 	private String value;
+	@Getter
 	private String field;
+	
+	private String key;
 
 	public FilterParameter(String key, String value) {
 		this.value = value;
-		extractFromKey(key);
+		this.key = key;
+		processKey();
 	}
 
-	private void extractFromKey(String key) {
+	private void processKey() {
 		String[] elements = key.split("-");
 		switch (elements[0]) {
 		case "search":
-			if (elements.length != 2)
-				throw new RuntimeException("Invalid query param: " + key);
-			function = Function.SEARCH;
-			field = elements[1];
+			processTextKey(elements, Function.SEARCH);
 			break;
 		case "match":
-			if (elements.length != 2)
-				throw new RuntimeException("Invalid query param: " + key);
-			function = Function.MATCH;
-			field = elements[1];
+			processTextKey(elements, Function.MATCH);
 			break;
 		case "min":
-			if (elements.length != 2)
-				throw new RuntimeException("Invalid query param: " + key);
-			if (!isNumeric(this.value))
-				throw new RuntimeException("Invalid query param: " + key + ". Min supports only numbers");
-			function = Function.MIN;
-			field = elements[1];
+			processNumericKey(elements, Function.MIN);
 			break;
 		case "max":
-			if (elements.length != 2)
-				throw new RuntimeException("Invalid query param: " + key);
-			if (!isNumeric(this.value))
-				throw new RuntimeException("Invalid query param: " + key + ". Min supports only numbers");
-			function = Function.MAX;
-			field = elements[1];
+			processNumericKey(elements, Function.MAX);
 			break;
 		case "order":
-			if (elements.length == 1) {
-				function = Function.ORDER_ASC;
-			} else if (elements.length == 2) {
-				switch (elements[1]) {
-					case "asc":
-						function = Function.ORDER_ASC;
-						break;
-					case "desc":
-						function = Function.ORDER_DESC;
-						break;
-					default:
-						throw new RuntimeException("Invalid query param: " + key);
-				}
-				
-			} else {
-				throw new RuntimeException("Invalid query param: " + key);
-			}
-			field = value;
-			value = null;
+			processOrderKey(elements);
 			break;
 		default:
-			throw new RuntimeException("Invalid query param: " + key);
+			throw new RuntimeException(INVALID_QUERY_PARAM_MESSAGE + key);
 		}
+	}
+
+	private void processOrderKey(String[] elements) {
+		if (elements.length == 1) {
+			function = Function.ORDER_ASC;
+		} else if (elements.length == 2) {
+			switch (elements[1]) {
+				case "asc":
+					function = Function.ORDER_ASC;
+					break;
+				case "desc":
+					function = Function.ORDER_DESC;
+					break;
+				default:
+					throw new RuntimeException(INVALID_QUERY_PARAM_MESSAGE + key);
+			}
+			
+		} else {
+			throw new RuntimeException(INVALID_QUERY_PARAM_MESSAGE + key);
+		}
+		field = value;
+		value = null;
+	}
+
+	private void processTextKey(String[] elements, Function functionType) {
+		if (elements.length != 2)
+			throw new RuntimeException(INVALID_QUERY_PARAM_MESSAGE + key);
+		if (!isNumeric(this.value))
+			throw new RuntimeException(INVALID_QUERY_PARAM_MESSAGE + key + ". " + functionType + " supports only numbers");
+		function = functionType;
+		field = elements[1];
+	}
+	
+	private void processNumericKey(String[] elements, Function functionType) {
+		if (elements.length != 2)
+			throw new RuntimeException(INVALID_QUERY_PARAM_MESSAGE + key);
+		function = functionType;
+		field = elements[1];
 	}
 
 	private boolean isNumeric(String value) {

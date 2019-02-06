@@ -12,6 +12,17 @@ import com.adamkorzeniak.masterdata.movie.model.dto.MovieDTO;
 import com.adamkorzeniak.masterdata.shared.FilterParameter;
 
 public class MovieServiceHelper {
+
+	private static final String TITLE_FIELD = "title";
+	private static final String YEAR_FIELD = "year";
+	private static final String DURATION_FIELD = "duration";
+	private static final String DESCRIPTION_FIELD = "description";
+	private static final String RATING_FIELD = "rating";
+	private static final String WATCH_PRIORITY_FIELD = "watchPriority";
+	private static final String REVIEW_FIELD = "review";
+	private static final String PLOT_SUMMARY_FIELD = "plotSummary";
+	
+	private MovieServiceHelper() {}
 	
 	public static Movie convertToEntity(MovieDTO dto) {
 		Movie entity = new Movie();
@@ -27,7 +38,7 @@ public class MovieServiceHelper {
 		entity.setReviewDate(dto.getReviewDate());
 		entity.setGenres(
 				dto.getGenres().stream()
-					.map(genre -> GenreServiceHelper.convertToEntity(genre))
+					.map(GenreServiceHelper::convertToEntity)
 					.collect(Collectors.toList()));
 		
 		return entity;
@@ -47,7 +58,7 @@ public class MovieServiceHelper {
 		dto.setReviewDate(entity.getReviewDate());
 		dto.setGenres(
 				entity.getGenres().stream()
-				.map(genre -> GenreServiceHelper.convertToDTO(genre))
+				.map(GenreServiceHelper::convertToDTO)
 				.collect(Collectors.toList()));
 		
 		return dto;
@@ -71,24 +82,24 @@ public class MovieServiceHelper {
 	private static void validateAndFix(FilterParameter filter) {
 		switch (filter.getFunction()) {
 			case SEARCH:
-				if (!Arrays.asList("title", "description", "review", "plotSummary").contains(filter.getField())) {
+				if (!Arrays.asList(TITLE_FIELD, DESCRIPTION_FIELD, REVIEW_FIELD, PLOT_SUMMARY_FIELD).contains(filter.getField())) {
 					throw new RuntimeException("Search doesn't support " + filter.getField());
 				}
 				break;
 			case MATCH:
-				if (!Arrays.asList("title").contains(filter.getField())) {
+				if (!Arrays.asList(TITLE_FIELD).contains(filter.getField())) {
 					throw new RuntimeException("Match doesn't support " + filter.getField());
 				}
 				break;
 			case MIN:
 			case MAX:
-				if (!Arrays.asList("year", "duration", "rating", "watchPriority").contains(filter.getField())) {
+				if (!Arrays.asList(YEAR_FIELD, DURATION_FIELD, RATING_FIELD, WATCH_PRIORITY_FIELD).contains(filter.getField())) {
 					throw new RuntimeException(filter.getFunction() + " doesn't support " + filter.getField());
 				}
 				break;
 			case ORDER_ASC:
 			case ORDER_DESC:
-				if (!Arrays.asList("title", "year", "duration", "rating", "watchPriority").contains(filter.getField())) {
+				if (!Arrays.asList(TITLE_FIELD, YEAR_FIELD, DURATION_FIELD, RATING_FIELD, WATCH_PRIORITY_FIELD).contains(filter.getField())) {
 					throw new RuntimeException(filter.getFunction() + " doesn't support " + filter.getField());
 				}
 				break;

@@ -30,6 +30,8 @@ import com.adamkorzeniak.masterdata.movie.service.MovieServiceHelper;
 @RequestMapping("/Movie/api/v0")
 public class MovieController {
 	
+	private static final String MOVIE_NOT_FOUND_MESSAGE = "Movie not found: id=";
+	
 	@Autowired
 	private MovieService movieService;
 	
@@ -46,7 +48,7 @@ public class MovieController {
 			) {
 		
 		List<MovieDTO> dtos = movieService.searchMovies(allRequestParams).stream()
-				.map(movie -> MovieServiceHelper.convertToDTO(movie))
+				.map(MovieServiceHelper::convertToDTO)
 				.collect(Collectors.toList());
 		if (dtos.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -66,7 +68,7 @@ public class MovieController {
 	public ResponseEntity<MovieDTO> findMovieById(@PathVariable("movieId") Long movieId) {
 		Optional<Movie> result = movieService.findMovieById(movieId);
 		if (!result.isPresent()) {
-			throw new NotFoundException("Movie not found: id=" + movieId);
+			throw new NotFoundException(MOVIE_NOT_FOUND_MESSAGE + movieId);
 		}
 		MovieDTO dto = MovieServiceHelper.convertToDTO(result.get());
 		return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -102,7 +104,7 @@ public class MovieController {
 	public ResponseEntity<MovieDTO> updateMovie(@RequestBody @Valid MovieDTO dto, @PathVariable Long movieId) {
 		boolean exists = movieService.isMovieExist(movieId);
 		if (!exists) {
-			throw new NotFoundException("Movie not found: id=" + movieId);
+			throw new NotFoundException(MOVIE_NOT_FOUND_MESSAGE + movieId);
 		}
 		Movie movie = MovieServiceHelper.convertToEntity(dto);
 		Movie newMovie = movieService.updateMovie(movieId, movie);
@@ -121,7 +123,7 @@ public class MovieController {
 	public ResponseEntity<Void> deleteMovie(@PathVariable Long movieId) {
 		boolean exists = movieService.isMovieExist(movieId);
 		if (!exists) {
-			throw new NotFoundException("Movie not found: id=" + movieId);
+			throw new NotFoundException(MOVIE_NOT_FOUND_MESSAGE + movieId);
 		}
 		movieService.deleteMovie(movieId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

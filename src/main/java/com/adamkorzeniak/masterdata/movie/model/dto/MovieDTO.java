@@ -7,8 +7,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
-import com.adamkorzeniak.masterdata.movie.model.Genre;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

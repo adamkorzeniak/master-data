@@ -30,6 +30,8 @@ import com.adamkorzeniak.masterdata.movie.service.GenreServiceHelper;
 @RequestMapping("/Movie/api/v0")
 public class GenreController {
 	
+	private static final String GENRE_NOT_FOUND_MESSAGE = "Genre not found: id=";
+	
 	@Autowired
 	private GenreService genreService;
 
@@ -40,14 +42,13 @@ public class GenreController {
 	 * 
 	 * @return  List of genres
 	 */
-	
 	@GetMapping("/genres")
 	public ResponseEntity<List<GenreDTO>> findGenres(
 			@RequestParam Map<String,String> allRequestParams
 			) {
 		
 		List<GenreDTO> dtos = genreService.searchGenres(allRequestParams).stream()
-				.map(genre -> GenreServiceHelper.convertToDTO(genre))
+				.map(GenreServiceHelper::convertToDTO)
 				.collect(Collectors.toList());
 				
 		if (dtos.isEmpty()) {
@@ -68,7 +69,7 @@ public class GenreController {
 	public ResponseEntity<GenreDTO> findGenreById(@PathVariable("genreId") Long genreId) {
 		Optional<Genre> result = genreService.findGenreById(genreId);
 		if (!result.isPresent()) {
-			throw new NotFoundException("Genre not found: id=" + genreId);
+			throw new NotFoundException(GENRE_NOT_FOUND_MESSAGE + genreId);
 		}
 		GenreDTO dto = GenreServiceHelper.convertToDTO(result.get());
 		return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -104,7 +105,7 @@ public class GenreController {
 	public ResponseEntity<GenreDTO> updateGenre(@RequestBody @Valid GenreDTO dto, @PathVariable Long genreId) {
 		boolean exists = genreService.isGenreExist(genreId);
 		if (!exists) {
-			throw new NotFoundException("Genre not found: id=" + genreId);
+			throw new NotFoundException(GENRE_NOT_FOUND_MESSAGE + genreId);
 		}
 		Genre genre = GenreServiceHelper.convertToEntity(dto);
 		Genre newGenre = genreService.updateGenre(genreId, genre);
@@ -123,7 +124,7 @@ public class GenreController {
 	public ResponseEntity<Void> deleteGenre(@PathVariable Long genreId) {
 		boolean exists = genreService.isGenreExist(genreId);
 		if (!exists) {
-			throw new NotFoundException("Genre not found: id=" + genreId);
+			throw new NotFoundException(GENRE_NOT_FOUND_MESSAGE + genreId);
 		}
 		genreService.deleteGenre(genreId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -44,8 +44,4 @@ public interface MovieService {
 	 * @return  If movie exists
 	 */
 	boolean isMovieExist(Long id);
-
-//	Movie addGenreToMovie(Long movieId, Long genreId);
-//
-//	Movie removeGenreFromMovie(Long movieId, Long genreId);
 }

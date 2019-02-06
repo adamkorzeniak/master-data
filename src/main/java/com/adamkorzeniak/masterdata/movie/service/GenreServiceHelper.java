@@ -12,6 +12,10 @@ import com.adamkorzeniak.masterdata.shared.FilterParameter;
 
 public class GenreServiceHelper {
 	
+	private static final String NAME_FIELD = "name";
+	
+	private GenreServiceHelper() {}
+	
 	public static Genre convertToEntity(GenreDTO dto) {
 		Genre entity = new Genre();
 		entity.setId(dto.getId());
@@ -51,7 +55,7 @@ public class GenreServiceHelper {
 			case MATCH:
 			case ORDER_ASC:
 			case ORDER_DESC:
-				if (!Arrays.asList("name").contains(filter.getField())) {
+				if (!Arrays.asList(NAME_FIELD).contains(filter.getField())) {
 					throw new RuntimeException(filter.getFunction() + " doesn't support " + filter.getField());
 				}
 				break;

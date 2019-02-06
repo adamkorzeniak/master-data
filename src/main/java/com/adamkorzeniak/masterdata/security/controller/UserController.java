@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.adamkorzeniak.masterdata.security.model.User;
+import com.adamkorzeniak.masterdata.security.model.UserDTO;
 import com.adamkorzeniak.masterdata.security.service.UserService;
+import com.adamkorzeniak.masterdata.security.service.UserServiceHelper;
 
 @RestController
 @RequestMapping("/api/v0")
@@ -22,7 +24,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping(value = "/users")
+	@GetMapping(value = "/me")
 	public ResponseEntity<Principal> user(Principal user) {
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -32,19 +34,19 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<User> registerUser(@RequestBody User user) {
-		user = userService.register(user);
+	public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO dto) {
+		User user = userService.register(UserServiceHelper.convertToEntity(dto));
 		if (user == null) {
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("message", "User already exists");
 			return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
 }
-		return new ResponseEntity<>(user, HttpStatus.CREATED);
+		return new ResponseEntity<>(UserServiceHelper.convertToDTO(user), HttpStatus.CREATED);
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<User> loginAsUser(@RequestBody User user) {
-		return new ResponseEntity<>(user, HttpStatus.OK);
+	public ResponseEntity<UserDTO> loginAsUser(@RequestBody UserDTO dto) {
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 
 }

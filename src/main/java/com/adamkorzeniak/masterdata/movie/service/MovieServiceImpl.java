@@ -18,15 +18,17 @@ import com.adamkorzeniak.masterdata.shared.GenericSpecification;
 @Service
 public class MovieServiceImpl implements MovieService {
 	
+	private static final String GENRE_MATCH_KEY = "genre";
+	
 	@Autowired
 	private MovieRepository movieRepository;
 
 	@Override
 	public List<Movie> searchMovies(Map<String,String> map) {
 		String genreName = null;
-		if (map.containsKey("genre")) {
-			genreName = map.get("genre");
-			map.remove("genre");
+		if (map.containsKey(GENRE_MATCH_KEY)) {
+			genreName = map.get(GENRE_MATCH_KEY);
+			map.remove(GENRE_MATCH_KEY);
 		}
 		List<FilterParameter> filters = MovieServiceHelper.buildFilters(map);
 		Specification<Movie> spec = new GenericSpecification<>(filters);
