@@ -1,0 +1,15 @@
+How to use Sonar (with code coverage)
+0.1 Stop everything related to Docker
+	sudo docker system prune
+
+1.0 Start Docker:
+	sudo docker run -d --name sonarqube -p 9000:9000 sonarqube
+
+1.1 Access http://localhost:9000
+
+2.0 Run unit tests
+	./mvnw clean test
+
+3.0 Send Reports to sonar
+    ./mvnw sonar:sonar
+	
