@@ -20,22 +20,30 @@ public class MovieServiceImpl implements MovieService {
 	
 	@Autowired
 	private MovieRepository movieRepository;
-	
-	@Autowired
-	private GenreService genreService;
 
-	/**
-	 * @inheritDoc
-	 */
 	@Override
-	public List<Movie> findAllMovies() {
-		return movieRepository.findAll();
+	public List<Movie> searchMovies(Map<String,String> map) {
+		String genreName = null;
+		if (map.containsKey("genre")) {
+			genreName = map.get("genre");
+			map.remove("genre");
+		}
+		List<FilterParameter> filters = MovieServiceHelper.buildFilters(map);
+		Specification<Movie> spec = new GenericSpecification<>(filters);
+		List<Movie> movies = movieRepository.findAll(spec);
+		if (genreName == null) {
+			return movies;
+		}
+		Genre genre = new Genre();
+		genre.setName(genreName);
+		return movies.stream()
+					.filter(movie -> movie.getGenres().contains(genre))
+					.collect(Collectors.toList());
 	}
-
+	
 	@Override
-	public Movie findMovieById(Long id) {
-		Optional<Movie> movie = movieRepository.findById(id);
-		return movie.isPresent() ? movie.get() : null;
+	public Optional<Movie> findMovieById(Long id) {
+		return movieRepository.findById(id);
 	}
 
 	@Override
@@ -59,49 +67,4 @@ public class MovieServiceImpl implements MovieService {
 	public boolean isMovieExist(Long id) {
 		return movieRepository.existsById(id);
 	}
-
-	@Override
-	public List<Movie> searchMovies(Map<String,String> map) {
-		String genreName = null;
-		if (map.containsKey("genre")) {
-			genreName = map.get("genre");
-			map.remove("genre");
-		}
-		List<FilterParameter> filters = MovieServiceHelper.buildFilters(map);
-		Specification<Movie> spec = new GenericSpecification<>(filters);
-		List<Movie> movies = movieRepository.findAll(spec);
-		if (genreName == null) {
-			return movies;
-		}
-		Genre genre = new Genre();
-		genre.setName(genreName);
-		return movies.stream()
-					.filter(movie -> movie.getGenres().contains(genre))
-					.collect(Collectors.toList());
-	}
-
-//	@Override
-//	public Movie addGenreToMovie(Long movieId, Long genreId) {
-//		Optional<Movie> opMovie = movieRepository.findById(movieId);
-//		Genre genre = genreService.findGenreById(genreId);
-//		if (!opMovie.isPresent() || genre == null) {
-//			throw new RuntimeException("Very unexpected exception");
-//		}
-//		Movie movie = opMovie.get();
-//		movie.addGenre(genre);
-//		return movieRepository.save(movie);
-//	}
-//
-//	@Override
-//	public Movie removeGenreFromMovie(Long movieId, Long genreId) {
-//		Optional<Movie> opMovie = movieRepository.findById(movieId);
-//		Genre genre = genreService.findGenreById(genreId);
-//		if (!opMovie.isPresent() || genre == null) {
-//			throw new RuntimeException("Very unexpected exception");
-//		}
-//		Movie movie = opMovie.get();
-//		movie.removeGenre(genre);
-//		return movieRepository.save(movie);
-//	}
-
 }

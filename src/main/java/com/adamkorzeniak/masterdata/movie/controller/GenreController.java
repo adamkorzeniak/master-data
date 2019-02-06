@@ -3,6 +3,7 @@ package com.adamkorzeniak.masterdata.movie.controller;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -21,8 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.adamkorzeniak.masterdata.exception.NotFoundException;
 import com.adamkorzeniak.masterdata.movie.model.Genre;
-import com.adamkorzeniak.masterdata.movie.model.Movie;
+import com.adamkorzeniak.masterdata.movie.model.dto.GenreDTO;
 import com.adamkorzeniak.masterdata.movie.service.GenreService;
+import com.adamkorzeniak.masterdata.movie.service.GenreServiceHelper;
 
 @RestController
 @RequestMapping("/Movie/api/v0")
@@ -32,34 +34,26 @@ public class GenreController {
 	private GenreService genreService;
 
 	/**
-	 * Returns list of all genres with 200 OK. 
+	 * Returns list of genres with 200 OK. 
 	 * <p>
 	 * If there are no genres it returns empty list with 204 No Content
 	 * 
-	 * @return  List of all genres
+	 * @return  List of genres
 	 */
+	
 	@GetMapping("/genres")
-	public ResponseEntity<List<Genre>> findGenres(
-			@RequestParam(value="name", required=false) String name) {
-
-		List<Genre> genres = (name != null && !name.isEmpty()) ? 
-			genreService.findGenresByName(name): genreService.findAllGenres(); 
-		
-		return new ResponseEntity<>(genres, HttpStatus.OK);
-	}
-	
-
-	
-	@GetMapping("/genres/search")
-	public ResponseEntity<List<Genre>> findGenres(
+	public ResponseEntity<List<GenreDTO>> findGenres(
 			@RequestParam Map<String,String> allRequestParams
 			) {
 		
-		List<Genre> genres = genreService.searchGenres(allRequestParams);
-		if (genres.isEmpty()) {
+		List<GenreDTO> dtos = genreService.searchGenres(allRequestParams).stream()
+				.map(genre -> GenreServiceHelper.convertToDTO(genre))
+				.collect(Collectors.toList());
+				
+		if (dtos.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<>(genres, HttpStatus.OK);
+		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
 
 	/**
@@ -71,12 +65,13 @@ public class GenreController {
 	 * @return  Genre for given id
 	 */
 	@GetMapping("/genres/{genreId}")
-	public ResponseEntity<Genre> findGenreById(@PathVariable("genreId") Long genreId) {
+	public ResponseEntity<GenreDTO> findGenreById(@PathVariable("genreId") Long genreId) {
 		Optional<Genre> result = genreService.findGenreById(genreId);
 		if (!result.isPresent()) {
 			throw new NotFoundException("Genre not found: id=" + genreId);
 		}
-		return new ResponseEntity<>(result.get(), HttpStatus.OK);
+		GenreDTO dto = GenreServiceHelper.convertToDTO(result.get());
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 
 	/**
@@ -88,9 +83,10 @@ public class GenreController {
 	 * @return  Created genre 
 	 */
 	@PostMapping("/genres")
-	public ResponseEntity<Genre> addGenre(@RequestBody @Valid Genre genre) {
+	public ResponseEntity<GenreDTO> addGenre(@RequestBody @Valid GenreDTO dto) {
+		Genre genre = GenreServiceHelper.convertToEntity(dto);
 		Genre newGenre = genreService.addGenre(genre);
-		return new ResponseEntity<>(newGenre, HttpStatus.CREATED);
+		return new ResponseEntity<>(GenreServiceHelper.convertToDTO(newGenre), HttpStatus.CREATED);
 	}
 	
 	/**
@@ -105,13 +101,14 @@ public class GenreController {
 	 * @return  Updated genre 
 	 */	
 	@PutMapping("/genres/{genreId}")
-	public ResponseEntity<Genre> updateGenre(@RequestBody @Valid Genre genre, @PathVariable Long genreId) {
+	public ResponseEntity<GenreDTO> updateGenre(@RequestBody @Valid GenreDTO dto, @PathVariable Long genreId) {
 		boolean exists = genreService.isGenreExist(genreId);
 		if (!exists) {
 			throw new NotFoundException("Genre not found: id=" + genreId);
 		}
+		Genre genre = GenreServiceHelper.convertToEntity(dto);
 		Genre newGenre = genreService.updateGenre(genreId, genre);
-		return new ResponseEntity<>(newGenre, HttpStatus.CREATED);
+		return new ResponseEntity<>(GenreServiceHelper.convertToDTO(newGenre), HttpStatus.CREATED);
 	}
 
 	/**

@@ -5,16 +5,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.adamkorzeniak.masterdata.movie.model.Genre;
-import com.adamkorzeniak.masterdata.movie.model.Movie;
 
 public interface GenreService {
-
-	/**
-	 * Returns list of all genres. 
-	 * 
-	 * @return  List of all genres
-	 */
-	List<Genre> findAllGenres();
+	
+	List<Genre> searchGenres(Map<String, String> allRequestParams);
 
 	/**
 	 * Returns genre for given id. 
@@ -57,6 +51,4 @@ public interface GenreService {
 	 * @return 	List of genres which name contains provided string
 	 */
 	List<Genre> findGenresByName(String name);
-
-	List<Genre> searchGenres(Map<String, String> allRequestParams);
 }

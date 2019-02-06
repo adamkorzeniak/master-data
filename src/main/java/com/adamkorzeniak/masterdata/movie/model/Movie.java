@@ -1,10 +1,7 @@
 package com.adamkorzeniak.masterdata.movie.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,10 +16,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-
-import com.adamkorzeniak.masterdata.movie.exception.GenreAlreadyInMovieException;
-import com.adamkorzeniak.masterdata.movie.exception.NotFoundGenreInMovieException;
-import com.adamkorzeniak.masterdata.shared.FilterParameter;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -41,16 +41,16 @@ public class MovieControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 	
-	@Test
-	public void GetAllMovies_NoIssue_ReturnsAllMovies() throws Exception {
-		
-		doReturn(Arrays.asList(new Movie(), new Movie())).when(movieService).findAllMovies();
-		
-		mockMvc.perform(get(baseMoviesPath))
-			.andExpect(status().isOk())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-			.andExpect(jsonPath("$", hasSize(2)));
-	}
+//	@Test
+//	public void GetAllMovies_NoIssue_ReturnsAllMovies() throws Exception {
+//		
+//		doReturn(Arrays.asList(new Movie(), new Movie())).when(movieService).findAllMovies();
+//		
+//		mockMvc.perform(get(baseMoviesPath))
+//			.andExpect(status().isOk())
+//			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+//			.andExpect(jsonPath("$", hasSize(2)));
+//	}
 	
 	@Test
 	public void GetMovieById_CorrectIdProvided_ReturnsMovie() throws Exception {

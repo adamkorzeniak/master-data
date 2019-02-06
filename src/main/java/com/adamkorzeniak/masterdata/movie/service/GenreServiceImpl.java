@@ -3,27 +3,27 @@ package com.adamkorzeniak.masterdata.movie.service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.adamkorzeniak.masterdata.movie.model.Genre;
-import com.adamkorzeniak.masterdata.movie.model.Movie;
 import com.adamkorzeniak.masterdata.movie.repository.GenreRepository;
 import com.adamkorzeniak.masterdata.shared.FilterParameter;
 import com.adamkorzeniak.masterdata.shared.GenericSpecification;
 
 @Service
 public class GenreServiceImpl implements GenreService {
-
+	
 	@Autowired
 	private GenreRepository genreRepository;
 
 	@Override
-	public List<Genre> findAllGenres() {
-		return genreRepository.findAll();
+	public List<Genre> searchGenres(Map<String, String> map) {
+		List<FilterParameter> filters = GenreServiceHelper.buildFilters(map);
+		Specification<Genre> spec = new GenericSpecification<>(filters);
+		return genreRepository.findAll(spec);
 	}
 
 	@Override
@@ -56,13 +56,6 @@ public class GenreServiceImpl implements GenreService {
 	@Override
 	public boolean isGenreExist(Long id) {
 		return genreRepository.existsById(id);
-	}
-
-	@Override
-	public List<Genre> searchGenres(Map<String, String> map) {
-		List<FilterParameter> filters = GenreServiceHelper.buildFilters(map);
-		Specification<Genre> spec = new GenericSpecification<>(filters);
-		return genreRepository.findAll(spec);
 	}
 
 }

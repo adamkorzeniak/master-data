@@ -28,13 +28,13 @@ public class TestGenreService {
 	@Autowired
 	private GenreService genreService;
 	
-	@Test
-	public void FindAllGenres_NoIssue_ReturnsAllGenres() throws Exception {
-		when(genreRepository.findAll()).thenReturn(Arrays.asList(new Genre(), new Genre()));
-		
-		List<Genre> genres = genreService.findAllGenres();
-		assertEquals(2, genres.size());
-	}
+//	@Test
+//	public void FindAllGenres_NoIssue_ReturnsAllGenres() throws Exception {
+//		when(genreRepository.findAll()).thenReturn(Arrays.asList(new Genre(), new Genre()));
+//		
+//		List<Genre> genres = genreService.findAllGenres();
+//		assertEquals(2, genres.size());
+//	}
 	
 	@Test
 	public void FindGenreById_CorrectIdProvided_ReturnsGenre() throws Exception {

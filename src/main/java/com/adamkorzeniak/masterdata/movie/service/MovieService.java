@@ -2,25 +2,21 @@ package com.adamkorzeniak.masterdata.movie.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.adamkorzeniak.masterdata.movie.model.Movie;
 
 public interface MovieService {
 
-	/**
-	 * Returns list of all movies. 
-	 * 
-	 * @return  List of all movies
-	 */
-	List<Movie> findAllMovies();
-
+	List<Movie> searchMovies(Map<String,String> allRequestParams);
+	
 	/**
 	 * Returns movie for given id. 
 	 * If movie not found returns null
 	 * 
 	 * @return  Movie for given id
 	 */
-	Movie findMovieById(Long id);
+	Optional<Movie> findMovieById(Long id);
 
 	/**
 	 * Create movie in database. Return created movie
@@ -48,8 +44,6 @@ public interface MovieService {
 	 * @return  If movie exists
 	 */
 	boolean isMovieExist(Long id);
-
-	List<Movie> searchMovies(Map<String,String> filter);
 
 //	Movie addGenreToMovie(Long movieId, Long genreId);
 //

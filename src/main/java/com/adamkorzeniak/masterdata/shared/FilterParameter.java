@@ -1,14 +1,12 @@
 package com.adamkorzeniak.masterdata.shared;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class FilterParameter {
 
 	private Function function;
 	private String value;
-	@Setter
 	private String field;
 
 	public FilterParameter(String key, String value) {
