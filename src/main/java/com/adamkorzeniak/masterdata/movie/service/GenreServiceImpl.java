@@ -15,7 +15,7 @@ import com.adamkorzeniak.masterdata.shared.GenericSpecification;
 
 @Service
 public class GenreServiceImpl implements GenreService {
-	
+
 	@Autowired
 	private GenreRepository genreRepository;
 

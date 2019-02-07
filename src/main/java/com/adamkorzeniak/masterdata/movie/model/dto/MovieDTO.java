@@ -12,24 +12,31 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter @Setter @NoArgsConstructor @ToString 
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class MovieDTO {
-	
+
 	private Long id;
 
 	@NotBlank
 	private String title;
 
-	@Min(1800)	@Max(2999)
+	@Min(1800)
+	@Max(2999)
 	private Integer year;
 
-	@Min(0)	@Max(2999)
+	@Min(0)
+	@Max(2999)
 	private Integer duration;
 
-	@Min(0) @Max(10)
+	@Min(0)
+	@Max(10)
 	private Integer rating;
 
-	@Min(0)	@Max(10)
+	@Min(0)
+	@Max(10)
 	private Integer watchPriority;
 
 	private String description;
@@ -39,6 +46,6 @@ public class MovieDTO {
 	private String plotSummary;
 
 	private LocalDate reviewDate;
-	
+
 	private List<GenreDTO> genres;
 }

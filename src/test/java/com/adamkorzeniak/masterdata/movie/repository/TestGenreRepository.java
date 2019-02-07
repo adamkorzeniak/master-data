@@ -1,5 +1,12 @@
 package com.adamkorzeniak.masterdata.movie.repository;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,26 +17,21 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.adamkorzeniak.masterdata.exception.NotFoundException;
 import com.adamkorzeniak.masterdata.movie.model.Genre;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.List;
-import java.util.Optional;
-
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 public class TestGenreRepository {
-	
+
 	private Genre comedy;
 	private Genre melodrama;
 	private Genre thriller;
 	private Genre drama;
-	
+
 	@Autowired
 	private GenreRepository genreRepository;
-	
+
 	@Autowired
 	private TestEntityManager entityManager;
-	
+
 	public TestGenreRepository() {
 		comedy = new Genre();
 		comedy.setName("Comedy");
@@ -40,20 +42,20 @@ public class TestGenreRepository {
 		melodrama = new Genre();
 		melodrama.setName("Melodrama");
 	}
-	
+
 	private void populateRepository(Genre... genres) {
-		for (Genre g: genres) {
+		for (Genre g : genres) {
 			this.entityManager.persist(g);
 		}
 	}
-	
+
 	@Test
 	public void FindAllGenres_NoIssue_ReturnsAllGenres() throws Exception {
 		populateRepository(comedy, drama);
 		List<Genre> genres = genreRepository.findAll();
 
 		assertEquals(2, genres.size());
-		for (Genre genre: genres) {
+		for (Genre genre : genres) {
 			if (genre.getId() == comedy.getId()) {
 				assertEquals("Comedy", genre.getName());
 			} else if (genre.getId() == drama.getId()) {
@@ -63,7 +65,7 @@ public class TestGenreRepository {
 			}
 		}
 	}
-	
+
 	@Test
 	public void FindGenreById_CorrectIdProvided_ReturnsOptionalWithGenre() throws Exception {
 		populateRepository(comedy, thriller, melodrama, drama);
@@ -75,14 +77,14 @@ public class TestGenreRepository {
 		assertEquals(thriller.getId(), genre.getId());
 		assertEquals("Thriller", genre.getName());
 	}
-	
+
 	@Test
 	public void FindGenreById_WrongIdProvided_ReturnsEmptyOptional() throws Exception {
 		populateRepository(comedy, thriller, melodrama, drama);
 		Optional<Genre> result = genreRepository.findById(999L);
 		assertFalse(result.isPresent());
 	}
-	
+
 //	@Test
 //	public void FindGenreContainingString_GenresContainString_ReturnsGenresList() throws Exception {
 //		populateRepository(comedy, thriller, melodrama, drama);
@@ -99,7 +101,7 @@ public class TestGenreRepository {
 //			}
 //		}
 //	}
-	
+
 //	@Test
 //	public void FindGenreContainingString_NoGenreContainString_ReturnsEmptyList() throws Exception {
 //		populateRepository(comedy, thriller, melodrama, drama);

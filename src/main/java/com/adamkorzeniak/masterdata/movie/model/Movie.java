@@ -23,52 +23,57 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter @Setter @NoArgsConstructor @ToString @EqualsAndHashCode(exclude="genres")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode(exclude = "genres")
 @Entity
-@Table(name="movie__movies")
+@Table(name = "movie__movies")
 public class Movie {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
 
 	@NotBlank
-	@Column(name="title")
+	@Column(name = "title")
 	private String title;
 
-	@Min(1800)	@Max(2999)
-	@Column(name="year")
+	@Min(1800)
+	@Max(2999)
+	@Column(name = "year")
 	private Integer year;
 
-	@Min(0)	@Max(2999)
-	@Column(name="duration")
+	@Min(0)
+	@Max(2999)
+	@Column(name = "duration")
 	private Integer duration;
 
-	@Min(0) @Max(10)
-	@Column(name="rating")
+	@Min(0)
+	@Max(10)
+	@Column(name = "rating")
 	private Integer rating;
 
-	@Min(0)	@Max(10)
-	@Column(name="watch_priority")
+	@Min(0)
+	@Max(10)
+	@Column(name = "watch_priority")
 	private Integer watchPriority;
 
-	@Column(name="description")
+	@Column(name = "description")
 	private String description;
 
-	@Column(name="review")
+	@Column(name = "review")
 	private String review;
 
-	@Column(name="plot_summary")
+	@Column(name = "plot_summary")
 	private String plotSummary;
 
-	@Column(name="review_date")
+	@Column(name = "review_date")
 	private LocalDate reviewDate;
-	
-	@ManyToMany(fetch=FetchType.EAGER)
-	@JoinTable(
-			name="movie__movie_genres",
-			joinColumns=@JoinColumn(name="movie_id"),
-			inverseJoinColumns=@JoinColumn(name="genre_id"))
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "movie__movie_genres", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
 	private List<Genre> genres;
 }

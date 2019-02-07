@@ -14,24 +14,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter @NoArgsConstructor @EqualsAndHashCode(of="name")
-@Table(name="movie__genres")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(of = "name")
+@Table(name = "movie__genres")
 public class Genre {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
 
 	@NotBlank
-	@Column(name="name")
+	@Column(name = "name")
 	private String name;
 
 	@Override
 	public String toString() {
 		return name;
 	}
-	
-	
-	
+
 }

@@ -40,7 +40,7 @@ public class UserController {
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("message", "User already exists");
 			return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
-}
+		}
 		return new ResponseEntity<>(UserServiceHelper.convertToDTO(user), HttpStatus.CREATED);
 	}
 

@@ -13,24 +13,25 @@ import com.adamkorzeniak.masterdata.movie.model.dto.GenreDTO;
 import com.adamkorzeniak.masterdata.shared.FilterParameter;
 
 public class GenreServiceHelper {
-	
+
 	private static final String NAME_FIELD = "name";
-	
-	private GenreServiceHelper() {}
-	
+
+	private GenreServiceHelper() {
+	}
+
 	public static Genre convertToEntity(GenreDTO dto) {
 		Genre entity = new Genre();
 		entity.setId(dto.getId());
 		entity.setName(dto.getName());
-		
+
 		return entity;
 	}
-	
+
 	public static GenreDTO convertToDTO(Genre entity) {
 		GenreDTO dto = new GenreDTO();
 		dto.setId(entity.getId());
 		dto.setName(entity.getName());
-		
+
 		return dto;
 	}
 
@@ -50,17 +51,17 @@ public class GenreServiceHelper {
 
 	private static void validateAndFix(FilterParameter filter) {
 		switch (filter.getFunction()) {
-			case MIN:
-			case MAX:
-				throw new FilterNotSupportedException(filter.getFunction());
-			case SEARCH:
-			case MATCH:
-			case ORDER_ASC:
-			case ORDER_DESC:
-				if (!Arrays.asList(NAME_FIELD).contains(filter.getField())) {
-					throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
-				}
-				break;
+		case MIN:
+		case MAX:
+			throw new FilterNotSupportedException(filter.getFunction());
+		case SEARCH:
+		case MATCH:
+		case ORDER_ASC:
+		case ORDER_DESC:
+			if (!Arrays.asList(NAME_FIELD).contains(filter.getField())) {
+				throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
+			}
+			break;
 		}
 
 	}

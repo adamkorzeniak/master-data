@@ -29,28 +29,25 @@ import com.adamkorzeniak.masterdata.movie.service.GenreServiceHelper;
 @RestController
 @RequestMapping("/Movie/api/v0")
 public class GenreController {
-	
+
 	private static final String GENRE_NOT_FOUND_MESSAGE = "Genre not found: id=";
-	
+
 	@Autowired
 	private GenreService genreService;
 
 	/**
-	 * Returns list of genres with 200 OK. 
+	 * Returns list of genres with 200 OK.
 	 * <p>
 	 * If there are no genres it returns empty list with 204 No Content
 	 * 
-	 * @return  List of genres
+	 * @return List of genres
 	 */
 	@GetMapping("/genres")
-	public ResponseEntity<List<GenreDTO>> findGenres(
-			@RequestParam Map<String,String> allRequestParams
-			) {
-		
-		List<GenreDTO> dtos = genreService.searchGenres(allRequestParams).stream()
-				.map(GenreServiceHelper::convertToDTO)
+	public ResponseEntity<List<GenreDTO>> findGenres(@RequestParam Map<String, String> allRequestParams) {
+
+		List<GenreDTO> dtos = genreService.searchGenres(allRequestParams).stream().map(GenreServiceHelper::convertToDTO)
 				.collect(Collectors.toList());
-				
+
 		if (dtos.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
@@ -58,12 +55,13 @@ public class GenreController {
 	}
 
 	/**
-	 * Returns genre with given id with 200 OK. 
+	 * Returns genre with given id with 200 OK.
 	 * <p>
-	 * If genre with given id does not exist it returns error response with 404 Not Found
+	 * If genre with given id does not exist it returns error response with 404 Not
+	 * Found
 	 * 
-	 * @param	genreId - Id of movie
-	 * @return  Genre for given id
+	 * @param genreId - Id of movie
+	 * @return Genre for given id
 	 */
 	@GetMapping("/genres/{genreId}")
 	public ResponseEntity<GenreDTO> findGenreById(@PathVariable("genreId") Long genreId) {
@@ -76,12 +74,12 @@ public class GenreController {
 	}
 
 	/**
-	 * Creates a genre in database. Returns created genre with 201 Created. 
+	 * Creates a genre in database. Returns created genre with 201 Created.
 	 * <p>
 	 * If provided genre data is invalid it returns 400 Bad Request.
 	 * 
-	 * @param	genre - Movie to be created
-	 * @return  Created genre 
+	 * @param genre - Movie to be created
+	 * @return Created genre
 	 */
 	@PostMapping("/genres")
 	public ResponseEntity<GenreDTO> addGenre(@RequestBody @Valid GenreDTO dto) {
@@ -89,18 +87,19 @@ public class GenreController {
 		Genre newGenre = genreService.addGenre(genre);
 		return new ResponseEntity<>(GenreServiceHelper.convertToDTO(newGenre), HttpStatus.CREATED);
 	}
-	
+
 	/**
 	 * Updates a genre with given id in database. Returns updated genre with 200 OK.
 	 * <p>
-	 * If genre with given id does not exist it returns error response with 404 Not Found
+	 * If genre with given id does not exist it returns error response with 404 Not
+	 * Found
 	 * <p>
 	 * If provided genre data is invalid it returns 400 Bad Request.
 	 * 
-	 * @param	genreId - Id of genre
-	 * @param	genre - Genre to be updated
-	 * @return  Updated genre 
-	 */	
+	 * @param genreId - Id of genre
+	 * @param genre   - Genre to be updated
+	 * @return Updated genre
+	 */
 	@PutMapping("/genres/{genreId}")
 	public ResponseEntity<GenreDTO> updateGenre(@RequestBody @Valid GenreDTO dto, @PathVariable Long genreId) {
 		boolean exists = genreService.isGenreExist(genreId);
@@ -115,11 +114,12 @@ public class GenreController {
 	/**
 	 * Deletes a genre with given id. Returns empty response with 204 No Content.
 	 * <p>
-	 * If genre with given id does not exist it returns error response with 404 Not Found
+	 * If genre with given id does not exist it returns error response with 404 Not
+	 * Found
 	 * 
-	 * @param	genreId - Id of movie
-	 * @return  Empty response 
-	 */	
+	 * @param genreId - Id of movie
+	 * @return Empty response
+	 */
 	@DeleteMapping("/genres/{genreId}")
 	public ResponseEntity<Void> deleteGenre(@PathVariable Long genreId) {
 		boolean exists = genreService.isGenreExist(genreId);

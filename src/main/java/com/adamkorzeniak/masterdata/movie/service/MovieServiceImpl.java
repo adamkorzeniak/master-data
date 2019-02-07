@@ -17,14 +17,14 @@ import com.adamkorzeniak.masterdata.shared.GenericSpecification;
 
 @Service
 public class MovieServiceImpl implements MovieService {
-	
+
 	private static final String GENRE_MATCH_KEY = "genre";
-	
+
 	@Autowired
 	private MovieRepository movieRepository;
 
 	@Override
-	public List<Movie> searchMovies(Map<String,String> map) {
+	public List<Movie> searchMovies(Map<String, String> map) {
 		String genreName = null;
 		if (map.containsKey(GENRE_MATCH_KEY)) {
 			genreName = map.get(GENRE_MATCH_KEY);
@@ -38,11 +38,9 @@ public class MovieServiceImpl implements MovieService {
 		}
 		Genre genre = new Genre();
 		genre.setName(genreName);
-		return movies.stream()
-					.filter(movie -> movie.getGenres().contains(genre))
-					.collect(Collectors.toList());
+		return movies.stream().filter(movie -> movie.getGenres().contains(genre)).collect(Collectors.toList());
 	}
-	
+
 	@Override
 	public Optional<Movie> findMovieById(Long id) {
 		return movieRepository.findById(id);

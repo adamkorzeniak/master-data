@@ -22,9 +22,10 @@ public class MovieServiceHelper {
 	private static final String WATCH_PRIORITY_FIELD = "watchPriority";
 	private static final String REVIEW_FIELD = "review";
 	private static final String PLOT_SUMMARY_FIELD = "plotSummary";
-	
-	private MovieServiceHelper() {}
-	
+
+	private MovieServiceHelper() {
+	}
+
 	public static Movie convertToEntity(MovieDTO dto) {
 		Movie entity = new Movie();
 		entity.setId(dto.getId());
@@ -38,13 +39,11 @@ public class MovieServiceHelper {
 		entity.setPlotSummary(dto.getPlotSummary());
 		entity.setReviewDate(dto.getReviewDate());
 		entity.setGenres(
-				dto.getGenres().stream()
-					.map(GenreServiceHelper::convertToEntity)
-					.collect(Collectors.toList()));
-		
+				dto.getGenres().stream().map(GenreServiceHelper::convertToEntity).collect(Collectors.toList()));
+
 		return entity;
 	}
-	
+
 	public static MovieDTO convertToDTO(Movie entity) {
 		MovieDTO dto = new MovieDTO();
 		dto.setId(entity.getId());
@@ -57,11 +56,8 @@ public class MovieServiceHelper {
 		dto.setReview(entity.getReview());
 		dto.setPlotSummary(entity.getPlotSummary());
 		dto.setReviewDate(entity.getReviewDate());
-		dto.setGenres(
-				entity.getGenres().stream()
-				.map(GenreServiceHelper::convertToDTO)
-				.collect(Collectors.toList()));
-		
+		dto.setGenres(entity.getGenres().stream().map(GenreServiceHelper::convertToDTO).collect(Collectors.toList()));
+
 		return dto;
 	}
 
@@ -82,28 +78,31 @@ public class MovieServiceHelper {
 
 	private static void validateAndFix(FilterParameter filter) {
 		switch (filter.getFunction()) {
-			case SEARCH:
-				if (!Arrays.asList(TITLE_FIELD, DESCRIPTION_FIELD, REVIEW_FIELD, PLOT_SUMMARY_FIELD).contains(filter.getField())) {
-					throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
-				}
-				break;
-			case MATCH:
-				if (!Arrays.asList(TITLE_FIELD).contains(filter.getField())) {
-					throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
-				}
-				break;
-			case MIN:
-			case MAX:
-				if (!Arrays.asList(YEAR_FIELD, DURATION_FIELD, RATING_FIELD, WATCH_PRIORITY_FIELD).contains(filter.getField())) {
-					throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
-				}
-				break;
-			case ORDER_ASC:
-			case ORDER_DESC:
-				if (!Arrays.asList(TITLE_FIELD, YEAR_FIELD, DURATION_FIELD, RATING_FIELD, WATCH_PRIORITY_FIELD).contains(filter.getField())) {
-					throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
-				}
-				break;
+		case SEARCH:
+			if (!Arrays.asList(TITLE_FIELD, DESCRIPTION_FIELD, REVIEW_FIELD, PLOT_SUMMARY_FIELD)
+					.contains(filter.getField())) {
+				throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
+			}
+			break;
+		case MATCH:
+			if (!Arrays.asList(TITLE_FIELD).contains(filter.getField())) {
+				throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
+			}
+			break;
+		case MIN:
+		case MAX:
+			if (!Arrays.asList(YEAR_FIELD, DURATION_FIELD, RATING_FIELD, WATCH_PRIORITY_FIELD)
+					.contains(filter.getField())) {
+				throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
+			}
+			break;
+		case ORDER_ASC:
+		case ORDER_DESC:
+			if (!Arrays.asList(TITLE_FIELD, YEAR_FIELD, DURATION_FIELD, RATING_FIELD, WATCH_PRIORITY_FIELD)
+					.contains(filter.getField())) {
+				throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
+			}
+			break;
 		}
 
 	}

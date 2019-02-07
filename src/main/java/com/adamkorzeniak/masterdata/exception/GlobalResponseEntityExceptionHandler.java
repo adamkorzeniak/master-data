@@ -10,7 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-	
+
 	public static final String NOT_FOUND_CODE = "REQ404";
 	public static final String NOT_FOUND_TITLE = "Not Found";
 	public static final String INVALID_QUERY_PARAM_CODE = "REQ001";
@@ -24,46 +24,35 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 
 	@ExceptionHandler(value = { NotFoundException.class })
 	protected ResponseEntity<Object> notFound(RuntimeException exc, WebRequest request) {
-		ExceptionResponse bodyOfResponse = new ExceptionResponse(
-				NOT_FOUND_CODE,
-				NOT_FOUND_TITLE,
-				exc.getMessage());
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(NOT_FOUND_CODE, NOT_FOUND_TITLE, exc.getMessage());
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
-	
+
 	@ExceptionHandler(value = { InvalidQueryParamException.class })
 	protected ResponseEntity<Object> invalidQueryParamException(RuntimeException exc, WebRequest request) {
-		ExceptionResponse bodyOfResponse = new ExceptionResponse(
-				INVALID_QUERY_PARAM_CODE,
-				INVALID_QUERY_PARAM_TITLE,
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(INVALID_QUERY_PARAM_CODE, INVALID_QUERY_PARAM_TITLE,
 				exc.getMessage());
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
-	
+
 	@ExceptionHandler(value = { InvalidQueryParamValueException.class })
 	protected ResponseEntity<Object> invalidQueryParamValueException(RuntimeException exc, WebRequest request) {
-		ExceptionResponse bodyOfResponse = new ExceptionResponse(
-				INVALID_QUERY_PARAM_VALUE_CODE,
-				INVALID_QUERY_PARAM_VALUE_TITLE,
-				exc.getMessage());
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(INVALID_QUERY_PARAM_VALUE_CODE,
+				INVALID_QUERY_PARAM_VALUE_TITLE, exc.getMessage());
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
-	
+
 	@ExceptionHandler(value = { FilterNotSupportedException.class })
 	protected ResponseEntity<Object> filterNotSupportedException(RuntimeException exc, WebRequest request) {
-		ExceptionResponse bodyOfResponse = new ExceptionResponse(
-				FILTER_NOT_SUPPORTED_CODE,
-				FILTER_NOT_SUPPORTED_TITLE,
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(FILTER_NOT_SUPPORTED_CODE, FILTER_NOT_SUPPORTED_TITLE,
 				exc.getMessage());
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
-	
+
 	@ExceptionHandler(value = { FieldFilterNotSupportedException.class })
 	protected ResponseEntity<Object> filterFieldNotSupportedException(RuntimeException exc, WebRequest request) {
-		ExceptionResponse bodyOfResponse = new ExceptionResponse(
-				FIELD_FILTER_NOT_SUPPORTED_CODE,
-				FIELD_FILTER_NOT_SUPPORTED_TITLE,
-				exc.getMessage());
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(FIELD_FILTER_NOT_SUPPORTED_CODE,
+				FIELD_FILTER_NOT_SUPPORTED_TITLE, exc.getMessage());
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 }
