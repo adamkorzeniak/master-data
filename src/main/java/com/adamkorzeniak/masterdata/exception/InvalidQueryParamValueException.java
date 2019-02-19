@@ -1,6 +1,6 @@
 package com.adamkorzeniak.masterdata.exception;
 
-import com.adamkorzeniak.masterdata.shared.FilterFunction;
+import com.adamkorzeniak.masterdata.common.FilterFunction;
 
 public class InvalidQueryParamValueException extends RuntimeException {
 

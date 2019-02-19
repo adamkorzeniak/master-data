@@ -8,16 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.adamkorzeniak.masterdata.common.FilterParameter;
+import com.adamkorzeniak.masterdata.common.GenericSpecification;
+import com.adamkorzeniak.masterdata.exception.NotFoundException;
 import com.adamkorzeniak.masterdata.movie.model.Genre;
+import com.adamkorzeniak.masterdata.movie.model.Movie;
 import com.adamkorzeniak.masterdata.movie.repository.GenreRepository;
-import com.adamkorzeniak.masterdata.shared.FilterParameter;
-import com.adamkorzeniak.masterdata.shared.GenericSpecification;
+import com.adamkorzeniak.masterdata.movie.repository.MovieRepository;
 
 @Service
 public class GenreServiceImpl implements GenreService {
 
 	@Autowired
 	private GenreRepository genreRepository;
+	
+	@Autowired
+	private MovieRepository movieRepository;
 
 	@Override
 	public List<Genre> searchGenres(Map<String, String> map) {
@@ -51,6 +57,32 @@ public class GenreServiceImpl implements GenreService {
 	@Override
 	public boolean isGenreExist(Long id) {
 		return genreRepository.existsById(id);
+	}
+
+	@Override
+	public Genre mergeGenres(Long oldGenreId, Long targetGenreId) {
+		Optional<Genre> oldResult = genreRepository.findById(oldGenreId);
+		Optional<Genre> targetResult = genreRepository.findById(targetGenreId);
+		if (!oldResult.isPresent()) {
+			throw new NotFoundException("Genre not found: id=" + oldGenreId);
+		}
+		if (!targetResult.isPresent()) {
+			throw new NotFoundException("Genre not found: id=" + targetGenreId);
+		}
+		Genre oldGenre = oldResult.get();
+		Genre targetGenre = targetResult.get();
+		List<Movie> movies = movieRepository.findByGenresContaining(oldGenre);
+		movies.stream()
+			.forEach(movie -> {
+			List<Genre> genres = movie.getGenres();
+			int index = genres.indexOf(oldGenre);
+			if (genres.contains(targetGenre)) {
+				genres.remove(index);
+			} else {
+				genres.set(index, targetGenre);
+			}
+		});
+		return targetGenre;
 	}
 
 }

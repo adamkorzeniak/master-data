@@ -12,7 +12,7 @@ public class UserServiceHelper {
 		User entity = new User();
 		entity.setId(dto.getId());
 		entity.setUsername(dto.getUsername());
-		entity.setPassword(entity.getPassword());
+		entity.setPassword(dto.getPassword());
 		entity.setRole(dto.getRole());
 
 		return entity;

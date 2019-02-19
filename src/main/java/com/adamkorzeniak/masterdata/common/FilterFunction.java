@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.shared;
+package com.adamkorzeniak.masterdata.common;
 
 public enum FilterFunction {
 	SEARCH, MATCH, MIN, MAX, ORDER_ASC, ORDER_DESC;

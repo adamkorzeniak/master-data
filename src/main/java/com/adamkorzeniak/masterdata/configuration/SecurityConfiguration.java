@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.security;
+package com.adamkorzeniak.masterdata.configuration;
 
 import java.util.Arrays;
 
@@ -22,7 +22,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	private static final String[] unauthorizedResources = new String[] { "/api/v0/register", "/api/v0/login" };
+	private static final String[] unauthorizedResources = new String[] {
+			"/v0/register"
+	};
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -49,10 +51,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.httpBasic().and().authorizeRequests().antMatchers(unauthorizedResources).permitAll().anyRequest()
-				.authenticated().and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+		http
+			.httpBasic()
+			.and()
+				.authorizeRequests()
+				.antMatchers(unauthorizedResources)
+				.permitAll().
+			anyRequest()
+				.authenticated()
+			.and()
+				.csrf()
+				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
-		http.cors().and().csrf().disable();
+		http
+			.cors()
+			.and()
+			.csrf()
+				.disable();
 
 		// check what to do about cors
 		// enable CSRF

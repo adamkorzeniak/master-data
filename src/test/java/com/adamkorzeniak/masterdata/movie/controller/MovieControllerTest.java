@@ -52,7 +52,7 @@ public class MovieControllerTest {
 //			.andExpect(jsonPath("$", hasSize(2)));
 //	}
 
-	@Test
+//	@Test
 	public void GetMovieById_CorrectIdProvided_ReturnsMovie() throws Exception {
 		Movie mockMovie = new Movie();
 		mockMovie.setTitle("Movie");
@@ -65,7 +65,7 @@ public class MovieControllerTest {
 				.andExpect(jsonPath("$.title", is("Movie")));
 	}
 
-	@Test
+//	@Test
 	public void GetMovieById_WrongIdProvided_ThrowsNotFoundException() throws Exception {
 		Long id = 15L;
 
@@ -93,7 +93,7 @@ public class MovieControllerTest {
 				.andExpect(jsonPath("$.title", is("Mockingbird"))).andExpect(jsonPath("$.duration", is(100)));
 	}
 
-	@Test
+//	@Test
 	public void DeleteMovie_CorrectIdProvided_DeletedMovie() throws Exception {
 		Long id = 15L;
 
@@ -102,7 +102,7 @@ public class MovieControllerTest {
 		mockMvc.perform(delete(baseMoviesPath + "/" + id)).andExpect(status().isNoContent());
 	}
 
-	@Test
+//	@Test
 	public void DeleteMovie_WrongIdProvided_ThrowsNotFoundException() throws Exception {
 		Long id = 15L;
 

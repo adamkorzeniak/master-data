@@ -43,4 +43,6 @@ public interface GenreService {
 	 * @return If genre exists
 	 */
 	boolean isGenreExist(Long id);
+
+	Genre mergeGenres(Long genreId, Long targetGenreId);
 }

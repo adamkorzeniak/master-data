@@ -27,7 +27,7 @@ import com.adamkorzeniak.masterdata.movie.service.MovieService;
 import com.adamkorzeniak.masterdata.movie.service.MovieServiceHelper;
 
 @RestController
-@RequestMapping("/Movie/api/v0")
+@RequestMapping("/Movie/v0")
 public class MovieController {
 
 	private static final String MOVIE_NOT_FOUND_MESSAGE = "Movie not found: id=";

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,11 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.adamkorzeniak.masterdata.exception.NotFoundException;
 import com.adamkorzeniak.masterdata.movie.model.Genre;
 import com.adamkorzeniak.masterdata.movie.model.dto.GenreDTO;
+import com.adamkorzeniak.masterdata.movie.model.dto.GenrePatchDTO;
 import com.adamkorzeniak.masterdata.movie.service.GenreService;
 import com.adamkorzeniak.masterdata.movie.service.GenreServiceHelper;
 
 @RestController
-@RequestMapping("/Movie/api/v0")
+@RequestMapping("/Movie/v0")
 public class GenreController {
 
 	private static final String GENRE_NOT_FOUND_MESSAGE = "Genre not found: id=";
@@ -128,5 +130,18 @@ public class GenreController {
 		}
 		genreService.deleteGenre(genreId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+
+	@PatchMapping("/genres/{genreId}")
+	public ResponseEntity<GenreDTO> mergeGenres(@RequestBody GenrePatchDTO mergedto, @PathVariable Long genreId) {
+		boolean oldExists = genreService.isGenreExist(genreId);
+		boolean targetExists = genreService.isGenreExist(mergedto.getTargetGenreId());
+		if (!oldExists || !targetExists) {
+			throw new NotFoundException(GENRE_NOT_FOUND_MESSAGE + genreId);
+		}
+		Genre result = genreService.mergeGenres(genreId, mergedto.getTargetGenreId());
+		genreService.deleteGenre(genreId);
+		return new ResponseEntity<>(GenreServiceHelper.convertToDTO(result), HttpStatus.OK);
 	}
 }

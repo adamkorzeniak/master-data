@@ -18,7 +18,7 @@ import com.adamkorzeniak.masterdata.security.service.UserService;
 import com.adamkorzeniak.masterdata.security.service.UserServiceHelper;
 
 @RestController
-@RequestMapping("/api/v0")
+@RequestMapping("/v0")
 public class UserController {
 
 	@Autowired
@@ -33,20 +33,15 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("/register")
-	public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO dto) {
-		User user = userService.register(UserServiceHelper.convertToEntity(dto));
-		if (user == null) {
-			HttpHeaders headers = new HttpHeaders();
-			headers.add("message", "User already exists");
-			return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<>(UserServiceHelper.convertToDTO(user), HttpStatus.CREATED);
-	}
-
-	@PostMapping("/login")
-	public ResponseEntity<UserDTO> loginAsUser(@RequestBody UserDTO dto) {
-		return new ResponseEntity<>(dto, HttpStatus.OK);
-	}
+//	@PostMapping("/register")
+//	public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO dto) {
+//		User user = userService.register(UserServiceHelper.convertToEntity(dto));
+//		if (user == null) {
+//			HttpHeaders headers = new HttpHeaders();
+//			headers.add("message", "User already exists");
+//			return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
+//		}
+//		return new ResponseEntity<>(UserServiceHelper.convertToDTO(user), HttpStatus.CREATED);
+//	}
 
 }

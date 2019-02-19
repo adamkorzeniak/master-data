@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.shared;
+package com.adamkorzeniak.masterdata.common;
 
 import java.io.Serializable;
 

@@ -6,11 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.adamkorzeniak.masterdata.common.FilterParameter;
 import com.adamkorzeniak.masterdata.exception.FieldFilterNotSupportedException;
 import com.adamkorzeniak.masterdata.exception.FilterNotSupportedException;
 import com.adamkorzeniak.masterdata.movie.model.Genre;
 import com.adamkorzeniak.masterdata.movie.model.dto.GenreDTO;
-import com.adamkorzeniak.masterdata.shared.FilterParameter;
 
 public class GenreServiceHelper {
 

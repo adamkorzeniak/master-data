@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.exception;
+package com.adamkorzeniak.masterdata.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

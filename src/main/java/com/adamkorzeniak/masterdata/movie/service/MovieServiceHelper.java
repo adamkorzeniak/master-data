@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.adamkorzeniak.masterdata.common.FilterParameter;
 import com.adamkorzeniak.masterdata.exception.FieldFilterNotSupportedException;
 import com.adamkorzeniak.masterdata.movie.model.Movie;
 import com.adamkorzeniak.masterdata.movie.model.dto.MovieDTO;
-import com.adamkorzeniak.masterdata.shared.FilterParameter;
 
 public class MovieServiceHelper {
 
@@ -38,8 +38,10 @@ public class MovieServiceHelper {
 		entity.setReview(dto.getReview());
 		entity.setPlotSummary(dto.getPlotSummary());
 		entity.setReviewDate(dto.getReviewDate());
-		entity.setGenres(
-				dto.getGenres().stream().map(GenreServiceHelper::convertToEntity).collect(Collectors.toList()));
+		if (dto.getGenres() != null && !dto.getGenres().isEmpty()) {
+			entity.setGenres(
+					dto.getGenres().stream().map(GenreServiceHelper::convertToEntity).collect(Collectors.toList()));
+		}
 
 		return entity;
 	}
@@ -56,8 +58,9 @@ public class MovieServiceHelper {
 		dto.setReview(entity.getReview());
 		dto.setPlotSummary(entity.getPlotSummary());
 		dto.setReviewDate(entity.getReviewDate());
-		dto.setGenres(entity.getGenres().stream().map(GenreServiceHelper::convertToDTO).collect(Collectors.toList()));
-
+		if (entity.getGenres() != null && !entity.getGenres().isEmpty()) {
+			dto.setGenres(entity.getGenres().stream().map(GenreServiceHelper::convertToDTO).collect(Collectors.toList()));
+		}
 		return dto;
 	}
 

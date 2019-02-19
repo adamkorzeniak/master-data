@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:17535/dev_master_data_dev?autoReconnect=true&useSSL=false
+    username: xxx
+    password: xxxx
+    
+  jpa.hibernate.ddl-auto: validate
+
+server.port: 19532

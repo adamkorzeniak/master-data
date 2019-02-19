@@ -1,5 +1,6 @@
 package com.adamkorzeniak.masterdata.movie.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -9,36 +10,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.adamkorzeniak.masterdata.common.FilterParameter;
+import com.adamkorzeniak.masterdata.common.GenericSpecification;
 import com.adamkorzeniak.masterdata.movie.model.Genre;
 import com.adamkorzeniak.masterdata.movie.model.Movie;
 import com.adamkorzeniak.masterdata.movie.repository.MovieRepository;
-import com.adamkorzeniak.masterdata.shared.FilterParameter;
-import com.adamkorzeniak.masterdata.shared.GenericSpecification;
 
 @Service
 public class MovieServiceImpl implements MovieService {
 
-	private static final String GENRE_MATCH_KEY = "genre";
+	private static final String GENRE_MATCH_KEY = "genres";
 
 	@Autowired
 	private MovieRepository movieRepository;
 
 	@Override
 	public List<Movie> searchMovies(Map<String, String> map) {
-		String genreName = null;
+		String genreString = null;
 		if (map.containsKey(GENRE_MATCH_KEY)) {
-			genreName = map.get(GENRE_MATCH_KEY);
+			genreString = map.get(GENRE_MATCH_KEY);
 			map.remove(GENRE_MATCH_KEY);
 		}
 		List<FilterParameter> filters = MovieServiceHelper.buildFilters(map);
 		Specification<Movie> spec = new GenericSpecification<>(filters);
 		List<Movie> movies = movieRepository.findAll(spec);
-		if (genreName == null) {
+		if (genreString == null) {
 			return movies;
 		}
-		Genre genre = new Genre();
-		genre.setName(genreName);
-		return movies.stream().filter(movie -> movie.getGenres().contains(genre)).collect(Collectors.toList());
+		String[] genreArray = genreString.split(",");
+		List<Genre> genres = new ArrayList<>();
+		for (String g: genreArray) {
+			Genre genre = new Genre();
+			genre.setName(g);
+			genres.add(genre);
+		}
+		return movies.stream().filter(movie -> movie.getGenres().containsAll(genres)).collect(Collectors.toList());
 	}
 
 	@Override
