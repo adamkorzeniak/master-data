@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +39,22 @@ public class MovieServiceImpl implements MovieService {
 			return movies;
 		}
 		String[] genreArray = genreString.split(",");
-		List<Genre> genres = new ArrayList<>();
-		for (String g: genreArray) {
-			Genre genre = new Genre();
-			genre.setName(g);
-			genres.add(genre);
+		return movies.stream()
+			.filter(movie -> containsSearchedGenres(movie, genreArray))
+			.collect(Collectors.toList());
+	}
+	
+	private boolean containsSearchedGenres(Movie movie, String[] searchedGenres) {
+		List<Genre> genres = movie.getGenres();
+		for (String s: searchedGenres) {
+			boolean found = genres.stream().anyMatch(
+					genre -> genre.getName().toLowerCase().contains(s.toLowerCase()));
+			if (!found) {
+				return false;
+			}
 		}
-		return movies.stream().filter(movie -> movie.getGenres().containsAll(genres)).collect(Collectors.toList());
+		return true;
+		
 	}
 
 	@Override

@@ -99,6 +99,13 @@ public class MovieServiceHelper {
 				throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
 			}
 			break;
+
+		case EXIST:
+			if (!Arrays.asList(RATING_FIELD, WATCH_PRIORITY_FIELD, REVIEW_FIELD, PLOT_SUMMARY_FIELD)
+					.contains(filter.getField())) {
+				throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
+			}
+			break;
 		case ORDER_ASC:
 		case ORDER_DESC:
 			if (!Arrays.asList(TITLE_FIELD, YEAR_FIELD, DURATION_FIELD, RATING_FIELD, WATCH_PRIORITY_FIELD)

@@ -39,6 +39,9 @@ public class FilterParameter implements Serializable {
 		case "max":
 			processNumericKey(elements, FilterFunction.MAX);
 			break;
+		case "exist":
+			processBooleanKey(elements, FilterFunction.EXIST);
+			break;
 		case "order":
 			processOrderKey(elements);
 			break;
@@ -86,6 +89,21 @@ public class FilterParameter implements Serializable {
 		}
 		function = functionType;
 		field = elements[1];
+	}
+
+	private void processBooleanKey(String[] elements, FilterFunction functionType) {
+		if (elements.length != 2) {
+			throw new InvalidQueryParamException(key);
+		}
+		if (!isBoolean(this.value)) {
+			throw new InvalidQueryParamValueException(functionType, key);
+		}
+		function = functionType;
+		field = elements[1];
+	}
+	
+	private boolean isBoolean(String value) {
+		return value.equals("true") || value.equals("false");
 	}
 
 	private boolean isNumeric(String value) {

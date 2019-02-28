@@ -6,9 +6,15 @@ spring:
     
   jpa.hibernate.ddl-auto: validate
 
-server.port: 8080
+server.port: 8443
+
+server:
+  ssl:
+    key-store: classpath:certs/local-keystore.p12
+    key-store-password: dummypassword
+    keyStoreType: PKCS12
+    key-alias: tomcat
 
 logging:
   level:
     com.adamkorzeniak: DEBUG
-

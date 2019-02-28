@@ -6,7 +6,9 @@ public class InvalidQueryParamValueException extends RuntimeException {
 
 	public InvalidQueryParamValueException(FilterFunction function, String queryParam) {
 		super("Invalid query param value: " + queryParam + ". " + function.toString()
-				+ " supports only numeric values.");
+				+ " supports only "
+				+ ((function == FilterFunction.EXIST) ? "boolean" : "numeric")
+				+ " values.");
 	}
 
 }

@@ -27,6 +27,8 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 	public static final String FILTER_NOT_SUPPORTED_TITLE = "Filter Not Supported";
 	public static final String FIELD_FILTER_NOT_SUPPORTED_CODE = "REQ004";
 	public static final String FIELD_FILTER_NOT_SUPPORTED_TITLE = "Filter Field Not Supported";
+	public static final String BAD_REQUEST_CODE = "REQ000";
+	public static final String BAD_REQUEST_TITLE = "Bad Request";
 
 	@ExceptionHandler(value = { NotFoundException.class })
 	protected ResponseEntity<Object> notFound(RuntimeException exc, WebRequest request) {
@@ -59,6 +61,12 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 	protected ResponseEntity<Object> filterFieldNotSupportedException(RuntimeException exc, WebRequest request) {
 		ExceptionResponse bodyOfResponse = new ExceptionResponse(FIELD_FILTER_NOT_SUPPORTED_CODE,
 				FIELD_FILTER_NOT_SUPPORTED_TITLE, exc.getMessage());
+		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
+	
+	@ExceptionHandler(value = { Throwable.class })
+	protected ResponseEntity<Object> defaultException(RuntimeException exc, WebRequest request) {
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(BAD_REQUEST_CODE, BAD_REQUEST_TITLE, exc.getMessage());
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 }

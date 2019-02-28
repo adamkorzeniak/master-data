@@ -1,3 +1,7 @@
+### Files for other environments ###
+src/main/resources/application-dev.yml
+src/main/resources/certs/dev-keystore.p12
+
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 

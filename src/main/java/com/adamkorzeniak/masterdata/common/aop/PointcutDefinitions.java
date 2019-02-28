@@ -7,15 +7,21 @@ public class PointcutDefinitions {
 	@Pointcut("execution(* com.adamkorzeniak..*Controller.*(..))")
 	public void controllers() {}
 	
-	@Pointcut("execution(* com.adamkorzeniak.masterdata.configuration..*(..))")
-	public void configurations() {}
+	@Pointcut("execution(* com.adamkorzeniak..*Service*.*(..))")
+	public void services() {}
 	
-	@Pointcut("execution(* com.adamkorzeniak..*(..))")
-	public void customMethods() {}
+	@Pointcut("execution(* com.adamkorzeniak..*Repository*.*(..))")
+	public void repositories() {}
 	
-	@Pointcut("customMethods() && !controllers() && !configurations()")
-	public void other() {}
+	@Pointcut("execution(* com.adamkorzeniak..*Helper*.*(..))")
+	public void helpers() {}
 	
-	@Pointcut("execution(* *.GlobalResponseEntityExceptionHandler.*(..))")
+	@Pointcut("services() || repositories() || helpers()")
+	public void logic() {}
+	
+	@Pointcut("execution(* com.adamkorzeniak..*.*(..))")
+	public void custom() {}
+	
+	@Pointcut("execution(* com.adamkorzeniak..GlobalResponseEntityExceptionHandler.*(..))")
 	public void exceptionHandlers() {}
 }

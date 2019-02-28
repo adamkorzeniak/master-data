@@ -38,6 +38,14 @@ public class GenericSpecification<T> implements Specification<T> {
 			case MAX:
 				p.getExpressions().add(cb.le(root.get(filter.getField()), Double.parseDouble(filter.getValue())));
 				break;
+			case EXIST:
+				boolean exist = Boolean.parseBoolean(filter.getValue());
+				if(exist) {
+					p.getExpressions().add(cb.isNotNull(root.get(filter.getField())));
+				} else {
+					p.getExpressions().add(cb.isNull(root.get(filter.getField())));
+				}
+				break;
 			case ORDER_ASC:
 				cq.orderBy(cb.asc(root.get(filter.getField())));
 				break;
