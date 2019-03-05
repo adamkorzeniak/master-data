@@ -8,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.adamkorzeniak.masterdata.common.FilterParameter;
 import com.adamkorzeniak.masterdata.common.GenericSpecification;
+import com.adamkorzeniak.masterdata.common.api.SearchFilter;
+import com.adamkorzeniak.masterdata.common.api.SearchFilterService;
 import com.adamkorzeniak.masterdata.exception.NotFoundException;
 import com.adamkorzeniak.masterdata.movie.model.Genre;
 import com.adamkorzeniak.masterdata.movie.model.Movie;
@@ -24,10 +25,13 @@ public class GenreServiceImpl implements GenreService {
 	
 	@Autowired
 	private MovieRepository movieRepository;
+	
+	@Autowired
+	private SearchFilterService searchFilterService;
 
 	@Override
-	public List<Genre> searchGenres(Map<String, String> map) {
-		List<FilterParameter> filters = GenreServiceHelper.buildFilters(map);
+	public List<Genre> searchGenres(Map<String, String> requestParams) {
+		List<SearchFilter> filters = searchFilterService.buildFilters(requestParams, "movie.genres");
 		Specification<Genre> spec = new GenericSpecification<>(filters);
 		return genreRepository.findAll(spec);
 	}

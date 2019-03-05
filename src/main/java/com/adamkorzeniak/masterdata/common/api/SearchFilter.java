@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.common;
+package com.adamkorzeniak.masterdata.common.api;
 
 import java.io.Serializable;
 
@@ -7,10 +7,10 @@ import com.adamkorzeniak.masterdata.exception.InvalidQueryParamValueException;
 
 import lombok.Getter;
 
-public class FilterParameter implements Serializable {
+public class SearchFilter implements Serializable {
 
 	@Getter
-	private FilterFunction function;
+	private SearchFunctionType function;
 	@Getter
 	private String value;
 	@Getter
@@ -18,7 +18,7 @@ public class FilterParameter implements Serializable {
 
 	private String key;
 
-	public FilterParameter(String key, String value) {
+	public SearchFilter(String key, String value) {
 		this.value = value;
 		this.key = key;
 		processKey();
@@ -28,19 +28,19 @@ public class FilterParameter implements Serializable {
 		String[] elements = key.split("-");
 		switch (elements[0]) {
 		case "search":
-			processTextKey(elements, FilterFunction.SEARCH);
+			processTextKey(elements, SearchFunctionType.SEARCH);
 			break;
 		case "match":
-			processTextKey(elements, FilterFunction.MATCH);
+			processTextKey(elements, SearchFunctionType.MATCH);
 			break;
 		case "min":
-			processNumericKey(elements, FilterFunction.MIN);
+			processNumericKey(elements, SearchFunctionType.MIN);
 			break;
 		case "max":
-			processNumericKey(elements, FilterFunction.MAX);
+			processNumericKey(elements, SearchFunctionType.MAX);
 			break;
 		case "exist":
-			processBooleanKey(elements, FilterFunction.EXIST);
+			processBooleanKey(elements, SearchFunctionType.EXIST);
 			break;
 		case "order":
 			processOrderKey(elements);
@@ -52,14 +52,14 @@ public class FilterParameter implements Serializable {
 
 	private void processOrderKey(String[] elements) {
 		if (elements.length == 1) {
-			function = FilterFunction.ORDER_ASC;
+			function = SearchFunctionType.ORDER_ASC;
 		} else if (elements.length == 2) {
 			switch (elements[1]) {
 			case "asc":
-				function = FilterFunction.ORDER_ASC;
+				function = SearchFunctionType.ORDER_ASC;
 				break;
 			case "desc":
-				function = FilterFunction.ORDER_DESC;
+				function = SearchFunctionType.ORDER_DESC;
 				break;
 			default:
 				throw new InvalidQueryParamException(key);
@@ -72,7 +72,7 @@ public class FilterParameter implements Serializable {
 		value = null;
 	}
 
-	private void processTextKey(String[] elements, FilterFunction functionType) {
+	private void processTextKey(String[] elements, SearchFunctionType functionType) {
 		if (elements.length != 2) {
 			throw new InvalidQueryParamException(key);
 		}
@@ -80,7 +80,7 @@ public class FilterParameter implements Serializable {
 		field = elements[1];
 	}
 
-	private void processNumericKey(String[] elements, FilterFunction functionType) {
+	private void processNumericKey(String[] elements, SearchFunctionType functionType) {
 		if (elements.length != 2) {
 			throw new InvalidQueryParamException(key);
 		}
@@ -91,7 +91,7 @@ public class FilterParameter implements Serializable {
 		field = elements[1];
 	}
 
-	private void processBooleanKey(String[] elements, FilterFunction functionType) {
+	private void processBooleanKey(String[] elements, SearchFunctionType functionType) {
 		if (elements.length != 2) {
 			throw new InvalidQueryParamException(key);
 		}

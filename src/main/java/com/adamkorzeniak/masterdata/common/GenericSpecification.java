@@ -10,13 +10,14 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.adamkorzeniak.masterdata.common.api.SearchFilter;
 import com.adamkorzeniak.masterdata.exception.FilterNotSupportedException;
 
 public class GenericSpecification<T> implements Specification<T> {
 
-	private List<FilterParameter> filters = new ArrayList<>();
+	private List<SearchFilter> filters = new ArrayList<>();
 
-	public GenericSpecification(List<FilterParameter> filters) {
+	public GenericSpecification(List<SearchFilter> filters) {
 		this.filters = filters;
 	}
 
@@ -24,7 +25,7 @@ public class GenericSpecification<T> implements Specification<T> {
 
 		Predicate p = cb.conjunction();
 
-		for (FilterParameter filter : filters) {
+		for (SearchFilter filter : filters) {
 			switch (filter.getFunction()) {
 			case SEARCH:
 				p.getExpressions().add(cb.like(root.get(filter.getField()), "%" + filter.getValue() + "%"));

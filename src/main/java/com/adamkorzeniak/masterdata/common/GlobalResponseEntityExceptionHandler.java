@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.adamkorzeniak.masterdata.common.model.ExceptionResponse;
 import com.adamkorzeniak.masterdata.exception.FieldFilterNotSupportedException;
 import com.adamkorzeniak.masterdata.exception.FilterNotSupportedException;
 import com.adamkorzeniak.masterdata.exception.InvalidQueryParamException;

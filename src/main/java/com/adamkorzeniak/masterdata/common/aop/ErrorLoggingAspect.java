@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import com.adamkorzeniak.masterdata.common.ExceptionResponse;
+import com.adamkorzeniak.masterdata.common.model.ExceptionResponse;
 
 @Aspect
 @Component

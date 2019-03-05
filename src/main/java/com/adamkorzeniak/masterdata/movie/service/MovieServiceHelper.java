@@ -1,31 +1,15 @@
 package com.adamkorzeniak.masterdata.movie.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.adamkorzeniak.masterdata.common.FilterParameter;
-import com.adamkorzeniak.masterdata.exception.FieldFilterNotSupportedException;
 import com.adamkorzeniak.masterdata.movie.model.Movie;
 import com.adamkorzeniak.masterdata.movie.model.dto.MovieDTO;
 
 public class MovieServiceHelper {
 
-	private static final String TITLE_FIELD = "title";
-	private static final String YEAR_FIELD = "year";
-	private static final String DURATION_FIELD = "duration";
-	private static final String DESCRIPTION_FIELD = "description";
-	private static final String RATING_FIELD = "rating";
-	private static final String WATCH_PRIORITY_FIELD = "watchPriority";
-	private static final String REVIEW_FIELD = "review";
-	private static final String PLOT_SUMMARY_FIELD = "plotSummary";
-
 	private MovieServiceHelper() {
 	}
-
+	
 	public static Movie convertToEntity(MovieDTO dto) {
 		Movie entity = new Movie();
 		entity.setId(dto.getId());
@@ -62,58 +46,5 @@ public class MovieServiceHelper {
 			dto.setGenres(entity.getGenres().stream().map(GenreServiceHelper::convertToDTO).collect(Collectors.toList()));
 		}
 		return dto;
-	}
-
-	public static List<FilterParameter> buildFilters(Map<String, String> map) {
-
-		List<FilterParameter> filters = new ArrayList<>();
-
-		Iterator it = map.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			FilterParameter filter = new FilterParameter((String) pair.getKey(), (String) pair.getValue());
-			validateAndFix(filter);
-			filters.add(filter);
-		}
-
-		return filters;
-	}
-
-	private static void validateAndFix(FilterParameter filter) {
-		switch (filter.getFunction()) {
-		case SEARCH:
-			if (!Arrays.asList(TITLE_FIELD, DESCRIPTION_FIELD, REVIEW_FIELD, PLOT_SUMMARY_FIELD)
-					.contains(filter.getField())) {
-				throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
-			}
-			break;
-		case MATCH:
-			if (!Arrays.asList(TITLE_FIELD).contains(filter.getField())) {
-				throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
-			}
-			break;
-		case MIN:
-		case MAX:
-			if (!Arrays.asList(YEAR_FIELD, DURATION_FIELD, RATING_FIELD, WATCH_PRIORITY_FIELD)
-					.contains(filter.getField())) {
-				throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
-			}
-			break;
-
-		case EXIST:
-			if (!Arrays.asList(RATING_FIELD, WATCH_PRIORITY_FIELD, REVIEW_FIELD, PLOT_SUMMARY_FIELD)
-					.contains(filter.getField())) {
-				throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
-			}
-			break;
-		case ORDER_ASC:
-		case ORDER_DESC:
-			if (!Arrays.asList(TITLE_FIELD, YEAR_FIELD, DURATION_FIELD, RATING_FIELD, WATCH_PRIORITY_FIELD)
-					.contains(filter.getField())) {
-				throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());
-			}
-			break;
-		}
-
 	}
 }

@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.common;
+package com.adamkorzeniak.masterdata.common.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,18 +1,17 @@
 package com.adamkorzeniak.masterdata.movie.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.adamkorzeniak.masterdata.common.FilterParameter;
 import com.adamkorzeniak.masterdata.common.GenericSpecification;
+import com.adamkorzeniak.masterdata.common.api.SearchFilter;
+import com.adamkorzeniak.masterdata.common.api.SearchFilterService;
 import com.adamkorzeniak.masterdata.movie.model.Genre;
 import com.adamkorzeniak.masterdata.movie.model.Movie;
 import com.adamkorzeniak.masterdata.movie.repository.MovieRepository;
@@ -24,6 +23,9 @@ public class MovieServiceImpl implements MovieService {
 
 	@Autowired
 	private MovieRepository movieRepository;
+	
+	@Autowired
+	private SearchFilterService searchFilterService;
 
 	@Override
 	public List<Movie> searchMovies(Map<String, String> map) {
@@ -32,7 +34,7 @@ public class MovieServiceImpl implements MovieService {
 			genreString = map.get(GENRE_MATCH_KEY);
 			map.remove(GENRE_MATCH_KEY);
 		}
-		List<FilterParameter> filters = MovieServiceHelper.buildFilters(map);
+		List<SearchFilter> filters = searchFilterService.buildFilters(map, "movie.movies");
 		Specification<Movie> spec = new GenericSpecification<>(filters);
 		List<Movie> movies = movieRepository.findAll(spec);
 		if (genreString == null) {

@@ -18,3 +18,23 @@ server:
 logging:
   level:
     com.adamkorzeniak: DEBUG
+    
+params:
+  movie:
+    movies:
+      MIN: year,duration,rating,watchPriority
+      MAX: year,duration,rating,watchPriority
+      MATCH: title
+      SEARCH: title,description,review,plotSummary
+      EXIST: rating,watchPriority,review,plotSummary
+      ORDER: title,year,duration,rating,watchPriority
+    genres:
+      MATCH: name
+      SEARCH: name
+      EXIST: name
+      ORDER: name
+  error:
+    errors:
+      SEARCH: description
+    
+  
