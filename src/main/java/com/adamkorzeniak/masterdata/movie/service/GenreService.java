@@ -11,34 +11,47 @@ public interface GenreService {
 	List<Genre> searchGenres(Map<String, String> allRequestParams);
 
 	/**
-	 * Returns genre for given id. If genre not found returns null
+	 * Returns optional of genre for given id. 
+	 * If genre not found empty optional
 	 * 
-	 * @return Genre for given id
+	 * @param id Must not be null
+	 * 
+	 * @return Optional of genre for given id
 	 */
 	Optional<Genre> findGenreById(Long id);
 
 	/**
-	 * Create genre in database. Return created genre
+	 * Create genre in database.
+	 * Returns created genre
+	 * 
+	 * @param genre Must not be null
 	 * 
 	 * @return Created genre
 	 */
 	Genre addGenre(Genre genre);
 
 	/**
-	 * Update genre for given in database. Return updated genre
+	 * Update genre for given id in database.
+	 * Returns updated genre
+	 * 
+	 * @param id Must not be null
+	 * @param genre Must not be null
 	 * 
 	 * @return Updated genre
 	 */
 	Genre updateGenre(Long id, Genre genre);
 
 	/**
-	 * Delete genre for given in database.
+	 * Delete genre for given id in database.
 	 * 
+	 * @param id Must not be null
 	 */
 	void deleteGenre(Long id);
 
 	/**
-	 * Returns if genre exists
+	 * Returns if genre exists in database
+	 * 
+	 * @param id Must not be null
 	 * 
 	 * @return If genre exists
 	 */

@@ -7,4 +7,5 @@ public class FilterNotSupportedException extends RuntimeException {
 	public FilterNotSupportedException(SearchFunctionType function) {
 		super("This resource doesn't support " + function.toString());
 	}
+	
 }

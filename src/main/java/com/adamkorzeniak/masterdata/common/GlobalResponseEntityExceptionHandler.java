@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.adamkorzeniak.masterdata.common.model.ExceptionResponse;
 import com.adamkorzeniak.masterdata.exception.FieldFilterNotSupportedException;
 import com.adamkorzeniak.masterdata.exception.FilterNotSupportedException;
+import com.adamkorzeniak.masterdata.exception.InternalServerException;
 import com.adamkorzeniak.masterdata.exception.InvalidQueryParamException;
 import com.adamkorzeniak.masterdata.exception.InvalidQueryParamValueException;
 import com.adamkorzeniak.masterdata.exception.NotFoundException;
@@ -30,6 +31,8 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 	public static final String FIELD_FILTER_NOT_SUPPORTED_TITLE = "Filter Field Not Supported";
 	public static final String BAD_REQUEST_CODE = "REQ000";
 	public static final String BAD_REQUEST_TITLE = "Bad Request";
+	public static final String INTERNAL_SERVER_ERROR_CODE = "ERR000";
+	public static final String INTERNAL_SERVER_ERROR_TITLE = "Internal Server Error";
 
 	@ExceptionHandler(value = { NotFoundException.class })
 	protected ResponseEntity<Object> notFound(RuntimeException exc, WebRequest request) {
@@ -63,6 +66,13 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 		ExceptionResponse bodyOfResponse = new ExceptionResponse(FIELD_FILTER_NOT_SUPPORTED_CODE,
 				FIELD_FILTER_NOT_SUPPORTED_TITLE, exc.getMessage());
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
+
+	@ExceptionHandler(value = { InternalServerException.class })
+	protected ResponseEntity<Object> internalServerException(RuntimeException exc, WebRequest request) {
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(INTERNAL_SERVER_ERROR_CODE,
+				INTERNAL_SERVER_ERROR_TITLE, exc.getMessage());
+		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
 	}
 	
 	@ExceptionHandler(value = { Throwable.class })

@@ -1,5 +1,6 @@
 package com.adamkorzeniak.masterdata.movie.service;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import com.adamkorzeniak.masterdata.movie.model.Movie;
@@ -7,9 +8,15 @@ import com.adamkorzeniak.masterdata.movie.model.dto.MovieDTO;
 
 public class MovieServiceHelper {
 
-	private MovieServiceHelper() {
-	}
-	
+	private MovieServiceHelper() {}
+
+	/**
+	 * Converts Movie DTO to Entity.
+	 * 
+	 * @param entity Must not be null.
+	 * 
+	 * @return Movie Entity
+	 */
 	public static Movie convertToEntity(MovieDTO dto) {
 		Movie entity = new Movie();
 		entity.setId(dto.getId());
@@ -22,14 +29,24 @@ public class MovieServiceHelper {
 		entity.setReview(dto.getReview());
 		entity.setPlotSummary(dto.getPlotSummary());
 		entity.setReviewDate(dto.getReviewDate());
-		if (dto.getGenres() != null && !dto.getGenres().isEmpty()) {
-			entity.setGenres(
-					dto.getGenres().stream().map(GenreServiceHelper::convertToEntity).collect(Collectors.toList()));
+		if (dto.getGenres() == null) {
+			dto.setGenres(new ArrayList<>());
 		}
+		entity.setGenres(
+				dto.getGenres().stream()
+				.map(GenreServiceHelper::convertToEntity)
+				.collect(Collectors.toList()));
 
 		return entity;
 	}
 
+	/**
+	 * Converts Movie Entity to DTO.
+	 * 
+	 * @param entity Must not be null.
+	 * 
+	 * @return Movie DTO
+	 */
 	public static MovieDTO convertToDTO(Movie entity) {
 		MovieDTO dto = new MovieDTO();
 		dto.setId(entity.getId());
@@ -42,9 +59,13 @@ public class MovieServiceHelper {
 		dto.setReview(entity.getReview());
 		dto.setPlotSummary(entity.getPlotSummary());
 		dto.setReviewDate(entity.getReviewDate());
-		if (entity.getGenres() != null && !entity.getGenres().isEmpty()) {
-			dto.setGenres(entity.getGenres().stream().map(GenreServiceHelper::convertToDTO).collect(Collectors.toList()));
+		if (entity.getGenres() == null) {
+			entity.setGenres(new ArrayList<>());
 		}
+		dto.setGenres(
+				entity.getGenres().stream()
+				.map(GenreServiceHelper::convertToDTO)
+				.collect(Collectors.toList()));
 		return dto;
 	}
 }

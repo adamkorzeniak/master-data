@@ -20,25 +20,25 @@ public class SearchFilterServiceImpl implements SearchFilterService {
 	public Environment env;
 	
 	@Override
-	public List<SearchFilter> buildFilters(Map<String, String> map, String propertyPrefix) {
+	public List<SearchFilter> buildFilters(Map<String, String> params, String propertyString) {
 		List<SearchFilter> filters = new ArrayList<>();
-		Iterator it = map.entrySet().iterator();
+		Iterator it = params.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
 			SearchFilter filter = new SearchFilter((String) pair.getKey(), (String) pair.getValue());
-			validateAndFix(filter, propertyPrefix);
+			validateAndFix(filter, propertyString);
 			filters.add(filter);
 		}
 		return filters;
 	}
 
-	private void validateAndFix(SearchFilter filter, String propertyPrefix) {
-		String propertyLocation = "params." + propertyPrefix + "." + filter.getFunction().toString().toUpperCase();
-		String allowedString = env.getProperty(propertyLocation);
-		if (allowedString == null) {
+	private void validateAndFix(SearchFilter filter, String propertyString) {
+		String property = "params." + propertyString + "." + filter.getFunction().toString().toUpperCase();
+		String allowedFieldsString = env.getProperty(property);
+		if (allowedFieldsString == null) {
 			throw new FilterNotSupportedException(filter.getFunction());
 		}
-		String[] allowedFields = allowedString.split(",");
+		String[] allowedFields = allowedFieldsString.split(",");
 		boolean isSupported = Arrays.asList(allowedFields).contains(filter.getField());
 		if (!isSupported) {
 			throw new FieldFilterNotSupportedException(filter.getFunction(), filter.getField());

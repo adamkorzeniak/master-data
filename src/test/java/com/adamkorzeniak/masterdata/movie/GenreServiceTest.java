@@ -1,8 +1,6 @@
-package com.adamkorzeniak.masterdata.movie.service;
+package com.adamkorzeniak.masterdata.movie;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -10,17 +8,21 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Matchers;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.adamkorzeniak.masterdata.movie.model.Genre;
 import com.adamkorzeniak.masterdata.movie.repository.GenreRepository;
+import com.adamkorzeniak.masterdata.movie.service.GenreService;
 
 @ExtendWith(SpringExtension.class)
+@ActiveProfiles(profiles = "test")
 @SpringBootTest
-public class TestGenreService {
+public class GenreServiceTest {
 
 	@MockBean
 	private GenreRepository genreRepository;
@@ -36,8 +38,8 @@ public class TestGenreService {
 //		assertEquals(2, genres.size());
 //	}
 
-//	@Test
-	public void FindGenreById_CorrectIdProvided_ReturnsGenre() throws Exception {
+	@Test
+	public void FindGenreById_CorrectIdProvided_ReturnsOptionalOfGenre() throws Exception {
 		Long id = 1L;
 		Genre mocked = new Genre();
 		mocked.setName("Comedy");
@@ -48,14 +50,14 @@ public class TestGenreService {
 
 		Optional<Genre> result = genreService.findGenreById(id);
 
-		assertTrue(result.isPresent());
+		assertThat(result.isPresent()).isTrue();
 		Genre genre = result.get();
-		assertEquals("Comedy", genre.getName());
-		assertEquals(id, genre.getId());
+		assertThat(genre.getName()).isEqualTo("Comedy");
+		assertThat(genre.getId()).isEqualTo(id);
 
 	}
 
-//	@Test
+	@Test
 	public void FindGenreById_WrongIdProvided_ReturnsEmptyOptional() throws Exception {
 		Long id = 1L;
 		Optional<Genre> optional = Optional.empty();
@@ -64,51 +66,70 @@ public class TestGenreService {
 
 		Optional<Genre> result = genreService.findGenreById(id);
 
-		assertFalse(result.isPresent());
+		assertThat(result.isPresent()).isFalse();
 	}
 
-//	@Test
-//	public void FindGenresByName_NameStringFound_ReturnsGenresList() throws Exception {
-//		String name = "drama";
-//		
-//		when(genreRepository.findByNameIgnoreCaseContaining(name)).thenReturn(Arrays.asList(new Genre(), new Genre(), new Genre()));
-//
-//		List<Genre> genres = genreService.findGenresByName(name);
-//		assertEquals(3, genres.size());
-//	}
-
-//	@Test
+	@Test
 	public void AddGenre_GenreValid_ReturnsCreatedGenre() throws Exception {
+		Long id = 1L;
 		Genre genre = new Genre();
 		genre.setName("Comedy");
+		genre.setId(id);
 
-		when(genreRepository.save(Matchers.any())).thenReturn(genre);
+		when(genreRepository.save(Matchers.<Genre>any())).thenAnswer(
+			mockRepositorySaveInvocation(genre)
+		);
 
 		Genre result = genreService.addGenre(genre);
-		assertEquals("Comedy", result.getName());
+		assertThat(result).isNotNull();
+		assertThat(result.getName()).isEqualTo("Comedy");
+		assertThat(result.getId()).isEqualTo(100L);
+		
 	}
-
-//	@Test
+	
+	@Test
 	public void UpdateGenre_GenreValid_ReturnsUpdatedGenre() throws Exception {
+		Long id = 1L;
 		Genre genre = new Genre();
 		genre.setName("Comedy");
+		genre.setId(id);
 
-		when(genreRepository.save(Matchers.any())).thenReturn(genre);
+		when(genreRepository.save(Matchers.<Genre>any())).thenAnswer(
+			mockRepositorySaveInvocation(genre)
+		);
 
-		Genre result = genreService.updateGenre(1L, genre);
-		assertEquals("Comedy", result.getName());
+		Genre result = genreService.updateGenre(id, genre);
+		assertThat(result).isNotNull();
+		assertThat(result.getName()).isEqualTo("Comedy");
+		assertThat(result.getId()).isEqualTo(id);
 	}
-
-//	@Test
+	
+	@Test
 	public void DeleteGenre_GenreIdValid_DeletesGenre() throws Exception {
-		genreService.deleteGenre(1L);
+		Long id = 1L;
+		genreService.deleteGenre(id);
 	}
 
-//	@Test
+	@Test
 	public void IsGenreExist_GenreValid_ReturnsTrue() throws Exception {
 		Long id = 1L;
 		when(genreRepository.existsById(id)).thenReturn(true);
 
-		assertTrue(genreService.isGenreExist(id));
+		assertThat(genreService.isGenreExist(id)).isTrue();
+	}
+
+	private Answer<?> mockRepositorySaveInvocation(Genre genre) {
+		return invocation -> {
+		    Object argument = invocation.getArguments()[0];
+		    Genre receivedGenre = (Genre) argument;
+		    if (receivedGenre.getId() >= 0 ) {
+		        return genre;
+		    } else {
+		    	Genre newGenre = new Genre();
+		    	newGenre.setId(100L);
+		    	newGenre.setName(genre.getName());
+		        return newGenre;
+		    }
+		};
 	}
 }

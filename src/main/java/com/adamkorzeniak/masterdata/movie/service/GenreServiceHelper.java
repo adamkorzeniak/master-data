@@ -1,23 +1,19 @@
 package com.adamkorzeniak.masterdata.movie.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import com.adamkorzeniak.masterdata.common.api.SearchFilter;
-import com.adamkorzeniak.masterdata.common.api.SearchFilterServiceImpl;
-import com.adamkorzeniak.masterdata.exception.FieldFilterNotSupportedException;
-import com.adamkorzeniak.masterdata.exception.FilterNotSupportedException;
 import com.adamkorzeniak.masterdata.movie.model.Genre;
 import com.adamkorzeniak.masterdata.movie.model.dto.GenreDTO;
 
 public class GenreServiceHelper {
 
-	private GenreServiceHelper() {
-	}
+	private GenreServiceHelper() {}
 
+	/**
+	 * Converts Genre DTO to Entity.
+	 * 
+	 * @param dto Must not be null.
+	 * 
+	 * @return Genre entity
+	 */
 	public static Genre convertToEntity(GenreDTO dto) {
 		Genre entity = new Genre();
 		entity.setId(dto.getId());
@@ -26,6 +22,13 @@ public class GenreServiceHelper {
 		return entity;
 	}
 
+	/**
+	 * Converts Genre Entity to DTO.
+	 * 
+	 * @param entity Must not be null.
+	 * 
+	 * @return Genre DTO
+	 */
 	public static GenreDTO convertToDTO(Genre entity) {
 		GenreDTO dto = new GenreDTO();
 		dto.setId(entity.getId());

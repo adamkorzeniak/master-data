@@ -19,9 +19,16 @@ public class SearchFilter implements Serializable {
 	private String key;
 
 	public SearchFilter(String key, String value) {
-		this.value = value;
+		this.value = parseValue(value);
 		this.key = key;
 		processKey();
+	}
+
+	private String parseValue(String value) {
+		if (key.split("-")[0].equals("order")) {
+			return null;
+		}
+		return value;
 	}
 
 	private void processKey() {
@@ -51,25 +58,26 @@ public class SearchFilter implements Serializable {
 	}
 
 	private void processOrderKey(String[] elements) {
+		if (elements.length > 2) {
+			throw new InvalidQueryParamException(key);
+		}
 		if (elements.length == 1) {
 			function = SearchFunctionType.ORDER_ASC;
 		} else if (elements.length == 2) {
-			switch (elements[1]) {
-			case "asc":
-				function = SearchFunctionType.ORDER_ASC;
-				break;
-			case "desc":
-				function = SearchFunctionType.ORDER_DESC;
-				break;
-			default:
-				throw new InvalidQueryParamException(key);
-			}
-
-		} else {
-			throw new InvalidQueryParamException(key);
+			function = parseOrderType(elements[1]);
 		}
 		field = value;
-		value = null;
+	}
+
+	private SearchFunctionType parseOrderType(String orderType) {
+		switch (orderType) {
+		case "asc":
+			return SearchFunctionType.ORDER_ASC;
+		case "desc":
+			return SearchFunctionType.ORDER_DESC;
+		default:
+			throw new InvalidQueryParamException(key);
+		}
 	}
 
 	private void processTextKey(String[] elements, SearchFunctionType functionType) {
@@ -84,7 +92,7 @@ public class SearchFilter implements Serializable {
 		if (elements.length != 2) {
 			throw new InvalidQueryParamException(key);
 		}
-		if (!isNumeric(this.value)) {
+		if (!isNumeric(value)) {
 			throw new InvalidQueryParamValueException(functionType, key);
 		}
 		function = functionType;
@@ -95,7 +103,7 @@ public class SearchFilter implements Serializable {
 		if (elements.length != 2) {
 			throw new InvalidQueryParamException(key);
 		}
-		if (!isBoolean(this.value)) {
+		if (!isBoolean(value)) {
 			throw new InvalidQueryParamValueException(functionType, key);
 		}
 		function = functionType;

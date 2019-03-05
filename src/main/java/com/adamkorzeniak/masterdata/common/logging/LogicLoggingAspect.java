@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.common.aop;
+package com.adamkorzeniak.masterdata.common.logging;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -16,15 +16,24 @@ public class LogicLoggingAspect {
 
 	@Before("PointcutDefinitions.logic()")
 	public void enteringMethod(JoinPoint joinPoint) {
-		String method = joinPoint.getSignature().toShortString();
-		
-		logger.debug("*****Entering method*****\nMethodName=" + method + "\nCorrelationId=" + MDC.get("correlationId"));
+		String enteringMessage = buildEnteringMethodMessage(joinPoint);
+		logger.debug(enteringMessage);
 	}
 	
 	@After("PointcutDefinitions.logic()")
 	public void exitingMethod(JoinPoint joinPoint) {
-		String method = joinPoint.getSignature().toShortString();
-		
-		logger.debug("*****Exiting method*****\nMethodName=" + method + "\nCorrelationId=" + MDC.get("correlationId"));
+		String exitingMessage = buildExitingMethodMessage(joinPoint);
+		logger.debug(exitingMessage);
 	}
+
+	private String buildEnteringMethodMessage(JoinPoint joinPoint) {
+		String method = joinPoint.getSignature().toShortString();
+		return "*****Entering method*****\nMethodName=" + method + "\nCorrelationId=" + MDC.get("correlationId");
+	}
+	
+	private String buildExitingMethodMessage(JoinPoint joinPoint) {
+		String method = joinPoint.getSignature().toShortString();
+		return "*****Exiting method*****\nMethodName=" + method + "\nCorrelationId=" + MDC.get("correlationId");
+	}
+	
 }

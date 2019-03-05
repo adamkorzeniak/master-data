@@ -11,5 +11,13 @@ import java.util.List;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long>, JpaSpecificationExecutor<Movie> {
 	
+	/**
+	 * Returns list of movies that contains given genre.
+	 * If no movies found returns empty list.
+	 * 
+	 * @param genre Must be in managed (persisted) state.
+	 * 
+	 * @return List of movies for given genre
+	 */
 	List<Movie> findByGenresContaining(Genre genre);
 }

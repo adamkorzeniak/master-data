@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.common.aop;
+package com.adamkorzeniak.masterdata.common.logging;
 
 import org.aspectj.lang.annotation.Pointcut;
 

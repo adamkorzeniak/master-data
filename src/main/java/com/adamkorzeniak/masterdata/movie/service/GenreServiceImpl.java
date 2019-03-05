@@ -68,10 +68,10 @@ public class GenreServiceImpl implements GenreService {
 		Optional<Genre> oldResult = genreRepository.findById(oldGenreId);
 		Optional<Genre> targetResult = genreRepository.findById(targetGenreId);
 		if (!oldResult.isPresent()) {
-			throw new NotFoundException("Genre not found: id=" + oldGenreId);
+			throw new NotFoundException("Genre", oldGenreId);
 		}
 		if (!targetResult.isPresent()) {
-			throw new NotFoundException("Genre not found: id=" + targetGenreId);
+			throw new NotFoundException("Genre", targetGenreId);
 		}
 		Genre oldGenre = oldResult.get();
 		Genre targetGenre = targetResult.get();

@@ -1,6 +1,4 @@
-package com.adamkorzeniak.masterdata.common.aop;
-
-import java.util.UUID;
+package com.adamkorzeniak.masterdata.common.logging;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,35 +14,44 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class ControllerLoggingAspect {
-	
+
 	@Autowired
 	private HttpServletRequest request;
-	
+
 	private Logger logger = Logger.getLogger(ControllerLoggingAspect.class.getName());
-	
+
 	@Before("PointcutDefinitions.controllers()")
 	public void enteringController(JoinPoint joinPoint) {
-		String uuid = UUID.randomUUID().toString();
-		MDC.put("correlationId", uuid);
-		
+		String uuid = LoggingHelper.generateCorrelationId();
+		String requestURL = getRequestURL();
+		String message = buildRequestReceivedMessage(uuid, requestURL);
+		logger.debug(message);
+	}
+
+	@AfterReturning("PointcutDefinitions.controllers()")
+	public void successfullyExitingController(JoinPoint joinPoint) {
+		String message = buildResponseSendMessage();
+		LoggingHelper.clearCorellationId();
+		logger.debug(message);
+	}
+	
+	private String getRequestURL() {
 		String requestURL = request.getRequestURI();
 		if (request.getQueryString() != null) {
 			requestURL += "?" + request.getQueryString();
 		}
-		
-		String message = String.format(
-			"*****Request received*****\nCorrelationId=%s\n%s:%s",
+		return requestURL;
+	}
+	
+	private String buildRequestReceivedMessage(String uuid, String requestURL) {
+		return String.format(
+				"*****Request received*****%nCorrelationId=%s%n%s:%s",
 				uuid,
 				request.getMethod(),
 				requestURL);
-		
-		logger.debug(message);
-	}
-	
-	@AfterReturning("PointcutDefinitions.controllers()")
-	public void successfullyExitingController(JoinPoint joinPoint) {
-		logger.debug("*****Response send*****\nCorrelationId=" + MDC.get("correlationId"));
-		MDC.clear();
 	}
 
+	private String buildResponseSendMessage() {
+		return "*****Response send*****%nCorrelationId=" + MDC.get("correlationId");
+	}
 }

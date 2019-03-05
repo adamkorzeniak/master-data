@@ -19,7 +19,7 @@
 		<java.version>1.8</java.version>
 		<sonar.exclusions>
 			**/SpringBootDockerExampleApplication.java,
-			**/config/*.java
+			**/configuration/*.java
 		</sonar.exclusions>
 		<!-- Use most recent failsafe and surefire plugin versions -->
 	</properties>

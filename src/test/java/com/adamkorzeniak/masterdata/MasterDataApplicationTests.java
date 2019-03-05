@@ -9,7 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest
 public class MasterDataApplicationTests {
 
-//	@Test
+	@Test
 	public void contextLoads() {
 	}
 

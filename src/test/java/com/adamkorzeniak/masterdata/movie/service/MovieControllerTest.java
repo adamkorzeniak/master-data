@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.movie.controller;
+package com.adamkorzeniak.masterdata.movie.service;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.doReturn;
@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -26,6 +27,7 @@ import com.adamkorzeniak.masterdata.movie.service.GenreService;
 import com.adamkorzeniak.masterdata.movie.service.MovieService;
 
 @ExtendWith(SpringExtension.class)
+@ActiveProfiles(profiles = "test")
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithMockUser(username = "admin", password = "admin")

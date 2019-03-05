@@ -7,5 +7,4 @@ public class FieldFilterNotSupportedException extends RuntimeException {
 	public FieldFilterNotSupportedException(SearchFunctionType function, String field) {
 		super("This resource doesn't support " + function.toString() + " for field: " + field);
 	}
-
 }

@@ -9,7 +9,7 @@ public interface ErrorService {
 
 	List<Genre> searchErrors(Map<String, String> requestParams);
 
-	Error addGenre(Error error);
+	Error addError(Error error);
 
 	void deleteError(Long id);
 }

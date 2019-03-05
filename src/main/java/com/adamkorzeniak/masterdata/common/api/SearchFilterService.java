@@ -6,5 +6,4 @@ import java.util.Map;
 public interface SearchFilterService {
 
 	List<SearchFilter> buildFilters(Map<String, String> map, String propertyLocation);
-
 }

@@ -57,7 +57,6 @@ public class GenericSpecification<T> implements Specification<T> {
 				throw new FilterNotSupportedException(filter.getFunction());
 			}
 		}
-
 		return p;
 	}
 }

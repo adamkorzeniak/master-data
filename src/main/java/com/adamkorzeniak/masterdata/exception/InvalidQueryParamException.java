@@ -5,5 +5,4 @@ public class InvalidQueryParamException extends RuntimeException {
 	public InvalidQueryParamException(String queryParam) {
 		super("Invalid query param: " + queryParam);
 	}
-
 }
