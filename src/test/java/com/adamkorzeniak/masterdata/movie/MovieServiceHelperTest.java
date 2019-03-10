@@ -21,7 +21,6 @@ import com.adamkorzeniak.masterdata.movie.service.MovieServiceHelper;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
-@DataJpaTest
 public class MovieServiceHelperTest {
 	
 	private static final Long ID = 17L;

@@ -78,7 +78,7 @@ public class GenreController {
 	 * <p>
 	 * If provided genre data is invalid it returns 400 Bad Request.
 	 * 
-	 * @param genre - Movie to be created
+	 * @param genre - Genre to be created
 	 * @return Created genre
 	 */
 	@PostMapping("/genres")
@@ -108,7 +108,7 @@ public class GenreController {
 		}
 		Genre genre = GenreServiceHelper.convertToEntity(dto);
 		Genre newGenre = genreService.updateGenre(genreId, genre);
-		return new ResponseEntity<>(GenreServiceHelper.convertToDTO(newGenre), HttpStatus.CREATED);
+		return new ResponseEntity<>(GenreServiceHelper.convertToDTO(newGenre), HttpStatus.OK);
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class GenreController {
 	 * If genre with given id does not exist it returns error response with 404 Not
 	 * Found
 	 * 
-	 * @param genreId - Id of movie
+	 * @param genreId - Id of genre
 	 * @return Empty response
 	 */
 	@DeleteMapping("/genres/{genreId}")

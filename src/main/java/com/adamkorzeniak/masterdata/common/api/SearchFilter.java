@@ -19,16 +19,9 @@ public class SearchFilter implements Serializable {
 	private String key;
 
 	public SearchFilter(String key, String value) {
-		this.value = parseValue(value);
 		this.key = key;
+		this.value = value;
 		processKey();
-	}
-
-	private String parseValue(String value) {
-		if (key.split("-")[0].equals("order")) {
-			return null;
-		}
-		return value;
 	}
 
 	private void processKey() {
@@ -67,6 +60,7 @@ public class SearchFilter implements Serializable {
 			function = parseOrderType(elements[1]);
 		}
 		field = value;
+		value = null;
 	}
 
 	private SearchFunctionType parseOrderType(String orderType) {

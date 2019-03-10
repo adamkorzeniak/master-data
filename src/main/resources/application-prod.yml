@@ -1,11 +1,10 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: admin
+    url: jdbc:mysql://localhost:3306/dev_master_data_dev?autoReconnect=true&useSSL=false
+    username: root
     password: admin
     
-  jpa.hibernate.ddl-auto: create
+  jpa.hibernate.ddl-auto: validate
 
 server.port: 8443
 

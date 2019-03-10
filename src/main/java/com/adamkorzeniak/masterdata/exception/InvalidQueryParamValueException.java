@@ -23,7 +23,7 @@ public class InvalidQueryParamValueException extends RuntimeException {
 						+ function + " doesn't have supported value type message defined";
 				throw new InternalServerException(message);
 		}
-		return String.format("Invalid query param value: %s. %s supports only %s values.",
+		return String.format("Invalid query param value for '%s'. %s supports only %s values.",
 				queryParam,
 				function.toString(),
 				supportedType);

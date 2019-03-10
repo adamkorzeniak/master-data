@@ -18,6 +18,8 @@ server:
 logging:
   level:
     com.adamkorzeniak: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
     
 params:
   movie:
@@ -35,6 +37,11 @@ params:
       ORDER: name
   error:
     errors:
-      SEARCH: description
+      MIN: time
+      MAX: time
+      MATCH: errorId,appId,name
+      SEARCH: errorId,appId,name,details,status,location
+      EXIST: details
+      ORDER: errorId,appId,name,time
     
   

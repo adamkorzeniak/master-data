@@ -33,7 +33,7 @@ public class SearchFilterServiceImpl implements SearchFilterService {
 	}
 
 	private void validateAndFix(SearchFilter filter, String propertyString) {
-		String property = "params." + propertyString + "." + filter.getFunction().toString().toUpperCase();
+		String property = "params." + propertyString + "." + filter.getFunction().getBaseType();
 		String allowedFieldsString = env.getProperty(property);
 		if (allowedFieldsString == null) {
 			throw new FilterNotSupportedException(filter.getFunction());

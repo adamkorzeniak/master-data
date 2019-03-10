@@ -8,4 +8,11 @@ public enum SearchFunctionType {
 		String name = super.toString();
 		return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
 	}
+	
+	public String getBaseType() {
+		if (this == ORDER_DESC || this == ORDER_ASC) {
+			return "ORDER";
+		}
+		return toString().toUpperCase();
+	}
 }

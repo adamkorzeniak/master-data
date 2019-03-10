@@ -24,7 +24,7 @@ public class GenericSpecification<T> implements Specification<T> {
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
 
 		Predicate p = cb.conjunction();
-
+		
 		for (SearchFilter filter : filters) {
 			switch (filter.getFunction()) {
 			case SEARCH:

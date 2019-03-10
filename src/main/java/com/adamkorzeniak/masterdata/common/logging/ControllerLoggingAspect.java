@@ -7,7 +7,6 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.jboss.logging.Logger;
-import org.jboss.logging.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +29,8 @@ public class ControllerLoggingAspect {
 
 	@AfterReturning("PointcutDefinitions.controllers()")
 	public void successfullyExitingController(JoinPoint joinPoint) {
-		String message = buildResponseSendMessage();
+		String uuid = LoggingHelper.generateCorrelationId();
+		String message = buildResponseSendMessage(uuid);
 		LoggingHelper.clearCorellationId();
 		logger.debug(message);
 	}
@@ -51,7 +51,7 @@ public class ControllerLoggingAspect {
 				requestURL);
 	}
 
-	private String buildResponseSendMessage() {
-		return "*****Response send*****%nCorrelationId=" + MDC.get("correlationId");
+	private String buildResponseSendMessage(String uuid) {
+		return "*****Response send*****%nCorrelationId=" + uuid;
 	}
 }

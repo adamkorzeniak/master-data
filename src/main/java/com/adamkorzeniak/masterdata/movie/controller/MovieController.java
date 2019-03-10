@@ -71,7 +71,8 @@ public class MovieController {
 	}
 
 	/**
-	 * Creates a movie in database. Returns created movie with 201 Created.
+	 * Creates a movie in database. 
+	 * Returns created movie with 201 Created.
 	 * <p>
 	 * If provided movie data is invalid it returns 400 Bad Request.
 	 * 
@@ -105,11 +106,12 @@ public class MovieController {
 		}
 		Movie movie = MovieServiceHelper.convertToEntity(dto);
 		Movie newMovie = movieService.updateMovie(movieId, movie);
-		return new ResponseEntity<>(MovieServiceHelper.convertToDTO(newMovie), HttpStatus.CREATED);
+		return new ResponseEntity<>(MovieServiceHelper.convertToDTO(newMovie), HttpStatus.OK);
 	}
 
 	/**
-	 * Deletes a movie with given id. Returns empty response with 204 No Content.
+	 * Deletes a movie with given id. 
+	 * Returns empty response with 204 No Content.
 	 * <p>
 	 * If movie with given id does not exist it returns error response with 404 Not
 	 * Found

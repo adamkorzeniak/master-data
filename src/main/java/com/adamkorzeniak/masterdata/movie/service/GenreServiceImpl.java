@@ -31,7 +31,7 @@ public class GenreServiceImpl implements GenreService {
 
 	@Override
 	public List<Genre> searchGenres(Map<String, String> requestParams) {
-		List<SearchFilter> filters = searchFilterService.buildFilters(requestParams, "movie.genres");
+		List<SearchFilter> filters = searchFilterService.buildFilters(requestParams, "error.errors");
 		Specification<Genre> spec = new GenericSpecification<>(filters);
 		return genreRepository.findAll(spec);
 	}

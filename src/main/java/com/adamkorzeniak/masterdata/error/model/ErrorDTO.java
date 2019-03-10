@@ -3,20 +3,29 @@ package com.adamkorzeniak.masterdata.error.model;
 import javax.validation.constraints.NotBlank;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@ToString
 public class ErrorDTO {
 
 	private Long id;
+
 	@NotBlank
-	private String title;
+	private String errorId;
+
 	@NotBlank
+	private String appId;
+
+	private String name;
+
 	private String details;
 
+	private String status;
+
+	private String url;
+
+	private String stack;
+
+	private Long time;
 }
