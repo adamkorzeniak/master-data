@@ -33,15 +33,14 @@ public class UserController {
 		}
 	}
 
-//	@PostMapping("/register")
-//	public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO dto) {
-//		User user = userService.register(UserServiceHelper.convertToEntity(dto));
-//		if (user == null) {
-//			HttpHeaders headers = new HttpHeaders();
-//			headers.add("message", "User already exists");
-//			return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
-//		}
-//		return new ResponseEntity<>(UserServiceHelper.convertToDTO(user), HttpStatus.CREATED);
-//	}
-
+	@PostMapping("/register")
+	public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO dto) {
+		User user = userService.register(UserServiceHelper.convertToEntity(dto));
+		if (user == null) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("message", "User already exists");
+			return new ResponseEntity<>(headers, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(UserServiceHelper.convertToDTO(user), HttpStatus.CREATED);
+	}
 }

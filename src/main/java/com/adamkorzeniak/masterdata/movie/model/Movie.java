@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,16 +39,19 @@ public class Movie {
 	private Long id;
 
 	@NotBlank
+	@NotNull
 	@Column(name = "title")
 	private String title;
 
 	@Min(1800)
 	@Max(2999)
+	@NotNull
 	@Column(name = "year")
 	private Integer year;
 
 	@Min(0)
 	@Max(2999)
+	@NotNull
 	@Column(name = "duration")
 	private Integer duration;
 

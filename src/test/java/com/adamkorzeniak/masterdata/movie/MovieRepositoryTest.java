@@ -99,6 +99,8 @@ public class MovieRepositoryTest {
 	private Movie persistMovie(String title, String... genreNames) {
 		Movie movie = new Movie();
 		movie.setTitle(title);
+		movie.setYear(2000);
+		movie.setDuration(120);
 		List<Genre> genres = Arrays.asList(genreNames).stream()
 				.map(genre -> findGenreByName(genre))
 				.collect(Collectors.toList());

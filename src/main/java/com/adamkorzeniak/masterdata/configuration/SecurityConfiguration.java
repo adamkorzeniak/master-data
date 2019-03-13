@@ -23,7 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private static final String[] unauthorizedResources = new String[] {
-			"/v0/register"
+			"v0/register"
 	};
 
 	@Autowired
@@ -56,8 +56,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.and()
 				.authorizeRequests()
 				.antMatchers(unauthorizedResources)
-				.permitAll().
-			anyRequest()
+				.permitAll()
+			.anyRequest()
 				.authenticated()
 			.and()
 				.csrf()
