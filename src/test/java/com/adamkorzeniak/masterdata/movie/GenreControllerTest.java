@@ -5,6 +5,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -34,6 +35,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.adamkorzeniak.masterdata.movie.model.Genre;
 import com.adamkorzeniak.masterdata.movie.model.dto.GenreDTO;
+import com.adamkorzeniak.masterdata.movie.model.dto.GenrePatchDTO;
 import com.adamkorzeniak.masterdata.movie.service.GenreService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,7 +49,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @WithMockUser(username = "admin", password = "admin")
 public class GenreControllerTest {
 
-	private String baseGenresPath = "/Movie/v0/genres";
+	private String baseGenresPath = "/v0/Movie/genres";
 
 	@MockBean
 	private GenreService genreService;
@@ -220,12 +222,115 @@ public class GenreControllerTest {
 				.andExpect(jsonPath("$.title", is("Not Found")))
 				.andExpect(jsonPath("$.message", is("Genre not found: id=" + id)));
 	}
+	
+	@Test
+	public void MergeGenres_NoIssues_ReturnsResultGenre() throws Exception {
+		Long oldId = 11L;
+		Long newId = 22L;
+		
+		GenrePatchDTO patchDTO = new GenrePatchDTO();
+		patchDTO.setOp("merge");
+		patchDTO.setTargetGenreId(newId);
+		
+		Genre targetGenre = new Genre();
+		targetGenre.setId(newId);
+		targetGenre.setName("Comedy");
+		
+	    String requestJson = convertToJson(patchDTO);
+
+		doReturn(true).when(genreService).isGenreExist(oldId);
+		doReturn(true).when(genreService).isGenreExist(newId);
+		doReturn(targetGenre).when(genreService).mergeGenres(Matchers.anyLong(), Matchers.any());
+
+		mockMvc.perform(patch(baseGenresPath + "/" + oldId)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(requestJson))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(jsonPath("$.id", is(22)))
+				.andExpect(jsonPath("$.name", is("Comedy")));
+	}
+	
+	@Test
+	public void MergeGenres_SourceGenreNotExists_ReturnsErrorResult() throws Exception {
+		Long oldId = 11L;
+		Long newId = 22L;
+		
+		GenrePatchDTO patchDTO = new GenrePatchDTO();
+		patchDTO.setOp("merge");
+		patchDTO.setTargetGenreId(newId);
+		
+	    String requestJson = convertToJson(patchDTO);
+
+		doReturn(false).when(genreService).isGenreExist(oldId);
+		doReturn(true).when(genreService).isGenreExist(newId);
+
+		mockMvc.perform(patch(baseGenresPath + "/" + oldId)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(requestJson))
+				.andExpect(status().isNotFound())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(jsonPath("$.code", is("REQ404")))
+				.andExpect(jsonPath("$.title", is("Not Found")))
+				.andExpect(jsonPath("$.message", is("Genre not found: id=11")));
+	}
+	
+	@Test
+	public void MergeGenres_TargetGenreNotExists_ReturnsErrorResult() throws Exception {
+		Long oldId = 11L;
+		Long newId = 22L;
+		
+		GenrePatchDTO patchDTO = new GenrePatchDTO();
+		patchDTO.setOp("merge");
+		patchDTO.setTargetGenreId(newId);
+		
+	    String requestJson = convertToJson(patchDTO);
+
+		doReturn(true).when(genreService).isGenreExist(oldId);
+		doReturn(false).when(genreService).isGenreExist(newId);
+
+		mockMvc.perform(patch(baseGenresPath + "/" + oldId)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(requestJson))
+				.andExpect(status().isNotFound())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(jsonPath("$.code", is("REQ404")))
+				.andExpect(jsonPath("$.title", is("Not Found")))
+				.andExpect(jsonPath("$.message", is("Genre not found: id=22")));
+	}
+	
+	@Test
+	public void PatchGenre_OperationNotSupported_ReturnsErrorResult() throws Exception {
+		Long newId = 22L;
+		
+		GenrePatchDTO patchDTO = new GenrePatchDTO();
+		patchDTO.setOp("rename");
+		patchDTO.setTargetGenreId(newId);
+		
+	    String requestJson = convertToJson(patchDTO);
+
+		mockMvc.perform(patch(baseGenresPath + "/" + 11)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(requestJson))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(jsonPath("$.code", is("REQ400")))
+				.andExpect(jsonPath("$.title", is("Bad Request")))
+				.andExpect(jsonPath("$.message", is("Operation 'rename' is not supported for Patch method on Genre resource.")));
+	}
 
 	private String convertToJson(GenreDTO postGenre) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 	    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 	    ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
 	    return ow.writeValueAsString(postGenre);
+	}
+
+	private String convertToJson(GenrePatchDTO genrePatchDTO) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+	    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+	    ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+	    return ow.writeValueAsString(genrePatchDTO);
 	}
 
 }

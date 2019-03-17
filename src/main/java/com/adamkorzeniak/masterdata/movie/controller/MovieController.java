@@ -27,7 +27,7 @@ import com.adamkorzeniak.masterdata.movie.service.MovieService;
 import com.adamkorzeniak.masterdata.movie.service.MovieServiceHelper;
 
 @RestController
-@RequestMapping("/Movie/v0")
+@RequestMapping("/v0/Movie")
 public class MovieController {
 
 	@Autowired

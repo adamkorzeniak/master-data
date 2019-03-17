@@ -11,7 +11,7 @@ server.port: 8443
 server:
   ssl:
     key-store: classpath:certs/local-keystore.p12
-    key-store-password: dummypassword
+    key-store-password: ENC(vwYgQXJDh0XPISUNOebgYQxL5Bat1c/l)
     keyStoreType: PKCS12
     key-alias: tomcat
 
@@ -24,10 +24,10 @@ logging:
 params:
   movie:
     movies:
-      MIN: year,duration,rating,watchPriority
-      MAX: year,duration,rating,watchPriority
       MATCH: title
       SEARCH: title,description,review,plotSummary
+      MIN: year,duration,rating,watchPriority
+      MAX: year,duration,rating,watchPriority
       EXIST: rating,watchPriority,review,plotSummary
       ORDER: title,year,duration,rating,watchPriority
     genres:
@@ -37,18 +37,18 @@ params:
       ORDER: name
   error:
     errors:
-      MIN: time
-      MAX: time
       MATCH: errorId,appId,name
       SEARCH: errorId,appId,name,details,status,location
+      MIN: time
+      MAX: time
       EXIST: details
       ORDER: errorId,appId,name,time
   diet:
     product:
-      MIN: calories,carbs,fats,proteins
-      MAX: calories,carbs,fats,proteins
       MATCH: name,baseUnit
       SEARCH: name
+      MIN: calories,carbs,fats,proteins
+      MAX: calories,carbs,fats,proteins
       EXIST: details
       ORDER: name,calories,carbs,fats,proteins
     

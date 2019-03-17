@@ -3,6 +3,10 @@ package com.adamkorzeniak.masterdata.movie;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -12,9 +16,12 @@ import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.adamkorzeniak.masterdata.movie.model.Genre;
 import com.adamkorzeniak.masterdata.movie.model.Movie;
 import com.adamkorzeniak.masterdata.movie.repository.MovieRepository;
 import com.adamkorzeniak.masterdata.movie.service.MovieService;
@@ -29,6 +36,66 @@ public class MovieServiceTest {
 
 	@Autowired
 	private MovieService movieService;
+
+	@Test
+	public void SearchMovies_NoGenreParam_ReturnsListOfMovies() throws Exception {
+		Map<String, String> params = new HashMap<>();
+		params.put("search-title", "to the");
+		
+		Movie movie1 = new Movie();
+		movie1.setTitle("Back to the Future");
+		Genre genre1 = new Genre();
+		genre1.setName("Drama");
+		movie1.setGenres(Arrays.asList(genre1));
+		
+		Movie movie2 = new Movie();
+		movie2.setTitle("Back to the Future 2");
+		Genre genre2 = new Genre();
+		genre2.setName("Comedy");
+		movie2.setGenres(Arrays.asList(genre2));
+		
+		List<Movie> movies = Arrays.asList(movie1, movie2);
+
+		when(movieRepository.findAll(Matchers.<Specification>any())).thenReturn(movies);
+
+		List<Movie> result = movieService.searchMovies(params);
+		
+		assertThat(params).hasSize(1);
+		assertThat(result).isNotNull();
+		assertThat(result).hasSize(2);
+		assertThat(result.get(0).getTitle()).isEqualTo("Back to the Future");
+		assertThat(result.get(1).getTitle()).isEqualTo("Back to the Future 2");
+	}
+	
+	@Test
+	public void SearchMovies_WithGenreParam_ReturnsListOfMoviesForGenre() throws Exception {
+		Map<String, String> params = new HashMap<>();
+		params.put("search-title", "to the");
+		params.put("genres", "com");
+		
+		Movie movie1 = new Movie();
+		movie1.setTitle("Back to the Future");
+		Genre genre1 = new Genre();
+		genre1.setName("Drama");
+		movie1.setGenres(Arrays.asList(genre1));
+		
+		Movie movie2 = new Movie();
+		movie2.setTitle("Back to the Future 2");
+		Genre genre2 = new Genre();
+		genre2.setName("Comedy");
+		movie2.setGenres(Arrays.asList(genre2));
+		
+		List<Movie> movies = Arrays.asList(movie1, movie2);
+
+		when(movieRepository.findAll(Matchers.<Specification>any())).thenReturn(movies);
+
+		List<Movie> result = movieService.searchMovies(params);
+		
+		assertThat(params).hasSize(1);
+		assertThat(result).isNotNull();
+		assertThat(result).hasSize(1);
+		assertThat(result.get(0).getTitle()).isEqualTo("Back to the Future 2");
+	}
 
 	@Test
 	public void FindMovieById_CorrectIdProvided_ReturnsOptionalOfMovie() throws Exception {

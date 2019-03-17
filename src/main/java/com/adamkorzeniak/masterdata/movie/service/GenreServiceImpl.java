@@ -31,7 +31,7 @@ public class GenreServiceImpl implements GenreService {
 
 	@Override
 	public List<Genre> searchGenres(Map<String, String> requestParams) {
-		List<SearchFilter> filters = searchFilterService.buildFilters(requestParams, "error.errors");
+		List<SearchFilter> filters = searchFilterService.buildFilters(requestParams, "movie.genres");
 		Specification<Genre> spec = new GenericSpecification<>(filters);
 		return genreRepository.findAll(spec);
 	}
@@ -76,8 +76,7 @@ public class GenreServiceImpl implements GenreService {
 		Genre oldGenre = oldResult.get();
 		Genre targetGenre = targetResult.get();
 		List<Movie> movies = movieRepository.findByGenresContaining(oldGenre);
-		movies.stream()
-			.forEach(movie -> {
+		for (Movie movie: movies) {
 			List<Genre> genres = movie.getGenres();
 			int index = genres.indexOf(oldGenre);
 			if (genres.contains(targetGenre)) {
@@ -85,7 +84,7 @@ public class GenreServiceImpl implements GenreService {
 			} else {
 				genres.set(index, targetGenre);
 			}
-		});
+		}
 		return targetGenre;
 	}
 

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.adamkorzeniak.masterdata.exception.NotFoundException;
+import com.adamkorzeniak.masterdata.exception.PatchOperationNotSupportedException;
 import com.adamkorzeniak.masterdata.movie.model.Genre;
 import com.adamkorzeniak.masterdata.movie.model.dto.GenreDTO;
 import com.adamkorzeniak.masterdata.movie.model.dto.GenrePatchDTO;
@@ -29,8 +30,10 @@ import com.adamkorzeniak.masterdata.movie.service.GenreService;
 import com.adamkorzeniak.masterdata.movie.service.GenreServiceHelper;
 
 @RestController
-@RequestMapping("/Movie/v0")
+@RequestMapping("/v0/Movie")
 public class GenreController {
+	
+	private static final String MERGE_OPERATION = "merge";
 
 	@Autowired
 	private GenreService genreService;
@@ -133,10 +136,16 @@ public class GenreController {
 
 	@PatchMapping("/genres/{genreId}")
 	public ResponseEntity<GenreDTO> mergeGenres(@RequestBody GenrePatchDTO mergedto, @PathVariable Long genreId) {
+		if (!MERGE_OPERATION.equals(mergedto.getOp())) {
+			throw new PatchOperationNotSupportedException(mergedto.getOp(), "Genre");
+		}
 		boolean oldExists = genreService.isGenreExist(genreId);
 		boolean targetExists = genreService.isGenreExist(mergedto.getTargetGenreId());
-		if (!oldExists || !targetExists) {
+		if (!oldExists) {
 			throw new NotFoundException("Genre", genreId);
+		}
+		if (!targetExists) {
+			throw new NotFoundException("Genre", mergedto.getTargetGenreId());
 		}
 		Genre result = genreService.mergeGenres(genreId, mergedto.getTargetGenreId());
 		genreService.deleteGenre(genreId);

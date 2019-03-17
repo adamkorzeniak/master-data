@@ -50,7 +50,7 @@ public class Movie {
 	private Integer year;
 
 	@Min(0)
-	@Max(2999)
+	@Max(1000)
 	@NotNull
 	@Column(name = "duration")
 	private Integer duration;
@@ -61,7 +61,7 @@ public class Movie {
 	private Integer rating;
 
 	@Min(0)
-	@Max(10)
+	@Max(5)
 	@Column(name = "watch_priority")
 	private Integer watchPriority;
 

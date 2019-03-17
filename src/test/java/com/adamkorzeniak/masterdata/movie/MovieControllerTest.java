@@ -48,7 +48,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @WithMockUser(username = "admin", password = "admin")
 public class MovieControllerTest {
 
-	private String baseMoviesPath = "/Movie/v0/movies";
+	private String baseMoviesPath = "/v0/Movie/movies";
 
 	@MockBean
 	private MovieService movieService;
@@ -150,9 +150,10 @@ public class MovieControllerTest {
 	public void AddMovie_MissingRequiredField_ReturnsBadRequestError() throws Exception {
 		MovieDTO postMovie = new MovieDTO();
 		postMovie.setDuration(100);
+		postMovie.setTitle("Titanic");
 		
 	    String requestJson = convertToJson(postMovie);
-	    String errorMessage = "Invalid 'title' field value: null. Field 'title' must not be blank.";
+	    String errorMessage = "Invalid 'year' field value: null. Field 'year' must not be null.";
 	    
 		mockMvc.perform(post(baseMoviesPath)
 				.contentType(MediaType.APPLICATION_JSON)

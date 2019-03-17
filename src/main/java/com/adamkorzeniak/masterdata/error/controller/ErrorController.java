@@ -25,7 +25,7 @@ import com.adamkorzeniak.masterdata.error.service.ErrorServiceHelper;
 import com.adamkorzeniak.masterdata.exception.NotFoundException;
 
 @RestController
-@RequestMapping("/Error/v0")
+@RequestMapping("/v0/Error")
 public class ErrorController {
 
 	@Autowired

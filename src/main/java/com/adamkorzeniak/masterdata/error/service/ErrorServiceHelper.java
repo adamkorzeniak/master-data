@@ -43,7 +43,8 @@ public class ErrorServiceHelper {
 		dto.setName(entity.getName());
 		dto.setDetails(entity.getDetails());
 		dto.setStatus(entity.getStatus());
-		dto.setUrl(dto.getUrl());
+		dto.setUrl(entity.getUrl());
+		dto.setStack(entity.getStack());
 		dto.setTime(entity.getTime());
 		return dto;
 	}
