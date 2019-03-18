@@ -11,7 +11,7 @@ server.port: 8443
 server:
   ssl:
     key-store: classpath:certs/local-keystore.p12
-    key-store-password: ENC(vwYgQXJDh0XPISUNOebgYQxL5Bat1c/l)
+    key-store-password: dummypassword
     keyStoreType: PKCS12
     key-alias: tomcat
 
@@ -51,5 +51,4 @@ params:
       MAX: calories,carbs,fats,proteins
       EXIST: details
       ORDER: name,calories,carbs,fats,proteins
-    
-  
+

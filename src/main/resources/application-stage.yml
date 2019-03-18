@@ -1,18 +1,18 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: admin
-    password: admin
+    url: jdbc:mysql://localhost:13457/stage_master_data?autoReconnect=true&useSSL=false
+    username: ENC(RX+vnag/AvPEXA7mgzyb/lbZVuE9FuI7)
+    password: ENC(yZXJWfmrcIFTxci3LLZUzNLU9Ce9J3Mhsd3GD3uZFd8=)
     
-  jpa.hibernate.ddl-auto: create
+  jpa.hibernate.ddl-auto: validate
 
 server.port: 8443
 
+
 server:
   ssl:
-    key-store: classpath:certs/local-keystore.p12
-    key-store-password: dummypassword
+    key-store: /home/pi/server/certs/keystore.p12
+    key-store-password: ENC(h/DOzvvwNTGLp1JxCMRuLI+K/Cv6PMPZAQnIqFHSJOw=)
     keyStoreType: PKCS12
     key-alias: tomcat
 
@@ -21,6 +21,8 @@ logging:
     com.adamkorzeniak: DEBUG
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
+    
+  file: custom-log.log
     
 params:
   movie:
@@ -52,5 +54,4 @@ params:
       MAX: calories,carbs,fats,proteins
       EXIST: details
       ORDER: name,calories,carbs,fats,proteins
-
 

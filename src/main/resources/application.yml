@@ -1,4 +1,6 @@
 spring:
   profiles:
-    active: local
+# Used for Jenkins deployment, by default it starts in local.
+# If SPRING_PROFILE provided in vm arguments application will pick it up.
+    active: ${env:local}
     include: application-${spring.profiles.active}.yml
