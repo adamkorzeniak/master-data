@@ -1,0 +1,57 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:13457/master_data?autoReconnect=true&useSSL=false
+    username: ENC(PzqdJrsbvXzfvQ1f54zqxKwvB50lGNKi)
+    password: ENC(2kL6hc5UhDpF9DdV+0Q9i1RBFVntbtVL6wPb403x2oE=)
+    
+  jpa.hibernate.ddl-auto: validate
+
+server.port: 9876
+
+
+server:
+  ssl:
+    key-store: /home/pi/server/certs/keystore.p12
+    key-store-password: ENC(h/DOzvvwNTGLp1JxCMRuLI+K/Cv6PMPZAQnIqFHSJOw=)
+    keyStoreType: PKCS12
+    key-alias: tomcat
+
+logging:
+  level:
+    com.adamkorzeniak: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    
+  file: custom-log.log
+    
+params:
+  movie:
+    movies:
+      MATCH: title
+      SEARCH: title,description,review,plotSummary
+      MIN: year,duration,rating,watchPriority
+      MAX: year,duration,rating,watchPriority
+      EXIST: rating,watchPriority,review,plotSummary
+      ORDER: title,year,duration,rating,watchPriority
+    genres:
+      MATCH: name
+      SEARCH: name
+      EXIST: name
+      ORDER: name
+  error:
+    errors:
+      MATCH: errorId,appId,name
+      SEARCH: errorId,appId,name,details,status,location
+      MIN: time
+      MAX: time
+      EXIST: details
+      ORDER: errorId,appId,name,time
+  diet:
+    product:
+      MATCH: name,baseUnit
+      SEARCH: name
+      MIN: calories,carbs,fats,proteins
+      MAX: calories,carbs,fats,proteins
+      EXIST: details
+      ORDER: name,calories,carbs,fats,proteins
+

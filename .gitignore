@@ -1,7 +1,3 @@
-### Files for other environments ###
-src/main/resources/application-dev.yml
-src/main/resources/application-prod.yml
-
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
