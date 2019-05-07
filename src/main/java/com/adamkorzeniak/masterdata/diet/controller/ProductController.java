@@ -27,7 +27,7 @@ import com.adamkorzeniak.masterdata.diet.service.ProductServiceHelper;
 import com.adamkorzeniak.masterdata.exception.NotFoundException;
 
 @RestController
-@RequestMapping("/Diet/v0")
+@RequestMapping("/v0/Diet")
 public class ProductController {
 
 	@Autowired

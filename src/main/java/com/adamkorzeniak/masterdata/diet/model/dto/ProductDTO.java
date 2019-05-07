@@ -22,8 +22,11 @@ public class ProductDTO {
 	@NotNull
 	private String name;
 
+	@NotBlank
+	private String characteristic;
+
 	@NotNull
-	private UnitType baseUnit;
+	private String baseUnit;
 
 	@NotNull
 	private Double calories;
@@ -36,5 +39,9 @@ public class ProductDTO {
 
 	@NotNull
 	private Double proteins;
+
+	private Double roughage;
+
+	private Double salt;
 
 }

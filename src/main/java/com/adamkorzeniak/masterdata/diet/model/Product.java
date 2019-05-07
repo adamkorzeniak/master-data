@@ -32,6 +32,10 @@ public class Product {
 	@Column(name = "name")
 	private String name;
 
+	@NotBlank
+	@Column(name = "characteristic")
+	private String characteristic;
+
 	@NotNull
 	@Column(name = "baseUnit")
 	private UnitType baseUnit;
@@ -51,5 +55,11 @@ public class Product {
 	@NotNull
 	@Column(name = "proteins")
 	private Double proteins;
+
+	@Column(name = "roughage")
+	private Double roughage;
+
+	@Column(name = "salt")
+	private Double salt;
 
 }

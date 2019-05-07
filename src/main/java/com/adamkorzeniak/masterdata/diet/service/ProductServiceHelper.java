@@ -1,6 +1,7 @@
 package com.adamkorzeniak.masterdata.diet.service;
 
 import com.adamkorzeniak.masterdata.diet.model.Product;
+import com.adamkorzeniak.masterdata.diet.model.UnitType;
 import com.adamkorzeniak.masterdata.diet.model.dto.ProductDTO;
 
 public class ProductServiceHelper {
@@ -18,11 +19,14 @@ public class ProductServiceHelper {
 		Product entity = new Product();
 		entity.setId(dto.getId());
 		entity.setName(dto.getName());
-		entity.setBaseUnit(dto.getBaseUnit());
+		entity.setCharacteristic(dto.getCharacteristic());
+		entity.setBaseUnit(UnitType.valueOf(dto.getBaseUnit().toUpperCase()));
 		entity.setCalories(dto.getCalories());
 		entity.setCarbs(dto.getCarbs());
 		entity.setFats(dto.getFats());
 		entity.setProteins(dto.getProteins());
+		entity.setRoughage(dto.getRoughage());
+		entity.setSalt(dto.getSalt());
 
 		return entity;
 	}
@@ -38,11 +42,14 @@ public class ProductServiceHelper {
 		ProductDTO dto = new ProductDTO();
 		dto.setId(entity.getId());
 		dto.setName(entity.getName());
-		dto.setBaseUnit(entity.getBaseUnit());
+		dto.setCharacteristic(entity.getCharacteristic());
+		dto.setBaseUnit(entity.getBaseUnit().toString());
 		dto.setCalories(entity.getCalories());
 		dto.setCarbs(entity.getCarbs());
 		dto.setFats(entity.getFats());
 		dto.setProteins(entity.getProteins());
+		dto.setRoughage(entity.getRoughage());
+		dto.setSalt(entity.getSalt());
 
 		return dto;
 	}
