@@ -2,13 +2,11 @@ package com.adamkorzeniak.masterdata.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,10 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.movie.model.Movie;
-import com.adamkorzeniak.masterdata.security.model.User;
-import com.adamkorzeniak.masterdata.security.repository.UserRepository;
-import com.adamkorzeniak.masterdata.security.service.UserService;
+import com.adamkorzeniak.masterdata.exception.exceptions.DuplicateUserException;
+import com.adamkorzeniak.masterdata.features.account.model.User;
+import com.adamkorzeniak.masterdata.features.account.repository.UserRepository;
+import com.adamkorzeniak.masterdata.features.account.service.UserService;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
@@ -45,7 +43,7 @@ public class UserServiceTest {
 
 		when(encoder.encode("password")).thenReturn("$10$encodedpassword");
 		when(userRepository.findByUsername(username)).thenReturn(null);
-		when(userRepository.save(Matchers.<User>any())).thenAnswer(i -> i.getArguments()[0]);
+		when(userRepository.save(ArgumentMatchers.<User>any())).thenAnswer(i -> i.getArguments()[0]);
 
 		User result = userService.register(adam);
 
@@ -66,7 +64,7 @@ public class UserServiceTest {
 
 		assertThatExceptionOfType(DuplicateUserException.class).isThrownBy(() -> {
 			userService.register(adam);
-		}).withMessage(null);
+		}).withMessage("User with username 'adam' already exists");
 	}
 
 	@Test

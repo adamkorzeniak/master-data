@@ -15,11 +15,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.common.api.SearchFilter;
-import com.adamkorzeniak.masterdata.common.api.SearchFilterService;
-import com.adamkorzeniak.masterdata.common.api.SearchFunctionType;
-import com.adamkorzeniak.masterdata.exception.FieldFilterNotSupportedException;
-import com.adamkorzeniak.masterdata.exception.FilterNotSupportedException;
+import com.adamkorzeniak.masterdata.api.SearchFilterParam;
+import com.adamkorzeniak.masterdata.api.SearchFilterService;
+import com.adamkorzeniak.masterdata.api.SearchFunctionType;
+import com.adamkorzeniak.masterdata.exception.exceptions.FieldFilterNotSupportedException;
+import com.adamkorzeniak.masterdata.exception.exceptions.SearchFilterParamNotSupportedException;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
@@ -43,7 +43,7 @@ public class SearchFilterServiceTest {
 		params.put("order-asc", "watchPriority");
 		params.put("exist-review", "false");
 
-		List<SearchFilter> filters = searchFilterService.buildFilters(params, "movie.movies");
+		List<SearchFilterParam> filters = searchFilterService.buildFilters(params, "movie.movies");
 
 		assertThat(filters).isNotNull();
 		assertThat(filters).hasSize(7);
@@ -55,7 +55,7 @@ public class SearchFilterServiceTest {
 		Map<String,String> params = new HashMap<>();
 		params.put("match-title", "Titanic");
 
-		List<SearchFilter> filters = searchFilterService.buildFilters(params, "movie.movies");
+		List<SearchFilterParam> filters = searchFilterService.buildFilters(params, "movie.movies");
 
 		assertThat(filters).isNotNull();
 		assertThat(filters).hasSize(1);
@@ -70,7 +70,7 @@ public class SearchFilterServiceTest {
 		Map<String,String> params = new HashMap<>();
 		params.put("search-description", "love");
 
-		List<SearchFilter> filters = searchFilterService.buildFilters(params, "movie.movies");
+		List<SearchFilterParam> filters = searchFilterService.buildFilters(params, "movie.movies");
 
 		assertThat(filters).isNotNull();
 		assertThat(filters).hasSize(1);
@@ -85,7 +85,7 @@ public class SearchFilterServiceTest {
 		Map<String,String> params = new HashMap<>();
 		params.put("min-duration", "10");
 
-		List<SearchFilter> filters = searchFilterService.buildFilters(params, "movie.movies");
+		List<SearchFilterParam> filters = searchFilterService.buildFilters(params, "movie.movies");
 
 		assertThat(filters).isNotNull();
 		assertThat(filters).hasSize(1);
@@ -100,7 +100,7 @@ public class SearchFilterServiceTest {
 		Map<String,String> params = new HashMap<>();
 		params.put("max-year", "2000");
 
-		List<SearchFilter> filters = searchFilterService.buildFilters(params, "movie.movies");
+		List<SearchFilterParam> filters = searchFilterService.buildFilters(params, "movie.movies");
 
 		assertThat(filters).isNotNull();
 		assertThat(filters).hasSize(1);
@@ -115,7 +115,7 @@ public class SearchFilterServiceTest {
 		Map<String,String> params = new HashMap<>();
 		params.put("exist-review", "false");
 
-		List<SearchFilter> filters = searchFilterService.buildFilters(params, "movie.movies");
+		List<SearchFilterParam> filters = searchFilterService.buildFilters(params, "movie.movies");
 
 		assertThat(filters).isNotNull();
 		assertThat(filters).hasSize(1);
@@ -130,7 +130,7 @@ public class SearchFilterServiceTest {
 		Map<String,String> params = new HashMap<>();
 		params.put("order-asc", "watchPriority");
 
-		List<SearchFilter> filters = searchFilterService.buildFilters(params, "movie.movies");
+		List<SearchFilterParam> filters = searchFilterService.buildFilters(params, "movie.movies");
 
 		assertThat(filters).isNotNull();
 		assertThat(filters).hasSize(1);
@@ -145,7 +145,7 @@ public class SearchFilterServiceTest {
 		Map<String,String> params = new HashMap<>();
 		params.put("order-desc", "rating");
 
-		List<SearchFilter> filters = searchFilterService.buildFilters(params, "movie.movies");
+		List<SearchFilterParam> filters = searchFilterService.buildFilters(params, "movie.movies");
 
 		assertThat(filters).isNotNull();
 		assertThat(filters).hasSize(1);
@@ -160,7 +160,7 @@ public class SearchFilterServiceTest {
 		Map<String,String> params = new HashMap<>();
 		params.put("max-id", "2000");
 
-		assertThatExceptionOfType(FilterNotSupportedException.class).isThrownBy(() -> { 
+		assertThatExceptionOfType(SearchFilterParamNotSupportedException.class).isThrownBy(() -> { 
 			searchFilterService.buildFilters(params, "movie.genres"); })
         .withMessage("This resource doesn't support Max");
 

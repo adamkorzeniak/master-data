@@ -3,7 +3,6 @@ package com.adamkorzeniak.masterdata.movie;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -18,16 +17,14 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEnti
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.adamkorzeniak.masterdata.common.GenericSpecification;
-import com.adamkorzeniak.masterdata.common.api.SearchFilter;
-import com.adamkorzeniak.masterdata.common.api.SearchFilterService;
-import com.adamkorzeniak.masterdata.movie.model.Movie;
-import com.adamkorzeniak.masterdata.movie.repository.MovieRepository;
+import com.adamkorzeniak.masterdata.api.GenericSpecification;
+import com.adamkorzeniak.masterdata.api.SearchFilterParam;
+import com.adamkorzeniak.masterdata.api.SearchFilterService;
+import com.adamkorzeniak.masterdata.features.movie.model.Movie;
+import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
@@ -58,7 +55,7 @@ public class GenericSpecificationTest {
 		params.put("exist-review", "true");
 		params.put("exist-plotSummary", "false");
 
-		List<SearchFilter> filters = searchFilterService.buildFilters(params, "movie.movies");
+		List<SearchFilterParam> filters = searchFilterService.buildFilters(params, "movie.movies");
 		Specification<Movie> spec = new GenericSpecification<>(filters);
 		List<Movie> movies = movieRepository.findAll(spec);
 		
@@ -82,7 +79,7 @@ public class GenericSpecificationTest {
 		params.put("min-duration", "187");
 		params.put("order-asc", "duration");
 
-		List<SearchFilter> filters = searchFilterService.buildFilters(params, "movie.movies");
+		List<SearchFilterParam> filters = searchFilterService.buildFilters(params, "movie.movies");
 		Specification<Movie> spec = new GenericSpecification<>(filters);
 		List<Movie> movies = movieRepository.findAll(spec);
 		
@@ -103,7 +100,7 @@ public class GenericSpecificationTest {
 		params.put("order-desc", "year");
 		params.put("max-year", "2013");
 
-		List<SearchFilter> filters = searchFilterService.buildFilters(params, "movie.movies");
+		List<SearchFilterParam> filters = searchFilterService.buildFilters(params, "movie.movies");
 		Specification<Movie> spec = new GenericSpecification<>(filters);
 		List<Movie> movies = movieRepository.findAll(spec);
 		

@@ -10,7 +10,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,9 +19,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.error.model.Error;
-import com.adamkorzeniak.masterdata.error.repository.ErrorRepository;
-import com.adamkorzeniak.masterdata.error.service.ErrorService;
+import com.adamkorzeniak.masterdata.features.error.model.Error;
+import com.adamkorzeniak.masterdata.features.error.repository.ErrorRepository;
+import com.adamkorzeniak.masterdata.features.error.service.ErrorService;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
@@ -44,7 +44,7 @@ public class ErrorServiceTest {
 		error2.setName("Client failure");
 		List<Error> errors = Arrays.asList(error1, error2);
 
-		when(errorRepository.findAll(Matchers.<Specification>any())).thenReturn(errors);
+		when(errorRepository.findAll(ArgumentMatchers.<Specification<Error>>any())).thenReturn(errors);
 
 		List<Error> result = errorService.searchErrors(params);
 		assertThat(result).isNotNull();
@@ -61,7 +61,7 @@ public class ErrorServiceTest {
 		error.setId(id);
 		error.setName("ClientError");
 
-		when(errorRepository.save(Matchers.<Error>any())).thenAnswer(
+		when(errorRepository.save(ArgumentMatchers.<Error>any())).thenAnswer(
 			mockRepositorySaveInvocation(error)
 		);
 

@@ -3,28 +3,14 @@ package com.adamkorzeniak.masterdata.security;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.mockito.Mockito.doReturn;
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,9 +21,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.adamkorzeniak.masterdata.security.model.User;
-import com.adamkorzeniak.masterdata.security.model.UserDTO;
-import com.adamkorzeniak.masterdata.security.service.UserService;
+import com.adamkorzeniak.masterdata.features.account.model.User;
+import com.adamkorzeniak.masterdata.features.account.model.UserDTO;
+import com.adamkorzeniak.masterdata.features.account.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -69,7 +55,7 @@ public class UserControllerTest {
 		
 	    String requestJson = convertToJson(postUser);
 
-		doReturn(mockUser).when(userService).register(Matchers.any());
+		doReturn(mockUser).when(userService).register(ArgumentMatchers.any());
 
 		mockMvc.perform(post(basePath + "/register").contentType(MediaType.APPLICATION_JSON)
 				.content(requestJson))

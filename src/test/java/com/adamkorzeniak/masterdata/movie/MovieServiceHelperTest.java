@@ -9,15 +9,14 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.movie.model.Genre;
-import com.adamkorzeniak.masterdata.movie.model.Movie;
-import com.adamkorzeniak.masterdata.movie.model.dto.GenreDTO;
-import com.adamkorzeniak.masterdata.movie.model.dto.MovieDTO;
-import com.adamkorzeniak.masterdata.movie.service.MovieServiceHelper;
+import com.adamkorzeniak.masterdata.features.movie.model.Genre;
+import com.adamkorzeniak.masterdata.features.movie.model.Movie;
+import com.adamkorzeniak.masterdata.features.movie.model.dto.GenreDTO;
+import com.adamkorzeniak.masterdata.features.movie.model.dto.MovieDTO;
+import com.adamkorzeniak.masterdata.features.movie.service.MovieServiceHelper;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")

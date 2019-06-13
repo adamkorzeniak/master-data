@@ -8,9 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.error.model.Error;
-import com.adamkorzeniak.masterdata.error.model.ErrorDTO;
-import com.adamkorzeniak.masterdata.error.service.ErrorServiceHelper;
+import com.adamkorzeniak.masterdata.features.error.model.Error;
+import com.adamkorzeniak.masterdata.features.error.model.ErrorDTO;
+import com.adamkorzeniak.masterdata.features.error.service.ErrorServiceHelper;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")

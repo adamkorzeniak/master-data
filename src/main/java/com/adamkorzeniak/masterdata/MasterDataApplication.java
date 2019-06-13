@@ -11,5 +11,4 @@ public class MasterDataApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MasterDataApplication.class, args);
 	}
-
 }

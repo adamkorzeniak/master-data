@@ -22,7 +22,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,10 +33,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.adamkorzeniak.masterdata.movie.model.Genre;
-import com.adamkorzeniak.masterdata.movie.model.dto.GenreDTO;
-import com.adamkorzeniak.masterdata.movie.model.dto.GenrePatchDTO;
-import com.adamkorzeniak.masterdata.movie.service.GenreService;
+import com.adamkorzeniak.masterdata.features.movie.model.Genre;
+import com.adamkorzeniak.masterdata.features.movie.model.dto.GenreDTO;
+import com.adamkorzeniak.masterdata.features.movie.model.dto.GenrePatchDTO;
+import com.adamkorzeniak.masterdata.features.movie.service.GenreService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -115,7 +115,7 @@ public class GenreControllerTest {
 
 		mockMvc.perform(get(baseGenresPath + '/' + id)).andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.code", is("REQ404")))
+				.andExpect(jsonPath("$.code", is("REQ001")))
 				.andExpect(jsonPath("$.title", is("Not Found")))
 				.andExpect(jsonPath("$.message", is("Genre not found: id=" + id)));
 	}
@@ -129,7 +129,7 @@ public class GenreControllerTest {
 		
 	    String requestJson = convertToJson(postGenre);
 
-		doReturn(mockGenre).when(genreService).addGenre(Matchers.any());
+		doReturn(mockGenre).when(genreService).addGenre(ArgumentMatchers.any());
 
 		mockMvc.perform(post(baseGenresPath).contentType(MediaType.APPLICATION_JSON)
 				.content(requestJson))
@@ -151,7 +151,7 @@ public class GenreControllerTest {
 				.content(requestJson))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.code", is("REQ400")))
+				.andExpect(jsonPath("$.code", is("REQ000")))
 				.andExpect(jsonPath("$.title", is("Bad Request")))
 				.andExpect(jsonPath("$.message", is(errorMessage)));
 	}
@@ -169,7 +169,7 @@ public class GenreControllerTest {
 	    String requestJson = convertToJson(genre);
 
 		doReturn(true).when(genreService).isGenreExist(id);
-		doReturn(mockGenre).when(genreService).updateGenre(Matchers.anyLong(), Matchers.any());
+		doReturn(mockGenre).when(genreService).updateGenre(ArgumentMatchers.anyLong(), ArgumentMatchers.any());
 
 		mockMvc.perform(put(baseGenresPath + "/" + id)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -196,7 +196,7 @@ public class GenreControllerTest {
 				.andDo(print())
 				.andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.code", is("REQ404")))
+				.andExpect(jsonPath("$.code", is("REQ001")))
 				.andExpect(jsonPath("$.title", is("Not Found")))
 				.andExpect(jsonPath("$.message", is("Genre not found: id=" + id)));
 	}
@@ -218,7 +218,7 @@ public class GenreControllerTest {
 
 		mockMvc.perform(delete(baseGenresPath + "/" + id)).andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.code", is("REQ404")))
+				.andExpect(jsonPath("$.code", is("REQ001")))
 				.andExpect(jsonPath("$.title", is("Not Found")))
 				.andExpect(jsonPath("$.message", is("Genre not found: id=" + id)));
 	}
@@ -240,7 +240,7 @@ public class GenreControllerTest {
 
 		doReturn(true).when(genreService).isGenreExist(oldId);
 		doReturn(true).when(genreService).isGenreExist(newId);
-		doReturn(targetGenre).when(genreService).mergeGenres(Matchers.anyLong(), Matchers.any());
+		doReturn(targetGenre).when(genreService).mergeGenres(ArgumentMatchers.anyLong(), ArgumentMatchers.any());
 
 		mockMvc.perform(patch(baseGenresPath + "/" + oldId)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -270,7 +270,7 @@ public class GenreControllerTest {
 				.content(requestJson))
 				.andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.code", is("REQ404")))
+				.andExpect(jsonPath("$.code", is("REQ001")))
 				.andExpect(jsonPath("$.title", is("Not Found")))
 				.andExpect(jsonPath("$.message", is("Genre not found: id=11")));
 	}
@@ -294,7 +294,7 @@ public class GenreControllerTest {
 				.content(requestJson))
 				.andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.code", is("REQ404")))
+				.andExpect(jsonPath("$.code", is("REQ001")))
 				.andExpect(jsonPath("$.title", is("Not Found")))
 				.andExpect(jsonPath("$.message", is("Genre not found: id=22")));
 	}
@@ -314,8 +314,8 @@ public class GenreControllerTest {
 				.content(requestJson))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.code", is("REQ400")))
-				.andExpect(jsonPath("$.title", is("Bad Request")))
+				.andExpect(jsonPath("$.code", is("REQ104")))
+				.andExpect(jsonPath("$.title", is("Patch Operation Not Supported")))
 				.andExpect(jsonPath("$.message", is("Operation 'rename' is not supported for Patch method on Genre resource.")));
 	}
 

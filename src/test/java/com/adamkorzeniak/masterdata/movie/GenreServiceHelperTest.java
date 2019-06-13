@@ -8,9 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.movie.model.Genre;
-import com.adamkorzeniak.masterdata.movie.model.dto.GenreDTO;
-import com.adamkorzeniak.masterdata.movie.service.GenreServiceHelper;
+import com.adamkorzeniak.masterdata.features.movie.model.Genre;
+import com.adamkorzeniak.masterdata.features.movie.model.dto.GenreDTO;
+import com.adamkorzeniak.masterdata.features.movie.service.GenreServiceHelper;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")

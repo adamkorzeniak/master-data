@@ -15,9 +15,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.movie.model.Genre;
-import com.adamkorzeniak.masterdata.movie.model.Movie;
-import com.adamkorzeniak.masterdata.movie.repository.MovieRepository;
+import com.adamkorzeniak.masterdata.features.movie.model.Genre;
+import com.adamkorzeniak.masterdata.features.movie.model.Movie;
+import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")

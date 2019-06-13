@@ -21,7 +21,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,10 +32,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.adamkorzeniak.masterdata.movie.model.Movie;
-import com.adamkorzeniak.masterdata.movie.model.dto.MovieDTO;
-import com.adamkorzeniak.masterdata.movie.service.GenreService;
-import com.adamkorzeniak.masterdata.movie.service.MovieService;
+import com.adamkorzeniak.masterdata.features.movie.model.Movie;
+import com.adamkorzeniak.masterdata.features.movie.model.dto.MovieDTO;
+import com.adamkorzeniak.masterdata.features.movie.service.GenreService;
+import com.adamkorzeniak.masterdata.features.movie.service.MovieService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -117,7 +117,7 @@ public class MovieControllerTest {
 
 		mockMvc.perform(get(baseMoviesPath + '/' + id)).andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.code", is("REQ404")))
+				.andExpect(jsonPath("$.code", is("REQ001")))
 				.andExpect(jsonPath("$.title", is("Not Found")))
 				.andExpect(jsonPath("$.message", is("Movie not found: id=" + id)));
 	}
@@ -135,7 +135,7 @@ public class MovieControllerTest {
 		
 	    String requestJson = convertToJson(postMovie);
 
-		doReturn(mockMovie).when(movieService).addMovie(Matchers.any());
+		doReturn(mockMovie).when(movieService).addMovie(ArgumentMatchers.any());
 
 		mockMvc.perform(post(baseMoviesPath).contentType(MediaType.APPLICATION_JSON)
 				.content(requestJson))
@@ -160,7 +160,7 @@ public class MovieControllerTest {
 				.content(requestJson))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.code", is("REQ400")))
+				.andExpect(jsonPath("$.code", is("REQ000")))
 				.andExpect(jsonPath("$.title", is("Bad Request")))
 				.andExpect(jsonPath("$.message", is(errorMessage)));
 	}
@@ -182,7 +182,7 @@ public class MovieControllerTest {
 	    String requestJson = convertToJson(movie);
 
 		doReturn(true).when(movieService).isMovieExist(id);
-		doReturn(mockMovie).when(movieService).updateMovie(Matchers.anyLong(), Matchers.any());
+		doReturn(mockMovie).when(movieService).updateMovie(ArgumentMatchers.anyLong(), ArgumentMatchers.any());
 
 		mockMvc.perform(put(baseMoviesPath + "/" + id)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -213,7 +213,7 @@ public class MovieControllerTest {
 				.andDo(print())
 				.andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.code", is("REQ404")))
+				.andExpect(jsonPath("$.code", is("REQ001")))
 				.andExpect(jsonPath("$.title", is("Not Found")))
 				.andExpect(jsonPath("$.message", is("Movie not found: id=" + id)));
 	}
@@ -235,7 +235,7 @@ public class MovieControllerTest {
 
 		mockMvc.perform(delete(baseMoviesPath + "/" + id)).andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.code", is("REQ404")))
+				.andExpect(jsonPath("$.code", is("REQ001")))
 				.andExpect(jsonPath("$.title", is("Not Found")))
 				.andExpect(jsonPath("$.message", is("Movie not found: id=" + id)));
 	}

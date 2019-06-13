@@ -11,20 +11,19 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.movie.model.Genre;
-import com.adamkorzeniak.masterdata.movie.model.Movie;
-import com.adamkorzeniak.masterdata.movie.repository.MovieRepository;
-import com.adamkorzeniak.masterdata.movie.service.MovieService;
+import com.adamkorzeniak.masterdata.features.movie.model.Genre;
+import com.adamkorzeniak.masterdata.features.movie.model.Movie;
+import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
+import com.adamkorzeniak.masterdata.features.movie.service.MovieService;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
@@ -56,7 +55,7 @@ public class MovieServiceTest {
 		
 		List<Movie> movies = Arrays.asList(movie1, movie2);
 
-		when(movieRepository.findAll(Matchers.<Specification>any())).thenReturn(movies);
+		when(movieRepository.findAll(ArgumentMatchers.<Specification<Movie>>any())).thenReturn(movies);
 
 		List<Movie> result = movieService.searchMovies(params);
 		
@@ -87,7 +86,7 @@ public class MovieServiceTest {
 		
 		List<Movie> movies = Arrays.asList(movie1, movie2);
 
-		when(movieRepository.findAll(Matchers.<Specification>any())).thenReturn(movies);
+		when(movieRepository.findAll(ArgumentMatchers.<Specification<Movie>>any())).thenReturn(movies);
 
 		List<Movie> result = movieService.searchMovies(params);
 		
@@ -135,7 +134,7 @@ public class MovieServiceTest {
 		movie.setTitle("Titanic");
 		movie.setId(id);
 
-		when(movieRepository.save(Matchers.<Movie>any())).thenAnswer(
+		when(movieRepository.save(ArgumentMatchers.<Movie>any())).thenAnswer(
 			mockRepositorySaveInvocation(movie)
 		);
 
@@ -153,7 +152,7 @@ public class MovieServiceTest {
 		movie.setTitle("Titanic");
 		movie.setId(id);
 
-		when(movieRepository.save(Matchers.<Movie>any())).thenAnswer(
+		when(movieRepository.save(ArgumentMatchers.<Movie>any())).thenAnswer(
 			mockRepositorySaveInvocation(movie)
 		);
 

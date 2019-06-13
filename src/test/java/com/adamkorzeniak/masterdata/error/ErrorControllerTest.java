@@ -18,7 +18,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,9 +29,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.adamkorzeniak.masterdata.error.model.Error;
-import com.adamkorzeniak.masterdata.error.model.ErrorDTO;
-import com.adamkorzeniak.masterdata.error.service.ErrorService;
+import com.adamkorzeniak.masterdata.features.error.model.Error;
+import com.adamkorzeniak.masterdata.features.error.model.ErrorDTO;
+import com.adamkorzeniak.masterdata.features.error.service.ErrorService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -110,7 +110,7 @@ public class ErrorControllerTest {
 		
 	    String requestJson = convertToJson(postError);
 
-		doReturn(mockError).when(errorService).addError(Matchers.any());
+		doReturn(mockError).when(errorService).addError(ArgumentMatchers.any());
 
 		mockMvc.perform(post(baseErrorsPath).contentType(MediaType.APPLICATION_JSON)
 				.content(requestJson))
@@ -135,7 +135,7 @@ public class ErrorControllerTest {
 				.content(requestJson))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.code", is("REQ400")))
+				.andExpect(jsonPath("$.code", is("REQ000")))
 				.andExpect(jsonPath("$.title", is("Bad Request")))
 				.andExpect(jsonPath("$.message", is(errorMessage)));
 	}
@@ -157,7 +157,7 @@ public class ErrorControllerTest {
 
 		mockMvc.perform(delete(baseErrorsPath + "/" + id)).andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-				.andExpect(jsonPath("$.code", is("REQ404")))
+				.andExpect(jsonPath("$.code", is("REQ001")))
 				.andExpect(jsonPath("$.title", is("Not Found")))
 				.andExpect(jsonPath("$.message", is("Error not found: id=" + id)));
 	}

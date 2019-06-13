@@ -8,10 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.security.model.User;
-import com.adamkorzeniak.masterdata.security.model.UserDTO;
-import com.adamkorzeniak.masterdata.security.service.UserServiceHelper;
-import com.adamkorzeniak.masterdata.security.model.Role;
+import com.adamkorzeniak.masterdata.features.account.model.Role;
+import com.adamkorzeniak.masterdata.features.account.model.User;
+import com.adamkorzeniak.masterdata.features.account.model.UserDTO;
+import com.adamkorzeniak.masterdata.features.account.service.UserServiceHelper;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")

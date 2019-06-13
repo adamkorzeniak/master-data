@@ -13,7 +13,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,13 +22,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.exception.FilterNotSupportedException;
-import com.adamkorzeniak.masterdata.exception.NotFoundException;
-import com.adamkorzeniak.masterdata.movie.model.Genre;
-import com.adamkorzeniak.masterdata.movie.model.Movie;
-import com.adamkorzeniak.masterdata.movie.repository.GenreRepository;
-import com.adamkorzeniak.masterdata.movie.repository.MovieRepository;
-import com.adamkorzeniak.masterdata.movie.service.GenreService;
+import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
+import com.adamkorzeniak.masterdata.features.movie.model.Genre;
+import com.adamkorzeniak.masterdata.features.movie.model.Movie;
+import com.adamkorzeniak.masterdata.features.movie.repository.GenreRepository;
+import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
+import com.adamkorzeniak.masterdata.features.movie.service.GenreService;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
@@ -54,7 +53,7 @@ public class GenreServiceTest {
 		darkComedy.setName("Dark Comedy");
 		List<Genre> genres = Arrays.asList(comedy, darkComedy);
 
-		when(genreRepository.findAll(Matchers.<Specification>any())).thenReturn(genres);
+		when(genreRepository.findAll(ArgumentMatchers.<Specification<Genre>>any())).thenReturn(genres);
 
 		List<Genre> result = genreService.searchGenres(params);
 		assertThat(result).isNotNull();
@@ -102,7 +101,7 @@ public class GenreServiceTest {
 		genre.setName("Comedy");
 		genre.setId(id);
 
-		when(genreRepository.save(Matchers.<Genre>any())).thenAnswer(
+		when(genreRepository.save(ArgumentMatchers.<Genre>any())).thenAnswer(
 			mockRepositorySaveInvocation(genre)
 		);
 
@@ -120,7 +119,7 @@ public class GenreServiceTest {
 		genre.setName("Comedy");
 		genre.setId(id);
 
-		when(genreRepository.save(Matchers.<Genre>any())).thenAnswer(
+		when(genreRepository.save(ArgumentMatchers.<Genre>any())).thenAnswer(
 			mockRepositorySaveInvocation(genre)
 		);
 
