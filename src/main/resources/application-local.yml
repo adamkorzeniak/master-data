@@ -3,7 +3,7 @@ spring:
     url: jdbc:mysql://localhost:3306/dev_master_data_dev?useLegacyDatetimeCode=false&serverTimezone=Europe/Warsaw&autoReconnect=true&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: admin
+    password: ENC(4sZS5/oGTUwJN+MWSUPDaNBIFZh6D6yzpUbd59FykJI=)
     
   jpa:
     hibernate.ddl-auto: validate
