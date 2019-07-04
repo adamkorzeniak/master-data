@@ -15,7 +15,7 @@ public class InvalidQueryParamValueException extends RuntimeException {
 	public InvalidQueryParamValueException(SearchFunctionType function, String queryParam) {
 		super(buildMessage(function, queryParam));
 	}
-	
+
 	private static String buildMessage(SearchFunctionType function, String queryParam) {
 		String supportedType = "";
 		switch (function) {
@@ -29,10 +29,8 @@ public class InvalidQueryParamValueException extends RuntimeException {
 			default:
 				throw new FunctionUnsupportedValueMessageNotDefinedException(function);
 		}
-		return String.format("Invalid query param value for '%s'. %s supports only %s values.",
-				queryParam,
-				function.toString(),
-				supportedType);
+		return String.format("Invalid query param value for '%s'. %s supports only %s values.", queryParam,
+				function.toString(), supportedType);
 	}
 
 }

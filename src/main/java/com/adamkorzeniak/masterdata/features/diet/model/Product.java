@@ -21,7 +21,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "diet__products")
 public class Product {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")

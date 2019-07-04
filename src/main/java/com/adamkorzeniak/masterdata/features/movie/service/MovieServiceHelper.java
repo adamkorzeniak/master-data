@@ -8,8 +8,6 @@ import com.adamkorzeniak.masterdata.features.movie.model.dto.MovieDTO;
 
 public class MovieServiceHelper {
 
-	private MovieServiceHelper() {}
-
 	/**
 	 * Converts Movie DTO to Entity.
 	 * 

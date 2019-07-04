@@ -24,7 +24,7 @@ public class LogicLoggingAspect {
 		String enteringMessage = buildEnteringMethodMessage(joinPoint);
 		logger.debug(enteringMessage);
 	}
-	
+
 	/**
 	 * 
 	 * Logs message after exiting from every service, helper and repository method
@@ -40,10 +40,10 @@ public class LogicLoggingAspect {
 		String method = joinPoint.getSignature().toShortString();
 		return "*****Entering method*****\nMethodName=" + method + "\nCorrelationId=" + MDC.get("correlationId");
 	}
-	
+
 	private String buildExitingMethodMessage(JoinPoint joinPoint) {
 		String method = joinPoint.getSignature().toShortString();
 		return "*****Exiting method*****\nMethodName=" + method + "\nCorrelationId=" + MDC.get("correlationId");
 	}
-	
+
 }

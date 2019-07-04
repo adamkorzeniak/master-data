@@ -12,7 +12,8 @@ public class UserDTO {
 
 	private Long id;
 
-	@NotEmpty @NotNull
+	@NotEmpty
+	@NotNull
 	private String username;
 
 	@NotEmpty

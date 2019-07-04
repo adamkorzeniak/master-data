@@ -7,6 +7,4 @@ public interface UserService {
 	User getUser(String username);
 
 	User register(User user);
-
-	String getPrincipal();
 }

@@ -2,7 +2,8 @@ package com.adamkorzeniak.masterdata.exception.exceptions;
 
 /**
  * 
- * Exception is thrown if query param is incorrectly build (i.e. maxYear instead of max-year) 
+ * Exception is thrown if query param is incorrectly build (i.e. maxYear instead
+ * of max-year)
  *
  */
 public class InvalidQueryParamException extends RuntimeException {

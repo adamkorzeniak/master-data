@@ -15,10 +15,10 @@ import com.adamkorzeniak.masterdata.features.error.repository.ErrorRepository;
 
 @Service
 public class ErrorServiceImpl implements ErrorService {
-	
+
 	@Autowired
 	private ErrorRepository errorRepository;
-	
+
 	@Autowired
 	private SearchFilterService searchFilterService;
 
@@ -26,7 +26,7 @@ public class ErrorServiceImpl implements ErrorService {
 	public List<Error> searchErrors(Map<String, String> requestParams) {
 		List<SearchFilterParam> filters = searchFilterService.buildFilters(requestParams, "movie.genres");
 		Specification<Error> spec = new GenericSpecification<>(filters);
-		return errorRepository.findAll(spec);	
+		return errorRepository.findAll(spec);
 	}
 
 	@Override

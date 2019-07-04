@@ -23,7 +23,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "diet__food_units")
 public class FoodUnit {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")

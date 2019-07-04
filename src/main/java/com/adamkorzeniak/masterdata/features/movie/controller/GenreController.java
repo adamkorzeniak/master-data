@@ -32,7 +32,7 @@ import com.adamkorzeniak.masterdata.features.movie.service.GenreServiceHelper;
 @RestController
 @RequestMapping("/v0/Movie")
 public class GenreController {
-	
+
 	private static final String MERGE_OPERATION = "merge";
 
 	@Autowired
@@ -114,7 +114,6 @@ public class GenreController {
 		genreService.deleteGenre(genreId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
 
 	@PatchMapping("/genres/{genreId}")
 	public ResponseEntity<GenreDTO> mergeGenres(@RequestBody GenrePatchDTO mergedto, @PathVariable Long genreId) {

@@ -9,5 +9,4 @@ import com.adamkorzeniak.masterdata.features.account.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	public User findByUsername(String username);
-
 }

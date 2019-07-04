@@ -4,8 +4,8 @@ import com.adamkorzeniak.masterdata.api.SearchFunctionType;
 
 /**
  * 
- * Exception is thrown if function (i.e. MAX) 
- * is not supported for given API Resource for specific field (i.e. title)
+ * Exception is thrown if function (i.e. MAX) is not supported for given API
+ * Resource for specific field (i.e. title)
  *
  */
 public class FieldFilterNotSupportedException extends RuntimeException {

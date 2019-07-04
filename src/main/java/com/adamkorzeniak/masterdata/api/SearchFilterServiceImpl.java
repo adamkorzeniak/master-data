@@ -16,16 +16,16 @@ import com.adamkorzeniak.masterdata.exception.exceptions.SearchFilterParamNotSup
 
 @Service
 public class SearchFilterServiceImpl implements SearchFilterService {
-	
+
 	@Autowired
 	public Environment env;
-	
+
 	@Override
 	public List<SearchFilterParam> buildFilters(Map<String, String> params, String propertyString) {
 		List<SearchFilterParam> filters = new ArrayList<>();
 		Iterator<Entry<String, String>> it = params.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry<String,String> pair = it.next();
+			Map.Entry<String, String> pair = it.next();
 			SearchFilterParam filter = new SearchFilterParam(pair.getKey(), pair.getValue());
 			validate(filter, propertyString);
 			filters.add(filter);

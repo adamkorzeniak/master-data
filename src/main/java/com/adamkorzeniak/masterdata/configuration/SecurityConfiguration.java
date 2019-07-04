@@ -63,13 +63,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.csrf()
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
-		http
-			.cors()
-			.and()
-			.csrf().disable();
+		http.cors().and().csrf().disable();
 
-		//TODO: check what to do about cors
-		//TODO: check what to do about CSRF
+		// TODO: check what to do about cors
+		// TODO: check what to do about CSRF
 	}
 
 	@Bean

@@ -31,7 +31,7 @@ import com.adamkorzeniak.masterdata.features.diet.service.ProductServiceHelper;
 public class ProductController {
 
 	private static final String RESOURCE_NAME = "Product";
-	
+
 	@Autowired
 	private ProductService productService;
 

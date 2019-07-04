@@ -6,8 +6,6 @@ import com.adamkorzeniak.masterdata.features.diet.model.dto.ProductDTO;
 
 public class ProductServiceHelper {
 
-	private ProductServiceHelper() {}
-
 	/**
 	 * Converts Product DTO to Entity.
 	 * 

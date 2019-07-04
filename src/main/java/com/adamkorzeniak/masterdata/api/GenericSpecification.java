@@ -21,7 +21,7 @@ import com.adamkorzeniak.masterdata.exception.exceptions.SearchFilterParamsNotIn
 public class GenericSpecification<T> implements Specification<T> {
 
 	private static final long serialVersionUID = 2286342570890056988L;
-	
+
 	private final List<SearchFilterParam> filters;
 
 	/**
@@ -36,16 +36,17 @@ public class GenericSpecification<T> implements Specification<T> {
 		}
 		this.filters = filters;
 	}
-	
+
 	/**
 	 * 
 	 * Creates a predicate for Specification.
 	 * 
 	 */
+	@Override
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
 
 		Predicate p = cb.conjunction();
-		
+
 		for (SearchFilterParam filter : filters) {
 			switch (filter.getFunction()) {
 			case SEARCH:
@@ -62,7 +63,7 @@ public class GenericSpecification<T> implements Specification<T> {
 				break;
 			case EXIST:
 				boolean exist = Boolean.parseBoolean(filter.getValue());
-				if(exist) {
+				if (exist) {
 					p.getExpressions().add(cb.isNotNull(root.get(filter.getField())));
 				} else {
 					p.getExpressions().add(cb.isNull(root.get(filter.getField())));

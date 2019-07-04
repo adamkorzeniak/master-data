@@ -5,13 +5,11 @@ import java.util.UUID;
 import org.jboss.logging.MDC;
 
 public class LoggingHelper {
-	
-	private LoggingHelper() {}
-	
+
 	/**
 	 * 
-	 * Generates uuid 
-	 *  
+	 * Generates uuid
+	 * 
 	 */
 	public static String generateCorrelationId() {
 		String uuid = UUID.randomUUID().toString();
@@ -21,8 +19,8 @@ public class LoggingHelper {
 
 	/**
 	 * 
-	 * Clears uuid 
-	 *  
+	 * Clears uuid
+	 * 
 	 */
 	public static void clearCorellationId() {
 		MDC.clear();

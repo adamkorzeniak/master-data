@@ -2,7 +2,8 @@ package com.adamkorzeniak.masterdata.exception.exceptions;
 
 /**
  * 
- * Exception is thrown when operation specified in body of PATCH request is not supported for given resource.
+ * Exception is thrown when operation specified in body of PATCH request is not
+ * supported for given resource.
  *
  */
 public class PatchOperationNotSupportedException extends RuntimeException {

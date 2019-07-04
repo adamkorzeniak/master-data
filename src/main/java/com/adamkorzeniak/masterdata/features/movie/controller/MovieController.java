@@ -25,7 +25,6 @@ import com.adamkorzeniak.masterdata.features.movie.model.Movie;
 import com.adamkorzeniak.masterdata.features.movie.model.dto.MovieDTO;
 import com.adamkorzeniak.masterdata.features.movie.service.MovieService;
 import com.adamkorzeniak.masterdata.features.movie.service.MovieServiceHelper;
-import com.adamkorzeniak.masterdata.scraping.ScrapFilmweb;
 
 @RestController
 @RequestMapping("/v0/Movie")
@@ -33,12 +32,6 @@ public class MovieController {
 
 	@Autowired
 	private MovieService movieService;
-	
-	@GetMapping("/movies/filmweb")
-	public ResponseEntity<MovieDTO> retrieveMoviesFromFilmweb(@RequestParam String title, @RequestParam Integer year) {
-
-		return new ResponseEntity<MovieDTO>(ScrapFilmweb.scrapMovie(title, year), HttpStatus.OK);
-	}
 
 	/**
 	 * Returns list of movies with 200 OK.

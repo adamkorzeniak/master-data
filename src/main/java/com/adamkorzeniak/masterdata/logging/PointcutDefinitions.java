@@ -8,7 +8,7 @@ import org.aspectj.lang.annotation.Pointcut;
  * 
  */
 public class PointcutDefinitions {
-	
+
 	@Pointcut("execution(* com.adamkorzeniak..*Controller.*(..))")
 	public void controllers() {}
 	

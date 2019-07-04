@@ -21,7 +21,8 @@ public class ControllerLoggingAspect {
 
 	/**
 	 * 
-	 * After request is received in controller it creates request uuid and logs details
+	 * After request is received in controller it creates request uuid and logs
+	 * details
 	 * 
 	 */
 	@Before("PointcutDefinitions.controllers()")
@@ -44,7 +45,7 @@ public class ControllerLoggingAspect {
 		LoggingHelper.clearCorellationId();
 		logger.debug(message);
 	}
-	
+
 	private String getRequestURL() {
 		String requestURL = request.getRequestURI();
 		if (request.getQueryString() != null) {
@@ -52,12 +53,9 @@ public class ControllerLoggingAspect {
 		}
 		return requestURL;
 	}
-	
+
 	private String buildRequestReceivedMessage(String uuid, String requestURL) {
-		return String.format(
-				"*****Request received*****%nCorrelationId=%s%n%s:%s",
-				uuid,
-				request.getMethod(),
+		return String.format("*****Request received*****%nCorrelationId=%s%n%s:%s", uuid, request.getMethod(),
 				requestURL);
 	}
 

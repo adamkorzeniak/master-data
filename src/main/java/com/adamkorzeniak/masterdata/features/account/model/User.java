@@ -8,7 +8,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import io.micrometer.core.lang.NonNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,13 +21,14 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotEmpty @NotNull
+	@NotEmpty
+	@NotNull
 	private String username;
 
 	@NotEmpty
 	private String password;
 
-	@NonNull @NotNull
+	@NotNull
 	private Role role;
 
 }

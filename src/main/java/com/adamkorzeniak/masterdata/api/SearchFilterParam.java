@@ -9,13 +9,14 @@ import lombok.Getter;
 
 /**
  * 
- * API Search Query Param object holding representation of search query parameter
+ * API Search Query Param object holding representation of search query
+ * parameter
  *
  */
 public class SearchFilterParam implements Serializable {
 
 	private static final long serialVersionUID = -3844292648390012518L;
-	
+
 	@Getter
 	private SearchFunctionType function;
 	@Getter
@@ -117,7 +118,7 @@ public class SearchFilterParam implements Serializable {
 		function = functionType;
 		field = elements[1];
 	}
-	
+
 	private boolean isBoolean(String value) {
 		return value.equals("true") || value.equals("false");
 	}

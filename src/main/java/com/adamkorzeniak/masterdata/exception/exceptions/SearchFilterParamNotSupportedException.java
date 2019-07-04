@@ -4,7 +4,8 @@ import com.adamkorzeniak.masterdata.api.SearchFunctionType;
 
 /**
  * 
- * Exception is thrown given resource doesn't support provided Search Filter Function (i.e. MATCH)
+ * Exception is thrown given resource doesn't support provided Search Filter
+ * Function (i.e. MATCH)
  *
  */
 public class SearchFilterParamNotSupportedException extends RuntimeException {
@@ -14,5 +15,5 @@ public class SearchFilterParamNotSupportedException extends RuntimeException {
 	public SearchFilterParamNotSupportedException(SearchFunctionType function) {
 		super("This resource doesn't support " + function.toString());
 	}
-	
+
 }

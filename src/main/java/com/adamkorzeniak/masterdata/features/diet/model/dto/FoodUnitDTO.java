@@ -14,7 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class FoodUnitDTO {
-	
+
 	private Long id;
 
 	@NotBlank

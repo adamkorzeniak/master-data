@@ -19,7 +19,7 @@ import lombok.ToString;
 //@Entity
 //@Table(name = "diet__consumption_goals")
 public class ConsumptionGoal {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")

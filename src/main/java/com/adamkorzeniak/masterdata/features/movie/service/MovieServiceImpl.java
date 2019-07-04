@@ -23,7 +23,7 @@ public class MovieServiceImpl implements MovieService {
 
 	@Autowired
 	private MovieRepository movieRepository;
-	
+
 	@Autowired
 	private SearchFilterService searchFilterService;
 
@@ -45,10 +45,10 @@ public class MovieServiceImpl implements MovieService {
 			.filter(movie -> containsSearchedGenres(movie, genreArray))
 			.collect(Collectors.toList());
 	}
-	
+
 	private boolean containsSearchedGenres(Movie movie, String[] searchedGenres) {
 		List<Genre> genres = movie.getGenres();
-		for (String s: searchedGenres) {
+		for (String s : searchedGenres) {
 			boolean found = genres.stream().anyMatch(
 					genre -> genre.getName().toLowerCase().contains(s.toLowerCase()));
 			if (!found) {
@@ -56,7 +56,7 @@ public class MovieServiceImpl implements MovieService {
 			}
 		}
 		return true;
-		
+
 	}
 
 	@Override

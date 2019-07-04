@@ -19,7 +19,7 @@ public class FoodUnitServiceImpl implements FoodUnitService {
 
 	@Autowired
 	private FoodUnitRepository foodUnitRepository;
-	
+
 	@Autowired
 	private SearchFilterService searchFilterService;
 

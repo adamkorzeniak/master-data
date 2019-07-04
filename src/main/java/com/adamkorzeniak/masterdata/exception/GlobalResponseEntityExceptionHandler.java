@@ -50,8 +50,7 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 	private static final String MESSAGE_NOT_READABLE_TITLE = "Message Not Readable";
 	private static final String MEDIA_TYPE_NOT_SUPPORTED_CODE = "REQ004";
 	private static final String MEDIA_TYPE_NOT_SUPPORTED_TITLE = "Media Type Not Supported";
-	
-	
+
 	private static final String INVALID_QUERY_PARAM_CODE = "REQ100";
 	private static final String INVALID_QUERY_PARAM_TITLE = "Invalid Query Param";
 	private static final String INVALID_QUERY_PARAM_VALUE_CODE = "REQ101";
@@ -62,20 +61,19 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 	private static final String FIELD_FILTER_NOT_SUPPORTED_TITLE = "Filter Field Not Supported";
 	private static final String PATCH_OPERATION_NOT_SUPPORTED_CODE = "REQ104";
 	private static final String PATCH_OPERATION_NOT_SUPPORTED_TITLE = "Patch Operation Not Supported";
-	
 
 	private static final String DUPLICATE_ENTRY_CODE = "REQ200";
 	private static final String DUPLICATE_ENTRY_TITLE = "Duplicate Entry";
-	
+
 	private static final String INTERNAL_SERVER_ERROR_CODE = "ERR000";
 	private static final String INTERNAL_SERVER_ERROR_TITLE = "Unexpected Internal Server Error";
-	
+
 	private static final String ERROR_UNSUPPORTED_FUNCTION_MESSAGE_CODE = "ERR001";
 	private static final String ERROR_UNSUPPORTED_FUNCTION_MESSAGE_TITLE = "Function Unsupported Value Message Not Defined";
-	
+
 	private static final String ERROR_SEARCH_PARAMS_NOT_INITIALIZED_CODE = "ERR002";
 	private static final String ERROR_SEARCH_PARAMS_NOT_INITIALIZED_TITLE = "Search Filter Params Not Initialized";
-	
+
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exc,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -85,11 +83,12 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 		ExceptionResponse bodyOfResponse = new ExceptionResponse(BAD_REQUEST_CODE, BAD_REQUEST_TITLE, message);
 		return handleExceptionInternal(exc, bodyOfResponse, headers, status, request);
 	}
-	
+
 	@Override
 	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		ExceptionResponse bodyOfResponse = new ExceptionResponse(METHOD_NOT_ALLOWED_CODE, METHOD_NOT_ALLOWED_TITLE, ex.getMessage());
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(METHOD_NOT_ALLOWED_CODE, METHOD_NOT_ALLOWED_TITLE,
+				ex.getMessage());
 		return handleExceptionInternal(ex, bodyOfResponse, headers, status, request);
 	}
 
@@ -97,20 +96,23 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		String message = ex.getMessage();
-		ExceptionResponse bodyOfResponse = new ExceptionResponse(MESSAGE_NOT_READABLE_CODE, MESSAGE_NOT_READABLE_TITLE, message);
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(MESSAGE_NOT_READABLE_CODE, MESSAGE_NOT_READABLE_TITLE,
+				message);
 		return handleExceptionInternal(ex, bodyOfResponse, headers, status, request);
 	}
 
 	@Override
 	protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		ExceptionResponse bodyOfResponse = new ExceptionResponse(MEDIA_TYPE_NOT_SUPPORTED_CODE, MEDIA_TYPE_NOT_SUPPORTED_TITLE, ex.getMessage());
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(MEDIA_TYPE_NOT_SUPPORTED_CODE,
+				MEDIA_TYPE_NOT_SUPPORTED_TITLE, ex.getMessage());
 		return handleExceptionInternal(ex, bodyOfResponse, headers, status, request);
 	}
 
 	@ExceptionHandler(value = { DuplicateUserException.class })
 	protected ResponseEntity<Object> duplicateUser(Exception exc, WebRequest request) {
-		ExceptionResponse bodyOfResponse = new ExceptionResponse(DUPLICATE_ENTRY_CODE, DUPLICATE_ENTRY_TITLE, exc.getMessage());
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(DUPLICATE_ENTRY_CODE, DUPLICATE_ENTRY_TITLE,
+				exc.getMessage());
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
 	}
 
@@ -154,31 +156,33 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 				PATCH_OPERATION_NOT_SUPPORTED_TITLE, exc.getMessage());
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
+
 	@ExceptionHandler(value = { FunctionUnsupportedValueMessageNotDefinedException.class })
 	protected ResponseEntity<Object> functionUnsupportedValueMessageNotDefined(Exception exc, WebRequest request) {
 		ExceptionResponse bodyOfResponse = new ExceptionResponse(ERROR_UNSUPPORTED_FUNCTION_MESSAGE_CODE,
 				ERROR_UNSUPPORTED_FUNCTION_MESSAGE_TITLE, exc.getMessage());
-		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
+				request);
 	}
 
 	@ExceptionHandler(value = { SearchFilterParamsNotInitializedException.class })
 	protected ResponseEntity<Object> searchFilterParamsNotInitialized(Exception exc, WebRequest request) {
 		ExceptionResponse bodyOfResponse = new ExceptionResponse(ERROR_SEARCH_PARAMS_NOT_INITIALIZED_CODE,
 				ERROR_SEARCH_PARAMS_NOT_INITIALIZED_TITLE, exc.getMessage());
-		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
+				request);
 	}
-	
+
 	@ExceptionHandler(value = { Throwable.class })
 	protected ResponseEntity<Object> defaultException(Exception exc, WebRequest request) {
-		ExceptionResponse bodyOfResponse = new ExceptionResponse(INTERNAL_SERVER_ERROR_CODE, INTERNAL_SERVER_ERROR_TITLE, exc.getMessage());
-		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(INTERNAL_SERVER_ERROR_CODE,
+				INTERNAL_SERVER_ERROR_TITLE, exc.getMessage());
+		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
+				request);
 	}
-	
+
 	private String buildModelFieldErrorMessage(FieldError error) {
-		return String.format("Invalid '%s' field value: %s. Field '%s' %s.",
-				error.getField(),
-				error.getRejectedValue(),
-				error.getField(),
-				error.getDefaultMessage());
+		return String.format("Invalid '%s' field value: %s. Field '%s' %s.", error.getField(), error.getRejectedValue(),
+				error.getField(), error.getDefaultMessage());
 	}
 }

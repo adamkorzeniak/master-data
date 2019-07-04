@@ -18,11 +18,10 @@ public class ErrorLoggingAspect {
 
 	private Logger logger = Logger.getLogger(ErrorLoggingAspect.class.getName());
 
-
 	/**
 	 * 
 	 * After exception is handled in logs message and clears uuid
-	 *  
+	 * 
 	 */
 	@AfterReturning(pointcut = "PointcutDefinitions.exceptionHandlers()", returning = "errorResult")
 	public void successfullyExitingController(JoinPoint joinPoint, ResponseEntity<Object> errorResult) {
@@ -30,11 +29,11 @@ public class ErrorLoggingAspect {
 		LoggingHelper.clearCorellationId();
 		logger.debug(errorMessage);
 	}
-	
+
 	/**
 	 * 
 	 * After exception in exception handler it logs the message
-	 *  
+	 * 
 	 */
 	@AfterThrowing(pointcut = "PointcutDefinitions.custom()", throwing = "error")
 	public void exitingMethodWithError(JoinPoint joinPoint, Throwable error) {
@@ -58,6 +57,6 @@ public class ErrorLoggingAspect {
 		}
 		String errorString = joiner.toString();
 		return "*****Exiting method with error*****\nMethodName=" + method + "\nCorrelationId="
-		+ MDC.get("correlationId") + errorString;
+				+ MDC.get("correlationId") + errorString;
 	}
 }

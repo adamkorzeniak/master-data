@@ -25,6 +25,9 @@ public class MovieDTO {
 	@NotNull
 	private String title;
 
+	@NotBlank
+	private String originalTitle;
+
 	@Min(1800)
 	@Max(2999)
 	@NotNull
@@ -35,6 +38,22 @@ public class MovieDTO {
 	@NotNull
 	private Integer duration;
 
+	@NotBlank
+	private String directors;
+
+	@NotBlank
+	private String productionCountries;
+
+	@Min(0)
+	@Max(10)
+	private Float filmwebRating;
+
+	@Min(0)
+	private Integer filmwebRatingCount;
+
+	@Min(0)
+	private Integer filmwebTopRanking;
+
 	@Min(0)
 	@Max(10)
 	private Integer rating;
@@ -42,6 +61,8 @@ public class MovieDTO {
 	@Min(0)
 	@Max(5)
 	private Integer watchPriority;
+
+	private String filmPlot;
 
 	private String description;
 

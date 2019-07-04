@@ -22,10 +22,10 @@ public class GenreServiceImpl implements GenreService {
 
 	@Autowired
 	private GenreRepository genreRepository;
-	
+
 	@Autowired
 	private MovieRepository movieRepository;
-	
+
 	@Autowired
 	private SearchFilterService searchFilterService;
 
@@ -76,7 +76,7 @@ public class GenreServiceImpl implements GenreService {
 		Genre oldGenre = oldResult.get();
 		Genre targetGenre = targetResult.get();
 		List<Movie> movies = movieRepository.findByGenresContaining(oldGenre);
-		for (Movie movie: movies) {
+		for (Movie movie : movies) {
 			List<Genre> genres = movie.getGenres();
 			int index = genres.indexOf(oldGenre);
 			if (genres.contains(targetGenre)) {
