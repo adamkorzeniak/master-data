@@ -1,0 +1,1376 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Master Data",
+    "description" : "Personal Master Data API.",
+    "version" : "0.0.1",
+    "contact" : {
+      "name" : "Adam Korzeniak",
+      "email" : "korzeniak.adam@gmail.com",
+      "url" : "https://www.adamkorzeniak.pl"
+    }
+  },
+  "servers" : [ {
+    "description" : "Stage/Test Server",
+    "url" : "https://adamkorzeniak.pl:8443/v0"
+  } ],
+  "tags" : [ {
+    "name" : "User",
+    "description" : "User management - register and get details about user"
+  }, {
+    "name" : "Movie",
+    "description" : "Movie database"
+  } ],
+  "paths" : {
+    "/User/me" : {
+      "get" : {
+        "tags" : [ "User" ],
+        "summary" : "Retrieves details of authenticated user",
+        "operationId" : "getMe",
+        "description" : "Retrieves details of user whose credentials were passed in request",
+        "responses" : {
+          "200" : {
+            "description" : "User details returned",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      }
+    },
+    "/User/register" : {
+      "post" : {
+        "tags" : [ "User" ],
+        "summary" : "Registers an user",
+        "operationId" : "registerUser",
+        "description" : "Registers an user with provided details",
+        "requestBody" : {
+          "description" : "User details",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Registered user details returned",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "409" : {
+            "$ref" : "#/components/responses/conflict"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      }
+    },
+    "/Movie/movies" : {
+      "get" : {
+        "tags" : [ "Movie" ],
+        "summary" : "Searches movies",
+        "operationId" : "searchMovies",
+        "description" : "Searches for movies using search parameters",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "genres",
+          "description" : "Pass a comma-limited list of values. Each of those values must be contained by name of at least one genre of movie. So for \"com,ram\" com is contained in Comedy and ram is contained in Drama.\n",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "omedy,dram"
+          }
+        }, {
+          "in" : "query",
+          "name" : "match-title",
+          "description" : "title of the movie",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "Pulp Fiction"
+          }
+        }, {
+          "in" : "query",
+          "name" : "search-title",
+          "description" : "movie title has to contain that value",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "back to the"
+          }
+        }, {
+          "in" : "query",
+          "name" : "search-description",
+          "description" : "movie description has to contain that value",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "love story"
+          }
+        }, {
+          "in" : "query",
+          "name" : "search-review",
+          "description" : "movie review has to contain that value",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "good"
+          }
+        }, {
+          "in" : "query",
+          "name" : "search-plotSummary",
+          "description" : "movie plot summary has to contain that value",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "kiss"
+          }
+        }, {
+          "in" : "query",
+          "name" : "min-year",
+          "description" : "movie year minimum value",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 2000
+          }
+        }, {
+          "in" : "query",
+          "name" : "max-year",
+          "description" : "movie year maximum value",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 2000
+          }
+        }, {
+          "in" : "query",
+          "name" : "min-duration",
+          "description" : "movie duration (in minutes) minimum value",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 100
+          }
+        }, {
+          "in" : "query",
+          "name" : "max-duration",
+          "description" : "movie duration (in minutes) maximum value",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 100
+          }
+        }, {
+          "in" : "query",
+          "name" : "min-rating",
+          "description" : "movie rating minimum value",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 6
+          }
+        }, {
+          "in" : "query",
+          "name" : "max-rating",
+          "description" : "movie rating maximum value",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 6
+          }
+        }, {
+          "in" : "query",
+          "name" : "min-watchPriority",
+          "description" : "movie watch priority minimum value",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 4
+          }
+        }, {
+          "in" : "query",
+          "name" : "max-watchPriority",
+          "description" : "movie watch priority maximum value",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 4
+          }
+        }, {
+          "in" : "query",
+          "name" : "exist-rating",
+          "description" : "is movie rated",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean",
+            "example" : true
+          }
+        }, {
+          "in" : "query",
+          "name" : "exist-watchPriority",
+          "description" : "does movie have watch priority set",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean",
+            "example" : true
+          }
+        }, {
+          "in" : "query",
+          "name" : "exist-review",
+          "description" : "does movie have review",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean",
+            "example" : true
+          }
+        }, {
+          "in" : "query",
+          "name" : "exist-plotSummary",
+          "description" : "does movie have plot summary",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean",
+            "example" : true
+          }
+        }, {
+          "in" : "query",
+          "name" : "order",
+          "description" : "order movies in default order using provided field",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "title",
+            "enum" : [ "title", "year", "duration", "rating", "watchPriority" ]
+          }
+        }, {
+          "in" : "query",
+          "name" : "order-asc",
+          "description" : "order movies in ascending order using provided field",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "title",
+            "enum" : [ "title", "year", "duration", "rating", "watchPriority" ]
+          }
+        }, {
+          "in" : "query",
+          "name" : "order-desc",
+          "description" : "order movies in descending order using provided field",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "title",
+            "enum" : [ "title", "year", "duration", "rating", "watchPriority" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of movies returned",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Movie"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Movie" ],
+        "summary" : "Adds a movie",
+        "description" : "Creates a movie in database with provided details",
+        "operationId" : "addMovie",
+        "requestBody" : {
+          "description" : "Movie details",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Movie"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created movie details returned",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      }
+    },
+    "/Movie/movies/{movieId}" : {
+      "get" : {
+        "tags" : [ "Movie" ],
+        "description" : "Retrieve movie for given id",
+        "operationId" : "getMovie",
+        "parameters" : [ {
+          "name" : "movieId",
+          "in" : "path",
+          "required" : true,
+          "description" : "Return movie with specific id",
+          "schema" : {
+            "type" : "integer",
+            "example" : 42
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "movie details returned",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Movie"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Movie" ],
+        "description" : "Updates a movie",
+        "operationId" : "updateMovie",
+        "parameters" : [ {
+          "name" : "movieId",
+          "in" : "path",
+          "required" : true,
+          "description" : "Return movie with specific id",
+          "schema" : {
+            "type" : "integer",
+            "example" : 42
+          }
+        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Movie"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Movie updated",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Movie" ],
+        "description" : "Delete movie with given id",
+        "operationId" : "deleteMovie",
+        "parameters" : [ {
+          "name" : "movieId",
+          "in" : "path",
+          "required" : true,
+          "description" : "movie id",
+          "schema" : {
+            "type" : "integer",
+            "example" : 42
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "movie removed"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      }
+    },
+    "/Movie/genres" : {
+      "get" : {
+        "tags" : [ "Movie" ],
+        "summary" : "Searches genres",
+        "operationId" : "searchGenres",
+        "description" : "Search for genres by adding search parameters\n",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "match-name",
+          "description" : "name of the genre",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "Comedy"
+          }
+        }, {
+          "in" : "query",
+          "name" : "search-name",
+          "description" : "genre name has to contain that value",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "drama"
+          }
+        }, {
+          "in" : "query",
+          "name" : "exist-name",
+          "description" : "genre name exists",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean",
+            "example" : true
+          }
+        }, {
+          "in" : "query",
+          "name" : "order",
+          "description" : "order genres in default order using provided field",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "name",
+            "enum" : [ "name" ]
+          }
+        }, {
+          "in" : "query",
+          "name" : "order-asc",
+          "description" : "order genres in ascending order using provided field",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "name",
+            "enum" : [ "name" ]
+          }
+        }, {
+          "in" : "query",
+          "name" : "order-desc",
+          "description" : "order genres in descending order using provided field",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "name",
+            "enum" : [ "name" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "list of genres returned",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Genre"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Movie" ],
+        "description" : "Adds a genre",
+        "operationId" : "addGenre",
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Genre"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Genre created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Genre"
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      }
+    },
+    "/Movie/genres/{genreId}" : {
+      "get" : {
+        "tags" : [ "Movie" ],
+        "description" : "Retrieve genre for given id",
+        "operationId" : "getGenre",
+        "parameters" : [ {
+          "name" : "genreId",
+          "in" : "path",
+          "required" : true,
+          "description" : "Return genre with specific id",
+          "schema" : {
+            "type" : "integer",
+            "example" : 42
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "genre details returned",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Genre"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Movie" ],
+        "description" : "Updates a genre",
+        "operationId" : "updateGenre",
+        "parameters" : [ {
+          "name" : "genreId",
+          "in" : "path",
+          "required" : true,
+          "description" : "Return genre with specific id",
+          "schema" : {
+            "type" : "integer",
+            "example" : 42
+          }
+        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Genre"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Genre updated",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Genre"
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Movie" ],
+        "description" : "Delete genre with given id",
+        "operationId" : "deleteGenre",
+        "parameters" : [ {
+          "name" : "genreId",
+          "in" : "path",
+          "required" : true,
+          "description" : "genre id",
+          "schema" : {
+            "type" : "integer",
+            "example" : 42
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "genre removed"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      }
+    },
+    "/Error/errors" : {
+      "get" : {
+        "tags" : [ "Error" ],
+        "summary" : "Searches errors",
+        "operationId" : "searchErrors",
+        "description" : "Search for errors by adding search parameters\n",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "match-errorId",
+          "description" : "errorId of the error",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "error-1234"
+          }
+        }, {
+          "in" : "query",
+          "name" : "match-appId",
+          "description" : "appId of the error",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "app-1234"
+          }
+        }, {
+          "in" : "query",
+          "name" : "match-name",
+          "description" : "name of the error",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "Client issue"
+          }
+        }, {
+          "in" : "query",
+          "name" : "search-errorId",
+          "description" : "error errorId has to contain that value",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : 1234
+          }
+        }, {
+          "in" : "query",
+          "name" : "search-appId",
+          "description" : "error appId has to contain that value",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : 1234
+          }
+        }, {
+          "in" : "query",
+          "name" : "search-name",
+          "description" : "error name has to contain that value",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "client"
+          }
+        }, {
+          "in" : "query",
+          "name" : "search-details",
+          "description" : "error details has to contain that value",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "client"
+          }
+        }, {
+          "in" : "query",
+          "name" : "search-status",
+          "description" : "error status has to contain that value",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "client"
+          }
+        }, {
+          "in" : "query",
+          "name" : "search-location",
+          "description" : "error location has to contain that value",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "client"
+          }
+        }, {
+          "in" : "query",
+          "name" : "min-time",
+          "description" : "error epoch time minimum value",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 1541111111
+          }
+        }, {
+          "in" : "query",
+          "name" : "max-time",
+          "description" : "error epoch time maximum value",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 1541111111
+          }
+        }, {
+          "in" : "query",
+          "name" : "exist-details",
+          "description" : "error details exists",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean",
+            "example" : true
+          }
+        }, {
+          "in" : "query",
+          "name" : "order",
+          "description" : "order errors in default order using provided field",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "time",
+            "enum" : [ "errorId", "appId", "name", "time" ]
+          }
+        }, {
+          "in" : "query",
+          "name" : "order-asc",
+          "description" : "order errors in ascending order using provided field",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "time",
+            "enum" : [ "errorId", "appId", "name", "time" ]
+          }
+        }, {
+          "in" : "query",
+          "name" : "order-desc",
+          "description" : "order errors in descending order using provided field",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "time",
+            "enum" : [ "errorId", "appId", "name", "time" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "list of errors returned",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Error" ],
+        "description" : "Adds an error",
+        "operationId" : "addError",
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Error"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Error created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      }
+    },
+    "/Error/errors/{errorId}" : {
+      "delete" : {
+        "tags" : [ "Error" ],
+        "description" : "Delete error with given id",
+        "operationId" : "deleteError",
+        "parameters" : [ {
+          "name" : "errorId",
+          "in" : "path",
+          "required" : true,
+          "description" : "error id",
+          "schema" : {
+            "type" : "integer",
+            "example" : 42
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "error removed"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/badRequest"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/unauthorized"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/notFound"
+          },
+          "405" : {
+            "$ref" : "#/components/responses/methodNotAllowed"
+          },
+          "500" : {
+            "$ref" : "#/components/responses/internalError"
+          }
+        }
+      }
+    }
+  },
+  "security" : [ {
+    "basicAuth" : [ ]
+  } ],
+  "components" : {
+    "securitySchemes" : {
+      "basicAuth" : {
+        "type" : "http",
+        "scheme" : "basic",
+        "description" : "For Stage environment use below credentials:<br>Username: <b>test</b><br>Password: <b>test123</b><br><br>"
+      }
+    },
+    "schemas" : {
+      "User" : {
+        "type" : "object",
+        "description" : "Represents User Entity",
+        "required" : [ "username", "password" ],
+        "properties" : {
+          "id" : {
+            "description" : "User Id",
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 11,
+            "readOnly" : true
+          },
+          "username" : {
+            "description" : "User username",
+            "type" : "string",
+            "example" : "adam"
+          },
+          "password" : {
+            "description" : "User password",
+            "type" : "string",
+            "example" : "Pa5$w0rd",
+            "writeOnly" : true
+          },
+          "role" : {
+            "description" : "User role",
+            "type" : "string",
+            "enum" : [ "USER", "ADMIN" ],
+            "example" : "USER"
+          }
+        }
+      },
+      "Movie" : {
+        "type" : "object",
+        "required" : [ "title", "year", "duration" ],
+        "properties" : {
+          "id" : {
+            "description" : "Movie Id",
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 987,
+            "readOnly" : true
+          },
+          "title" : {
+            "type" : "string",
+            "example" : "Titanic"
+          },
+          "year" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1997
+          },
+          "duration" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 194
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "Great movie"
+          },
+          "genres" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Genre"
+            }
+          },
+          "rating" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 8
+          },
+          "watchPriority" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 0
+          },
+          "review" : {
+            "type" : "string",
+            "example" : "Titanic"
+          },
+          "plotSummary" : {
+            "type" : "string",
+            "example" : "Women lives 100 years, man dies before his 18 ;)"
+          },
+          "reviewDate" : {
+            "type" : "string",
+            "format" : "yyyy-mm-dd",
+            "example" : "2019-02-03"
+          }
+        }
+      },
+      "Genre" : {
+        "type" : "object",
+        "required" : [ "name" ],
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 789
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Drama"
+          }
+        }
+      },
+      "Error" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 987
+          },
+          "errorId" : {
+            "type" : "string",
+            "example" : "error-1234"
+          },
+          "appId" : {
+            "type" : "string",
+            "example" : "app-1234"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "client issue"
+          },
+          "details" : {
+            "type" : "string",
+            "example" : "unexpected client error"
+          },
+          "status" : {
+            "type" : "string",
+            "example" : "status"
+          },
+          "url" : {
+            "type" : "string",
+            "example" : "Movies/-1"
+          },
+          "stack" : {
+            "type" : "string",
+            "example" : "stack trace"
+          },
+          "time" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 1541111111
+          }
+        }
+      },
+      "ErrorResponse" : {
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "description" : "error code",
+            "type" : "string",
+            "example" : "REQ001"
+          },
+          "title" : {
+            "description" : "error title",
+            "type" : "string",
+            "example" : "BAD REQUEST"
+          },
+          "message" : {
+            "description" : "error message",
+            "type" : "string",
+            "example" : "Missing field title"
+          }
+        }
+      }
+    },
+    "examples" : {
+      "BadRequestErrorResponse" : {
+        "value" : {
+          "code" : "BAD_REQUEST",
+          "title" : "Bad Request",
+          "message" : "Bad Request"
+        }
+      },
+      "NotAuthorizedErrorResponse" : {
+        "value" : {
+          "code" : "NOT_AUTHORIZED",
+          "title" : "Not Authorized",
+          "message" : "Not Authorized"
+        }
+      },
+      "NotFoundErrorResponse" : {
+        "value" : {
+          "code" : "NOT_Found",
+          "title" : "Not Found",
+          "message" : "Not Found"
+        }
+      },
+      "MethodNotAllowedErrorResponse" : {
+        "value" : {
+          "code" : "METHOD_NOT_ALLOWED",
+          "title" : "Not Found",
+          "message" : "Not Found"
+        }
+      },
+      "ConflictErrorResponse" : {
+        "value" : {
+          "code" : "Conflict",
+          "title" : "Not Found",
+          "message" : "Not Found"
+        }
+      },
+      "InternalErrorResponse" : {
+        "value" : {
+          "code" : "INTERNAL_ERROR",
+          "title" : "Not Found",
+          "message" : "Not Found"
+        }
+      }
+    },
+    "responses" : {
+      "badRequest" : {
+        "description" : "The request could not be understood by the server due to malformed syntax\n",
+        "content" : {
+          "application/json" : {
+            "examples" : {
+              "BadRequestErrorResponse" : {
+                "$ref" : "#/components/examples/BadRequestErrorResponse"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "unauthorized" : {
+        "description" : "User is not authorised",
+        "content" : {
+          "application/json" : {
+            "examples" : {
+              "BadRequestErrorResponse" : {
+                "$ref" : "#/components/examples/NotAuthorizedErrorResponse"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "notFound" : {
+        "description" : "Server could not found requested resource",
+        "content" : {
+          "application/json" : {
+            "examples" : {
+              "BadRequestErrorResponse" : {
+                "$ref" : "#/components/examples/NotFoundErrorResponse"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "methodNotAllowed" : {
+        "description" : "Method is not supported for given resource",
+        "content" : {
+          "application/json" : {
+            "examples" : {
+              "BadRequestErrorResponse" : {
+                "$ref" : "#/components/examples/MethodNotAllowedErrorResponse"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "conflict" : {
+        "description" : "Data to be created already exists.\n",
+        "content" : {
+          "application/json" : {
+            "examples" : {
+              "BadRequestErrorResponse" : {
+                "$ref" : "#/components/examples/ConflictErrorResponse"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "internalError" : {
+        "description" : "The server encountered an unexpected condition which prevented it from fulfilling the request.\n",
+        "content" : {
+          "application/json" : {
+            "examples" : {
+              "BadRequestErrorResponse" : {
+                "$ref" : "#/components/examples/InternalErrorResponse"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    }
+  }
+}
