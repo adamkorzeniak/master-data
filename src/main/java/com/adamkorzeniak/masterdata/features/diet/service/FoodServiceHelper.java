@@ -5,6 +5,8 @@ import com.adamkorzeniak.masterdata.features.diet.model.dto.FoodUnitDTO;
 
 public class FoodServiceHelper {
 
+	private FoodServiceHelper() {}
+	
 	/**
 	 * Converts FoodUnit DTO to Entity.
 	 * 

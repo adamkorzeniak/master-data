@@ -30,6 +30,8 @@ import com.adamkorzeniak.masterdata.features.movie.service.MovieServiceHelper;
 @RequestMapping("/v0/Movie")
 public class MovieController {
 
+	private static final String MOVIE_RESOURCE_NAME = "Movie";
+	
 	@Autowired
 	private MovieService movieService;
 
@@ -64,7 +66,7 @@ public class MovieController {
 	public ResponseEntity<MovieDTO> findMovieById(@PathVariable("movieId") Long movieId) {
 		Optional<Movie> result = movieService.findMovieById(movieId);
 		if (!result.isPresent()) {
-			throw new NotFoundException("Movie", movieId);
+			throw new NotFoundException(MOVIE_RESOURCE_NAME, movieId);
 		}
 		MovieDTO dto = MovieServiceHelper.convertToDTO(result.get());
 		return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -102,7 +104,7 @@ public class MovieController {
 	public ResponseEntity<MovieDTO> updateMovie(@RequestBody @Valid MovieDTO dto, @PathVariable Long movieId) {
 		boolean exists = movieService.isMovieExist(movieId);
 		if (!exists) {
-			throw new NotFoundException("Movie", movieId);
+			throw new NotFoundException(MOVIE_RESOURCE_NAME, movieId);
 		}
 		Movie movie = MovieServiceHelper.convertToEntity(dto);
 		Movie newMovie = movieService.updateMovie(movieId, movie);
@@ -123,7 +125,7 @@ public class MovieController {
 	public ResponseEntity<Void> deleteMovie(@PathVariable Long movieId) {
 		boolean exists = movieService.isMovieExist(movieId);
 		if (!exists) {
-			throw new NotFoundException("Movie", movieId);
+			throw new NotFoundException(MOVIE_RESOURCE_NAME, movieId);
 		}
 		movieService.deleteMovie(movieId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

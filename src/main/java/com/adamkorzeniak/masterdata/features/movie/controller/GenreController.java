@@ -33,6 +33,7 @@ import com.adamkorzeniak.masterdata.features.movie.service.GenreServiceHelper;
 @RequestMapping("/v0/Movie")
 public class GenreController {
 
+	private static final String GENRE_RESOURCE_NAME = "Genre";
 	private static final String MERGE_OPERATION = "merge";
 
 	@Autowired
@@ -66,7 +67,7 @@ public class GenreController {
 	public ResponseEntity<GenreDTO> findGenreById(@PathVariable("genreId") Long genreId) {
 		Optional<Genre> result = genreService.findGenreById(genreId);
 		if (!result.isPresent()) {
-			throw new NotFoundException("Genre", genreId);
+			throw new NotFoundException(GENRE_RESOURCE_NAME, genreId);
 		}
 		GenreDTO dto = GenreServiceHelper.convertToDTO(result.get());
 		return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -93,7 +94,7 @@ public class GenreController {
 	public ResponseEntity<GenreDTO> updateGenre(@RequestBody @Valid GenreDTO dto, @PathVariable Long genreId) {
 		boolean exists = genreService.isGenreExist(genreId);
 		if (!exists) {
-			throw new NotFoundException("Genre", genreId);
+			throw new NotFoundException(GENRE_RESOURCE_NAME, genreId);
 		}
 		Genre genre = GenreServiceHelper.convertToEntity(dto);
 		Genre newGenre = genreService.updateGenre(genreId, genre);
@@ -109,7 +110,7 @@ public class GenreController {
 	public ResponseEntity<Void> deleteGenre(@PathVariable Long genreId) {
 		boolean exists = genreService.isGenreExist(genreId);
 		if (!exists) {
-			throw new NotFoundException("Genre", genreId);
+			throw new NotFoundException(GENRE_RESOURCE_NAME, genreId);
 		}
 		genreService.deleteGenre(genreId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -118,15 +119,15 @@ public class GenreController {
 	@PatchMapping("/genres/{genreId}")
 	public ResponseEntity<GenreDTO> mergeGenres(@RequestBody GenrePatchDTO mergedto, @PathVariable Long genreId) {
 		if (!MERGE_OPERATION.equals(mergedto.getOp())) {
-			throw new PatchOperationNotSupportedException(mergedto.getOp(), "Genre");
+			throw new PatchOperationNotSupportedException(mergedto.getOp(), GENRE_RESOURCE_NAME);
 		}
 		boolean oldExists = genreService.isGenreExist(genreId);
 		boolean targetExists = genreService.isGenreExist(mergedto.getTargetGenreId());
 		if (!oldExists) {
-			throw new NotFoundException("Genre", genreId);
+			throw new NotFoundException(GENRE_RESOURCE_NAME, genreId);
 		}
 		if (!targetExists) {
-			throw new NotFoundException("Genre", mergedto.getTargetGenreId());
+			throw new NotFoundException(GENRE_RESOURCE_NAME, mergedto.getTargetGenreId());
 		}
 		Genre result = genreService.mergeGenres(genreId, mergedto.getTargetGenreId());
 		genreService.deleteGenre(genreId);

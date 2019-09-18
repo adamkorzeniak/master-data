@@ -9,6 +9,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.adamkorzeniak.masterdata.features.movie.model.dto.GenreDTO;
@@ -17,13 +19,12 @@ import com.adamkorzeniak.masterdata.features.movie.model.dto.MovieDTO;
 @Service
 public class FilmwebServiceImpl implements FilmwebService {
 
-	private static int count = 0;
+	private static final String FILMWEB_BASE_URL = "https://www.filmweb.pl";
 
-	private final static String FILMWEB_BASE_URL = "https://www.filmweb.pl";
+	private Logger logger = LoggerFactory.getLogger(FilmwebServiceImpl.class);
 
 	@Override
 	public MovieDTO getMovieDetails(String movieUrl) {
-
 		Document doc = retrieveDocument(movieUrl);
 		if (doc == null) {
 			return null;
@@ -31,12 +32,6 @@ public class FilmwebServiceImpl implements FilmwebService {
 
 		MovieDTO movie = new MovieDTO();
 		movie.setTitle(retrieveTitle(doc));
-
-		///
-		count++;
-		System.out.println(count);
-		System.out.println(movie.getTitle());
-		///
 
 		movie.setOriginalTitle(retrieveOriginalTitle(doc));
 		movie.setYear(retrieveYear(doc));
@@ -58,7 +53,7 @@ public class FilmwebServiceImpl implements FilmwebService {
 		try {
 			doc = Jsoup.connect(movieUrl).get();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("context", e);
 		}
 		return doc;
 	}
@@ -76,7 +71,7 @@ public class FilmwebServiceImpl implements FilmwebService {
 		if (originalTitleElement == null) {
 			return retrieveTitle(doc);
 		}
-		return originalTitleElement.text().trim().toString();
+		return originalTitleElement.text().trim();
 	}
 
 	private Integer retrieveYear(Document doc) {
@@ -85,10 +80,9 @@ public class FilmwebServiceImpl implements FilmwebService {
 			return null;
 		}
 		String yearString = yearElement.text();
-		yearString = yearString.substring(yearString.indexOf("(") + 1);
-		yearString = yearString.substring(0, yearString.indexOf(")"));
-		Integer year = Integer.parseInt(yearString);
-		return year;
+		yearString = yearString.substring(yearString.indexOf('(') + 1);
+		yearString = yearString.substring(0, yearString.indexOf(')'));
+		return Integer.parseInt(yearString);
 	}
 
 	private Integer retrieveDuration(Document doc) {
@@ -100,8 +94,7 @@ public class FilmwebServiceImpl implements FilmwebService {
 				.replace("PT", "")
 				.replace("M", "")
 				.trim();
-		Integer duration = Integer.parseInt(durationString);
-		return duration;
+		return Integer.parseInt(durationString);
 	}
 
 	private String retrieveDescription(Document doc) {
@@ -127,7 +120,7 @@ public class FilmwebServiceImpl implements FilmwebService {
 
 	private String retrieveProductionCountries(Document doc) {
 		Elements productionElements = doc.select(".filmInfo th:containsOwn(produkcja)").next().select("li a");
-		if (productionElements == null || productionElements.size() == 0) {
+		if (productionElements == null || productionElements.isEmpty()) {
 			return null;
 		}
 		return productionElements.stream()
@@ -137,7 +130,7 @@ public class FilmwebServiceImpl implements FilmwebService {
 
 	private List<GenreDTO> retrieveGenres(Document doc) {
 		Elements genreElements = doc.select(".filmInfo .genresList a");
-		if (genreElements == null || genreElements.size() == 0) {
+		if (genreElements == null || genreElements.isEmpty()) {
 			return new ArrayList<>();
 		}
 		return genreElements.stream()
@@ -151,7 +144,7 @@ public class FilmwebServiceImpl implements FilmwebService {
 	
 	private String retrieveDirectors(Document doc) {
 		Elements directorElements = doc.select(".filmInfo li[itemprop$=director]");
-		if (directorElements == null || directorElements.size() == 0) {
+		if (directorElements == null || directorElements.isEmpty()) {
 			return null;
 		}
 		return directorElements.stream()
@@ -200,7 +193,7 @@ public class FilmwebServiceImpl implements FilmwebService {
 			try {
 				doc = Jsoup.connect(url + page).get();
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("context", e);
 			}
 
 			if (doc == null) {
@@ -209,7 +202,7 @@ public class FilmwebServiceImpl implements FilmwebService {
 
 			Elements elements = doc.select("li.hits__item .filmPreview__link");
 
-			if (elements.size() < 1) {
+			if (elements.isEmpty()) {
 				return movieUrls;
 			}
 

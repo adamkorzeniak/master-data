@@ -7,6 +7,8 @@ import com.adamkorzeniak.masterdata.features.user.model.dto.UserResponse;
 
 public class UserServiceHelper {
 	
+	private UserServiceHelper() {}
+	
 	public static UserResponse convertToUserResponse(User user) {
 		UserResponse response = new UserResponse();
 		response.setId(user.getId());

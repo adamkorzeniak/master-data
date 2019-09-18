@@ -38,8 +38,6 @@ public class FilmwebController {
 				genres.add(dto.getName());
 			}
 		}
-		System.out.println(genres);
-		System.out.println(genres.size());
 		return new ResponseEntity<>(movieDTOs, HttpStatus.OK);
 	}
 }

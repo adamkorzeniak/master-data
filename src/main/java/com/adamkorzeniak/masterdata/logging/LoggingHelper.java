@@ -6,6 +6,8 @@ import org.jboss.logging.MDC;
 
 public class LoggingHelper {
 
+	private LoggingHelper() {}
+
 	/**
 	 * 
 	 * Generates uuid
