@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.features.account.model;
+package com.adamkorzeniak.masterdata.features.user.model;
 
 public enum Role {
 

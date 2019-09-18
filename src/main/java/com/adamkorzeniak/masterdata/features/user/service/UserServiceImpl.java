@@ -1,13 +1,15 @@
-package com.adamkorzeniak.masterdata.features.account.service;
+package com.adamkorzeniak.masterdata.features.user.service;
+
+import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.adamkorzeniak.masterdata.exception.exceptions.DuplicateUserException;
-import com.adamkorzeniak.masterdata.features.account.model.Role;
-import com.adamkorzeniak.masterdata.features.account.model.User;
-import com.adamkorzeniak.masterdata.features.account.repository.UserRepository;
+import com.adamkorzeniak.masterdata.features.user.model.Role;
+import com.adamkorzeniak.masterdata.features.user.model.User;
+import com.adamkorzeniak.masterdata.features.user.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -17,10 +19,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private PasswordEncoder encoder;
-
+	
 	@Override
 	public User register(User user) {
-
 		if (user == null) {
 			throw new IllegalArgumentException();
 		}
@@ -50,6 +51,11 @@ public class UserServiceImpl implements UserService {
 		if (user != null) {
 			throw new DuplicateUserException(username);
 		}
+	}
+
+	@Override
+	public User getUser(Principal user) {
+		return getUser(user.getName());
 	}
 
 }

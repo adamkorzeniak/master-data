@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.security;
+package com.adamkorzeniak.masterdata.features.user.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,10 +8,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.features.account.model.Role;
-import com.adamkorzeniak.masterdata.features.account.model.User;
-import com.adamkorzeniak.masterdata.features.account.model.UserDTO;
-import com.adamkorzeniak.masterdata.features.account.service.UserServiceHelper;
+import com.adamkorzeniak.masterdata.features.user.model.Role;
+import com.adamkorzeniak.masterdata.features.user.model.User;
+import com.adamkorzeniak.masterdata.features.user.model.dto.UserRequest;
+import com.adamkorzeniak.masterdata.features.user.model.dto.UserResponse;
+import com.adamkorzeniak.masterdata.features.user.service.UserServiceHelper;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
@@ -20,21 +21,20 @@ public class UserServiceHelperTest {
 	
 	private static final Long ID = 17L;
 	private static final String USERNAME = "adam";
-	private static final String PASSWORD = "randomized";
+	private static final String PASSWORD = "password";
 	private static final Role ROLE = Role.ADMIN;
 
 	@Test
 	public void ConvertUserDtoToEntity_NoIssuesExpected_ReturnsConvertedEntity() throws Exception {
-		UserDTO dto = new UserDTO();
-		dto.setId(ID);
-		dto.setUsername(USERNAME);
-		dto.setPassword(PASSWORD);
-		dto.setRole(ROLE);
+		UserRequest request = new UserRequest();
+		request.setUsername(USERNAME);
+		request.setPassword(PASSWORD);
+		request.setRole(ROLE.toString());
 		
-		User user = UserServiceHelper.convertToEntity(dto);
+		User user = UserServiceHelper.convertFromUserRequest(request);
 		
 		assertThat(user).isNotNull();
-		assertThat(user.getId()).isEqualTo(ID);
+		assertThat(user.getId()).isNull();
 		assertThat(user.getUsername()).isEqualTo(USERNAME);
 		assertThat(user.getPassword()).isEqualTo(PASSWORD);
 		assertThat(user.getRole()).isEqualTo(ROLE);
@@ -48,12 +48,11 @@ public class UserServiceHelperTest {
 		entity.setPassword(PASSWORD);
 		entity.setRole(ROLE);
 		
-		UserDTO dto = UserServiceHelper.convertToDTO(entity);
+		UserResponse dto = UserServiceHelper.convertToUserResponse(entity);
 		
 		assertThat(dto).isNotNull();
 		assertThat(dto.getId()).isEqualTo(ID);
 		assertThat(dto.getUsername()).isEqualTo(USERNAME);
-		assertThat(dto.getPassword()).isNull();
-		assertThat(dto.getRole()).isEqualTo(ROLE);
+		assertThat(dto.getRole()).isEqualTo(ROLE.toString());
 	}
 }

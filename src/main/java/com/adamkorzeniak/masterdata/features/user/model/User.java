@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.features.account.model;
+package com.adamkorzeniak.masterdata.features.user.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +22,6 @@ public class User {
 	private Long id;
 
 	@NotEmpty
-	@NotNull
 	private String username;
 
 	@NotEmpty

@@ -23,7 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private static final String[] notSecuredResources = new String[] {
-			"v0/register"
+			"/v0/User/register"
 	};
 
 	@Autowired

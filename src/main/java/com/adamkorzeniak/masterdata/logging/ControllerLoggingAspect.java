@@ -60,6 +60,6 @@ public class ControllerLoggingAspect {
 	}
 
 	private String buildResponseSendMessage(String uuid) {
-		return "*****Response send*****%nCorrelationId=" + uuid;
+		return "*****Response send*****\nCorrelationId=" + uuid;
 	}
 }
