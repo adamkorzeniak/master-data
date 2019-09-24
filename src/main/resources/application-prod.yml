@@ -9,10 +9,8 @@ spring:
     hibernate.ddl-auto: validate
     database-platform: org.hibernate.dialect.MySQL5Dialect
 
-server.port: 9876
-
-
 server:
+  port: 9876
   ssl:
     key-store: /home/pi/server/certs/keystore.p12
     key-store-password: ENC(h/DOzvvwNTGLp1JxCMRuLI+K/Cv6PMPZAQnIqFHSJOw=)

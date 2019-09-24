@@ -1,7 +1,7 @@
 package com.adamkorzeniak.masterdata.error;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -69,7 +69,7 @@ public class ErrorControllerTest {
 		error2.setAppId("master-data-web");
 		List<Error> errors = Arrays.asList(error1, error2);
 
-		doReturn(errors).when(errorService).searchErrors(params);
+		when(errorService.searchErrors(params)).thenReturn(errors);
 
 		mockMvc.perform(get(baseErrorsPath).param("search-name", "client"))
 				.andExpect(status().isOk())
@@ -91,7 +91,7 @@ public class ErrorControllerTest {
 		params.put("search-name", "client");
 		List<Error> errors = new ArrayList<>();
 
-		doReturn(errors).when(errorService).searchErrors(params);
+		when(errorService.searchErrors(params)).thenReturn(errors);
 
 		mockMvc.perform(get(baseErrorsPath).param("search-name", "client"))
 				.andExpect(status().isNoContent());
@@ -110,7 +110,7 @@ public class ErrorControllerTest {
 		
 	    String requestJson = convertToJson(postError);
 
-		doReturn(mockError).when(errorService).addError(ArgumentMatchers.any());
+		when(errorService.addError(ArgumentMatchers.any())).thenReturn(mockError);
 
 		mockMvc.perform(post(baseErrorsPath).contentType(MediaType.APPLICATION_JSON)
 				.content(requestJson))
@@ -144,7 +144,7 @@ public class ErrorControllerTest {
 	public void DeleteError_CorrectIdProvided_DeletedError() throws Exception {
 		Long id = 15L;
 
-		doReturn(true).when(errorService).isErrorExist(id);
+		when(errorService.isErrorExist(id)).thenReturn(true);
 
 		mockMvc.perform(delete(baseErrorsPath + "/" + id)).andExpect(status().isNoContent());
 	}
@@ -153,7 +153,7 @@ public class ErrorControllerTest {
 	public void DeleteError_WrongIdProvided_ReturnsNotFoundError() throws Exception {
 		Long id = 15L;
 
-		doReturn(false).when(errorService).isErrorExist(id);
+		when(errorService.isErrorExist(id)).thenReturn(false);
 
 		mockMvc.perform(delete(baseErrorsPath + "/" + id)).andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))

@@ -1,7 +1,7 @@
 package com.adamkorzeniak.masterdata.features.user.controller;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -69,9 +69,8 @@ public class UserControllerTest {
 		
 	    String requestJson = convertToJson(postUser);
 
-		doReturn(mockUser).when(userService).register(ArgumentMatchers.any());
-		doReturn(mockUser).when(userService).register(ArgumentMatchers.any());
-
+		when(userService.register(ArgumentMatchers.any())).thenReturn(mockUser);
+		
 		mockMvc.perform(post(BASE_PATH + REGISTER_PATH).contentType(MediaType.APPLICATION_JSON)
 				.content(requestJson))
 				.andExpect(status().isCreated())
@@ -92,8 +91,8 @@ public class UserControllerTest {
 		mockUser.setPassword(PASSWORD);
 		mockUser.setRole(ROLE);
 		
-		doReturn(USERNAME).when(principal).getName();
-		doReturn(mockUser).when(userService).getUser(ArgumentMatchers.any(Principal.class));
+		when(principal.getName()).thenReturn(USERNAME);
+		when(userService.getUser(ArgumentMatchers.any(Principal.class))).thenReturn(mockUser);
 
 		mockMvc.perform(get(BASE_PATH + GET_ME_PATH))
 				.andExpect(status().isOk())

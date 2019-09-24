@@ -1,6 +1,6 @@
 package com.adamkorzeniak.masterdata;
 
-import static io.restassured.module.mockmvc.RestAssuredMockMvc.when;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +20,15 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 @SpringBootTest
 public class IntegrationTest {
 	
+	private static final String GET_ME_PATH = "/v0/User/me";
+	private static final String REGISTER_USER_PATH = "/v0/User/register";
+	private static final String DUMMY_PATH = "/v0/dummy";
+
+	private static final String CONTENT_TYPE_PARAM_NAME = "Content-Type";
+	private static final String CONTENT_TYPE_PARAM_INVALID_VALUE = "application/xml";
+	private static final String ACCEPT_PARAM_NAME = "Accept";
+	private static final String ACCEPT_PARAM_INVALID_VALUE = "Accept";
+	
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 	
@@ -32,7 +41,7 @@ public class IntegrationTest {
 	public void RequestSend_NotFoundPath_ReturnsNotFoundErrorResponse() throws Exception {
 		
 		when()
-			.get("/v0/dummy")
+			.get(DUMMY_PATH)
 		.then()
 			.statusCode(404); 
 	}
@@ -41,9 +50,19 @@ public class IntegrationTest {
 	public void RequestSend_MethodNotAllowed_ReturnsNotAllowedErrorResponse() throws Exception {
 		
 		when()
-			.get("/v0/User/register")
+			.get(REGISTER_USER_PATH)
 		.then()
 			.statusCode(405); 
 	}
-	
+
+	@Test
+	public void RequestSend_AcceptHeaderInvalid_ReturnsErrorResponse() throws Exception {
+
+		given()
+			.header(ACCEPT_PARAM_NAME, ACCEPT_PARAM_INVALID_VALUE)
+		.when()
+			.get(GET_ME_PATH)
+		.then()
+			.statusCode(406); 
+	}
 }

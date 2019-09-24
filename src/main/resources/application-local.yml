@@ -9,47 +9,10 @@ spring:
     hibernate.ddl-auto: validate
     database-platform: org.hibernate.dialect.MySQL5Dialect
 
-server.port: 8443
-
 server:
+  port: 8443
   ssl:
     key-store: classpath:certs/local-keystore.p12
     key-store-password: dummypassword
     keyStoreType: PKCS12
     key-alias: tomcat
-
-logging:
-  level:
-    com.adamkorzeniak: DEBUG
-    
-params:
-  movie:
-    movies:
-      MATCH: title
-      SEARCH: title,description,review,plotSummary
-      MIN: year,duration,rating,watchPriority
-      MAX: year,duration,rating,watchPriority
-      EXIST: rating,watchPriority,review,plotSummary
-      ORDER: title,year,duration,rating,watchPriority
-    genres:
-      MATCH: name
-      SEARCH: name
-      EXIST: name
-      ORDER: name
-  error:
-    errors:
-      MATCH: errorId,appId,name
-      SEARCH: errorId,appId,name,details,status,location
-      MIN: time
-      MAX: time
-      EXIST: details
-      ORDER: errorId,appId,name,time
-  diet:
-    products:
-      MATCH: name,baseUnit
-      SEARCH: name
-      MIN: calories,carbs,fats,proteins
-      MAX: calories,carbs,fats,proteins
-      EXIST: details
-      ORDER: name,calories,carbs,fats,proteins
-

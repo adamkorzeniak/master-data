@@ -1,7 +1,7 @@
 package com.adamkorzeniak.masterdata.movie;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -70,7 +70,7 @@ public class MovieControllerTest {
 		movie2.setTitle("Titanic");
 		List<Movie> movies = Arrays.asList(movie1, movie2);
 
-		doReturn(movies).when(movieService).searchMovies(params);
+		when(movieService.searchMovies(params)).thenReturn(movies);
 
 		mockMvc.perform(get(baseMoviesPath).param("min-year", "2000"))
 				.andExpect(status().isOk())
@@ -88,7 +88,7 @@ public class MovieControllerTest {
 		params.put("min-year", "2000");
 		List<Movie> movies = new ArrayList<>();
 
-		doReturn(movies).when(movieService).searchMovies(params);
+		when(movieService.searchMovies(params)).thenReturn(movies);
 
 		mockMvc.perform(get(baseMoviesPath).param("min-year", "2000"))
 				.andExpect(status().isNoContent());
@@ -102,7 +102,7 @@ public class MovieControllerTest {
 		mocked.setId(15L);
 		Optional<Movie> optional = Optional.of(mocked);
 
-		doReturn(optional).when(movieService).findMovieById(id);
+		when(movieService.findMovieById(id)).thenReturn(optional);
 
 		mockMvc.perform(get(baseMoviesPath + '/' + id)).andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -113,7 +113,8 @@ public class MovieControllerTest {
 	@Test
 	public void GetMovieById_WrongIdProvided_ReturnsNotFoundError() throws Exception {
 		Long id = 15L;
-		doReturn(Optional.empty()).when(movieService).findMovieById(id);
+
+		when(movieService.findMovieById(id)).thenReturn(Optional.empty());
 
 		mockMvc.perform(get(baseMoviesPath + '/' + id)).andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -135,7 +136,7 @@ public class MovieControllerTest {
 		
 	    String requestJson = convertToJson(postMovie);
 
-		doReturn(mockMovie).when(movieService).addMovie(ArgumentMatchers.any());
+		when(movieService.addMovie(ArgumentMatchers.any())).thenReturn(mockMovie);
 
 		mockMvc.perform(post(baseMoviesPath).contentType(MediaType.APPLICATION_JSON)
 				.content(requestJson))
@@ -181,8 +182,8 @@ public class MovieControllerTest {
 		
 	    String requestJson = convertToJson(movie);
 
-		doReturn(true).when(movieService).isMovieExist(id);
-		doReturn(mockMovie).when(movieService).updateMovie(ArgumentMatchers.anyLong(), ArgumentMatchers.any());
+		when(movieService.isMovieExist(id)).thenReturn(true);
+		when(movieService.updateMovie(ArgumentMatchers.anyLong(), ArgumentMatchers.any())).thenReturn(mockMovie);
 
 		mockMvc.perform(put(baseMoviesPath + "/" + id)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -205,7 +206,7 @@ public class MovieControllerTest {
 		movie.setYear(2000);
 	    String requestJson = convertToJson(movie);
 
-		doReturn(false).when(movieService).isMovieExist(id);
+		when(movieService.isMovieExist(id)).thenReturn(false);
 	    
 		mockMvc.perform(put(baseMoviesPath + "/" + id)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -222,7 +223,7 @@ public class MovieControllerTest {
 	public void DeleteMovie_CorrectIdProvided_DeletedMovie() throws Exception {
 		Long id = 15L;
 
-		doReturn(true).when(movieService).isMovieExist(id);
+		when(movieService.isMovieExist(id)).thenReturn(true);
 
 		mockMvc.perform(delete(baseMoviesPath + "/" + id)).andExpect(status().isNoContent());
 	}
@@ -231,7 +232,7 @@ public class MovieControllerTest {
 	public void DeleteMovie_WrongIdProvided_ReturnsNotFoundError() throws Exception {
 		Long id = 15L;
 
-		doReturn(false).when(movieService).isMovieExist(id);
+		when(movieService.isMovieExist(id)).thenReturn(false);
 
 		mockMvc.perform(delete(baseMoviesPath + "/" + id)).andExpect(status().isNotFound())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))

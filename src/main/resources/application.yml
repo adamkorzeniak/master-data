@@ -2,3 +2,40 @@ spring:
   profiles:
     active: local
     include: application-${spring.profiles.active}.yml
+
+logging:
+  level:
+    com.adamkorzeniak: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    
+params:
+  movie:
+    movies:
+      MATCH: title
+      SEARCH: title,description,review,plotSummary
+      MIN: year,duration,rating,watchPriority
+      MAX: year,duration,rating,watchPriority
+      EXIST: rating,watchPriority,review,plotSummary
+      ORDER: title,year,duration,rating,watchPriority
+    genres:
+      MATCH: name
+      SEARCH: name
+      EXIST: name
+      ORDER: name
+  error:
+    errors:
+      MATCH: errorId,appId,name
+      SEARCH: errorId,appId,name,details,status,location
+      MIN: time
+      MAX: time
+      EXIST: details
+      ORDER: errorId,appId,name,time
+  diet:
+    products:
+      MATCH: name,baseUnit
+      SEARCH: name
+      MIN: calories,carbs,fats,proteins
+      MAX: calories,carbs,fats,proteins
+      EXIST: details
+      ORDER: name,calories,carbs,fats,proteins
