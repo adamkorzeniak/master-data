@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -24,13 +25,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			"/v0/User/register"
 	};
 
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 	@Autowired
 	private UserDetailsService userDetailsService;
 
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService)
-			.passwordEncoder(new BCryptPasswordEncoder());
+			.passwordEncoder(passwordEncoder());
 	}
 
 	@Override
