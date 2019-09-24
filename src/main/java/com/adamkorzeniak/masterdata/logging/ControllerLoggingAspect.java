@@ -14,8 +14,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ControllerLoggingAspect {
 
+	private final HttpServletRequest request;
+	
 	@Autowired
-	private HttpServletRequest request;
+	public ControllerLoggingAspect(HttpServletRequest request) {
+		this.request = request;
+	}
 
 	private Logger logger = Logger.getLogger(ControllerLoggingAspect.class.getName());
 

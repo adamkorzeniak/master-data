@@ -21,11 +21,14 @@ public class MovieServiceImpl implements MovieService {
 
 	private static final String GENRE_MATCH_KEY = "genres";
 
+	private final MovieRepository movieRepository;
+	private final SearchFilterService searchFilterService;
+	
 	@Autowired
-	private MovieRepository movieRepository;
-
-	@Autowired
-	private SearchFilterService searchFilterService;
+	public MovieServiceImpl(MovieRepository movieRepository, SearchFilterService searchFilterService) {
+		this.movieRepository = movieRepository;
+		this.searchFilterService = searchFilterService;
+	}
 
 	@Override
 	public List<Movie> searchMovies(Map<String, String> map) {

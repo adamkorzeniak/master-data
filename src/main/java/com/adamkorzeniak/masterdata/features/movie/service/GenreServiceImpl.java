@@ -20,14 +20,18 @@ import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
 @Service
 public class GenreServiceImpl implements GenreService {
 
+	private final GenreRepository genreRepository;
+	private final MovieRepository movieRepository;
+	private final SearchFilterService searchFilterService;
+	
 	@Autowired
-	private GenreRepository genreRepository;
-
-	@Autowired
-	private MovieRepository movieRepository;
-
-	@Autowired
-	private SearchFilterService searchFilterService;
+	public GenreServiceImpl(GenreRepository genreRepository,
+			MovieRepository movieRepository,
+			SearchFilterService searchFilterService) {
+		this.genreRepository = genreRepository;
+		this.movieRepository = movieRepository;
+		this.searchFilterService = searchFilterService;
+	}
 
 	@Override
 	public List<Genre> searchGenres(Map<String, String> requestParams) {

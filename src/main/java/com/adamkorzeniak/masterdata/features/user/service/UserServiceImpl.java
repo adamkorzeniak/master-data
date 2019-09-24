@@ -14,11 +14,14 @@ import com.adamkorzeniak.masterdata.features.user.repository.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
 
+	private final UserRepository userRepository;
+	private final PasswordEncoder encoder;
+	
 	@Autowired
-	UserRepository userRepository;
-
-	@Autowired
-	private PasswordEncoder encoder;
+	public UserServiceImpl(UserRepository userRepository, PasswordEncoder encoder) {
+		this.userRepository = userRepository;
+		this.encoder = encoder;
+	}
 	
 	@Override
 	public User register(User user) {

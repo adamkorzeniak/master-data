@@ -19,8 +19,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 	private static final String ROLE_PREFIX = "ROLE_";
 	private static final String USERNAME_NOT_FOUND_MESSAGE = "Username not found";
 	
+	private final UserService userService;
+	
 	@Autowired
-	private UserService userService;
+	public CustomUserDetailsService(UserService userService) {
+		this.userService = userService;
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) {

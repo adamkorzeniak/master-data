@@ -26,8 +26,12 @@ public class UserController {
 	private static final String GET_ME_PATH = "/me";
 	private static final String REGISTER_PATH = "/register";
 
+	private final UserService userService;
+	
 	@Autowired
-	private UserService userService;
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 
 	@GetMapping(value = GET_ME_PATH)
 	public ResponseEntity<UserResponse> user(Principal principal) {

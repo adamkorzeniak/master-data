@@ -21,8 +21,12 @@ import com.adamkorzeniak.masterdata.features.movie.model.dto.MovieDTO;
 @RequestMapping("/v0/Movie")
 public class FilmwebController {
 
+	private final FilmwebService filmwebService;
+	
 	@Autowired
-	private FilmwebService filmwebService;
+	public FilmwebController(FilmwebService filmwebService) {
+		this.filmwebService = filmwebService;
+	}
 
 	@GetMapping("/movies/filmweb/popular")
 	public ResponseEntity<List<MovieDTO>> retrieveMoviesFromFilmweb(@RequestParam int count) {

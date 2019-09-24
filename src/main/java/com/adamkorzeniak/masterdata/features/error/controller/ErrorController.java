@@ -27,9 +27,13 @@ import com.adamkorzeniak.masterdata.features.error.service.ErrorServiceHelper;
 @RestController
 @RequestMapping("/v0/Error")
 public class ErrorController {
-
+	
+	private final ErrorService errorService;
+	
 	@Autowired
-	private ErrorService errorService;
+	public ErrorController(ErrorService errorService) {
+		this.errorService = errorService;
+	}
 
 	/**
 	 * Returns list of errors with 200 OK.

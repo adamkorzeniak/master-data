@@ -17,11 +17,14 @@ import com.adamkorzeniak.masterdata.features.diet.repository.FoodUnitRepository;
 @Service
 public class FoodUnitServiceImpl implements FoodUnitService {
 
+	private final FoodUnitRepository foodUnitRepository;
+	private final SearchFilterService searchFilterService;
+	
 	@Autowired
-	private FoodUnitRepository foodUnitRepository;
-
-	@Autowired
-	private SearchFilterService searchFilterService;
+	public FoodUnitServiceImpl(FoodUnitRepository foodUnitRepository, SearchFilterService searchFilterService) {
+		this.foodUnitRepository = foodUnitRepository;
+		this.searchFilterService = searchFilterService;
+	}
 
 	@Override
 	public List<FoodUnit> searchFoodUnits(Map<String, String> requestParams) {

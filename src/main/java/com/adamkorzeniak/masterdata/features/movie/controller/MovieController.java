@@ -32,8 +32,12 @@ public class MovieController {
 
 	private static final String MOVIE_RESOURCE_NAME = "Movie";
 	
+	private final MovieService movieService;
+	
 	@Autowired
-	private MovieService movieService;
+	public MovieController(MovieService movieService) {
+		this.movieService = movieService;
+	}
 
 	/**
 	 * Returns list of movies with 200 OK.

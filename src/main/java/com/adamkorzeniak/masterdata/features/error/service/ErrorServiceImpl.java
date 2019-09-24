@@ -16,11 +16,14 @@ import com.adamkorzeniak.masterdata.features.error.repository.ErrorRepository;
 @Service
 public class ErrorServiceImpl implements ErrorService {
 
+	private final ErrorRepository errorRepository;
+	private final SearchFilterService searchFilterService;
+	
 	@Autowired
-	private ErrorRepository errorRepository;
-
-	@Autowired
-	private SearchFilterService searchFilterService;
+	public ErrorServiceImpl(ErrorRepository errorRepository, SearchFilterService searchFilterService) {
+		this.errorRepository = errorRepository;
+		this.searchFilterService = searchFilterService;
+	}
 
 	@Override
 	public List<Error> searchErrors(Map<String, String> requestParams) {

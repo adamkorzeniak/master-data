@@ -36,8 +36,12 @@ public class GenreController {
 	private static final String GENRE_RESOURCE_NAME = "Genre";
 	private static final String MERGE_OPERATION = "merge";
 
+	private final GenreService genreService;
+	
 	@Autowired
-	private GenreService genreService;
+	public GenreController(GenreService genreService) {
+		this.genreService = genreService;
+	}
 
 	/**
 	 * 

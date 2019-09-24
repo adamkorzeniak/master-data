@@ -17,8 +17,12 @@ import com.adamkorzeniak.masterdata.exception.exceptions.SearchFilterParamNotSup
 @Service
 public class SearchFilterServiceImpl implements SearchFilterService {
 
+	public final Environment env;
+	
 	@Autowired
-	public Environment env;
+    public SearchFilterServiceImpl(Environment env){
+        this.env = env;
+    }
 
 	@Override
 	public List<SearchFilterParam> buildFilters(Map<String, String> params, String propertyString) {

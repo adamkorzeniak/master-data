@@ -17,11 +17,14 @@ import com.adamkorzeniak.masterdata.features.diet.repository.ProductRepository;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+	private final ProductRepository productRepository;
+	private final SearchFilterService searchFilterService;
+	
 	@Autowired
-	private ProductRepository productRepository;
-
-	@Autowired
-	private SearchFilterService searchFilterService;
+	public ProductServiceImpl(ProductRepository productRepository, SearchFilterService searchFilterService) {
+		this.productRepository = productRepository;
+		this.searchFilterService = searchFilterService;
+	}
 
 	@Override
 	public List<Product> searchProducts(Map<String, String> requestParams) {
