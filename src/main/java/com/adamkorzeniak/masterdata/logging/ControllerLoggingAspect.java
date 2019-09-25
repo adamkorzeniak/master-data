@@ -1,7 +1,5 @@
 package com.adamkorzeniak.masterdata.logging;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,18 +8,23 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.adamkorzeniak.masterdata.logging.model.Log;
+import com.adamkorzeniak.masterdata.logging.model.LogType;
+import com.adamkorzeniak.masterdata.logging.model.RequestReceivedLog;
+import com.adamkorzeniak.masterdata.logging.model.ResponseReturnedLog;
+
 @Aspect
 @Component
 public class ControllerLoggingAspect {
 
-	private final HttpServletRequest request;
+	private Logger logger = Logger.getLogger(ControllerLoggingAspect.class.getName());
+	private final LoggingService loggingService;
 	
 	@Autowired
-	public ControllerLoggingAspect(HttpServletRequest request) {
-		this.request = request;
+	public ControllerLoggingAspect(LoggingServiceImpl loggingService) {
+		this.loggingService = loggingService;
 	}
 
-	private Logger logger = Logger.getLogger(ControllerLoggingAspect.class.getName());
 
 	/**
 	 * 
@@ -31,10 +34,10 @@ public class ControllerLoggingAspect {
 	 */
 	@Before("PointcutDefinitions.controllers()")
 	public void enteringController(JoinPoint joinPoint) {
-		String uuid = LoggingHelper.generateCorrelationId();
-		String requestURL = getRequestURL();
-		String message = buildRequestReceivedMessage(uuid, requestURL);
-		logger.debug(message);
+		loggingService.initializeContext();
+		LogType logType = new RequestReceivedLog();
+		Log log = loggingService.generateLog(logType);
+		logger.debug(log.toJsonMessage());
 	}
 
 	/**
@@ -44,26 +47,10 @@ public class ControllerLoggingAspect {
 	 */
 	@AfterReturning("PointcutDefinitions.controllers()")
 	public void successfullyExitingController(JoinPoint joinPoint) {
-		String uuid = LoggingHelper.generateCorrelationId();
-		String message = buildResponseSendMessage(uuid);
-		LoggingHelper.clearCorellationId();
-		logger.debug(message);
-	}
-
-	private String getRequestURL() {
-		String requestURL = request.getRequestURI();
-		if (request.getQueryString() != null) {
-			requestURL += "?" + request.getQueryString();
-		}
-		return requestURL;
-	}
-
-	private String buildRequestReceivedMessage(String uuid, String requestURL) {
-		return String.format("*****Request received*****%nCorrelationId=%s%n%s:%s", uuid, request.getMethod(),
-				requestURL);
-	}
-
-	private String buildResponseSendMessage(String uuid) {
-		return "*****Response send*****\nCorrelationId=" + uuid;
+		int httpStatus = loggingService.getHTTPStatus();
+		LogType logType = new ResponseReturnedLog(httpStatus);
+		Log log = loggingService.generateLog(logType);
+		loggingService.clearContext();
+		logger.debug(log.toJsonMessage());
 	}
 }

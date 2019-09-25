@@ -5,14 +5,25 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.jboss.logging.Logger;
-import org.jboss.logging.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.adamkorzeniak.masterdata.logging.model.Log;
+import com.adamkorzeniak.masterdata.logging.model.LogType;
+import com.adamkorzeniak.masterdata.logging.model.MethodEnteredLog;
+import com.adamkorzeniak.masterdata.logging.model.MethodExitedLog;
 
 @Aspect
 @Component
 public class LogicLoggingAspect {
 
 	private Logger logger = Logger.getLogger(LogicLoggingAspect.class.getName());
+	private final LoggingService loggingService;
+	
+	@Autowired
+	public LogicLoggingAspect(LoggingServiceImpl loggingService) {
+		this.loggingService = loggingService;
+	}
 
 	/**
 	 * 
@@ -21,9 +32,10 @@ public class LogicLoggingAspect {
 	 */
 	@Before("PointcutDefinitions.logic()")
 	public void enteringMethod(JoinPoint joinPoint) {
-		String enteringMessage = buildEnteringMethodMessage(joinPoint);
-		logger.debug(enteringMessage);
-	}
+		String methodName = joinPoint.getSignature().toShortString();
+		LogType logType = new MethodEnteredLog(methodName);
+		Log log = loggingService.generateLog(logType);
+		logger.debug(log.toJsonMessage());	}
 
 	/**
 	 * 
@@ -32,18 +44,9 @@ public class LogicLoggingAspect {
 	 */
 	@After("PointcutDefinitions.logic()")
 	public void exitingMethod(JoinPoint joinPoint) {
-		String exitingMessage = buildExitingMethodMessage(joinPoint);
-		logger.debug(exitingMessage);
+		String methodName = joinPoint.getSignature().toShortString();
+		LogType logType = new MethodExitedLog(methodName);
+		Log log = loggingService.generateLog(logType);
+		logger.debug(log.toJsonMessage());
 	}
-
-	private String buildEnteringMethodMessage(JoinPoint joinPoint) {
-		String method = joinPoint.getSignature().toShortString();
-		return "*****Entering method*****\nMethodName=" + method + "\nCorrelationId=" + MDC.get("correlationId");
-	}
-
-	private String buildExitingMethodMessage(JoinPoint joinPoint) {
-		String method = joinPoint.getSignature().toShortString();
-		return "*****Exiting method*****\nMethodName=" + method + "\nCorrelationId=" + MDC.get("correlationId");
-	}
-
 }

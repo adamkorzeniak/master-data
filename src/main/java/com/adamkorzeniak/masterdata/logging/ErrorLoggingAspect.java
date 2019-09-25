@@ -1,22 +1,33 @@
 package com.adamkorzeniak.masterdata.logging;
 
-import java.util.StringJoiner;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.jboss.logging.Logger;
-import org.jboss.logging.MDC;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+
+import com.adamkorzeniak.masterdata.logging.model.ErrorOccuredLog;
+import com.adamkorzeniak.masterdata.logging.model.ErrorResponseLog;
+import com.adamkorzeniak.masterdata.logging.model.Log;
+import com.adamkorzeniak.masterdata.logging.model.LogType;
 
 @Aspect
 @Component
 public class ErrorLoggingAspect {
 
 	private Logger logger = Logger.getLogger(ErrorLoggingAspect.class.getName());
+	private final LoggingService loggingService;
+	
+	@Autowired
+	public ErrorLoggingAspect(LoggingServiceImpl loggingService) {
+		this.loggingService = loggingService;
+	}
 
 	/**
 	 * 
@@ -25,9 +36,11 @@ public class ErrorLoggingAspect {
 	 */
 	@AfterReturning(pointcut = "PointcutDefinitions.exceptionHandlers()", returning = "errorResult")
 	public void successfullyExitingController(JoinPoint joinPoint, ResponseEntity<Object> errorResult) {
-		String errorMessage = buildErrorReturnedMessage(errorResult);
-		LoggingHelper.clearCorellationId();
-		logger.debug(errorMessage);
+		int httpStatus = loggingService.getHTTPStatus();
+		LogType logType = new ErrorResponseLog(httpStatus);
+		Log log = loggingService.generateLog(logType);
+		loggingService.clearContext();
+		logger.debug(log.toJsonMessage());
 	}
 
 	/**
@@ -37,26 +50,14 @@ public class ErrorLoggingAspect {
 	 */
 	@AfterThrowing(pointcut = "PointcutDefinitions.custom()", throwing = "error")
 	public void exitingMethodWithError(JoinPoint joinPoint, Throwable error) {
-		String errorString = buildErrorUnhandledMessage(joinPoint, error);
-		logger.debug(errorString);
-	}
-
-	private String buildErrorReturnedMessage(ResponseEntity<Object> responseEntity) {
-		String errorMessagePrefix = "*****Error Response send*****\nCorrelationId=" + MDC.get("correlationId") + "\n";
-		Object body = responseEntity.getBody();
-		HttpStatus status = responseEntity.getStatusCode();
-		return errorMessagePrefix + "HTTP Status: " + status + "\nResponse: " + body;
-	}
-
-	private String buildErrorUnhandledMessage(JoinPoint joinPoint, Throwable error) {
-		String method = joinPoint.getSignature().toShortString();
-		StringJoiner joiner = new StringJoiner("\n\t", "\n>>>>>Exception occurred<<<<<\n\t", "");
+		String methodName = joinPoint.getSignature().toShortString();
+		List<Throwable> errors = new ArrayList<>();
 		while (error != null) {
-			joiner.add(error.toString());
+			errors.add(error);
 			error = error.getCause();
 		}
-		String errorString = joiner.toString();
-		return "*****Exiting method with error*****\nMethodName=" + method + "\nCorrelationId="
-				+ MDC.get("correlationId") + errorString;
+		LogType logType = new ErrorOccuredLog(methodName, errors);
+		Log log = loggingService.generateLog(logType);
+		logger.debug(log.toJsonMessage());
 	}
 }
