@@ -20,6 +20,7 @@ import com.adamkorzeniak.masterdata.exception.exceptions.FieldFilterNotSupported
 import com.adamkorzeniak.masterdata.exception.exceptions.FunctionUnsupportedValueMessageNotDefinedException;
 import com.adamkorzeniak.masterdata.exception.exceptions.InvalidQueryParamException;
 import com.adamkorzeniak.masterdata.exception.exceptions.InvalidQueryParamValueException;
+import com.adamkorzeniak.masterdata.exception.exceptions.MetadataResourceException;
 import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
 import com.adamkorzeniak.masterdata.exception.exceptions.PatchOperationNotSupportedException;
 import com.adamkorzeniak.masterdata.exception.exceptions.SearchFilterParamNotSupportedException;
@@ -67,6 +68,8 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 
 	private static final String INTERNAL_SERVER_ERROR_CODE = "ERR000";
 	private static final String INTERNAL_SERVER_ERROR_TITLE = "Unexpected Internal Server Error";
+	private static final String METADATA_RESOURCE_ERROR_CODE = "ERR001";
+	private static final String METADATA_RESOURCE_ERROR_TITLE = "Metadata Resource Failure";
 
 	private static final String ERROR_UNSUPPORTED_FUNCTION_MESSAGE_CODE = "ERR001";
 	private static final String ERROR_UNSUPPORTED_FUNCTION_MESSAGE_TITLE = "Function Unsupported Value Message Not Defined";
@@ -169,6 +172,14 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 	protected ResponseEntity<Object> searchFilterParamsNotInitialized(Exception exc, WebRequest request) {
 		ExceptionResponse bodyOfResponse = new ExceptionResponse(ERROR_SEARCH_PARAMS_NOT_INITIALIZED_CODE,
 				ERROR_SEARCH_PARAMS_NOT_INITIALIZED_TITLE, exc.getMessage());
+		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
+				request);
+	}
+
+	@ExceptionHandler(value = { MetadataResourceException.class })
+	protected ResponseEntity<Object> metadataResourceException(Exception exc, WebRequest request) {
+		ExceptionResponse bodyOfResponse = new ExceptionResponse(METADATA_RESOURCE_ERROR_CODE,
+				METADATA_RESOURCE_ERROR_TITLE, exc.getMessage());
 		return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
 				request);
 	}
