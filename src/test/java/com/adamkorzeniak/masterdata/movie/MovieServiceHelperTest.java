@@ -34,7 +34,7 @@ public class MovieServiceHelperTest {
 	private static final  LocalDate REVIEW_DATE = LocalDate.of(2019, Month.JANUARY, 1);
 
 	@Test
-	public void ConvertMovieDtoToEntity_NoIssuesExpected_ReturnsConvertedEntity() throws Exception {
+	public void ConvertMovieDtoToEntity_NoIssuesExpected_ReturnsConvertedEntity() {
 		
 		MovieDTO dto = new MovieDTO();
 		dto.setId(ID);
@@ -71,7 +71,7 @@ public class MovieServiceHelperTest {
 	}
 
 	@Test
-	public void ConvertMovieEntityToDto_NoIssuesExpected_ReturnsConvertedDto() throws Exception {
+	public void ConvertMovieEntityToDto_NoIssuesExpected_ReturnsConvertedDto() {
 		Movie movie = new Movie();
 		movie.setId(ID);
 		movie.setTitle(TITLE);
@@ -107,7 +107,7 @@ public class MovieServiceHelperTest {
 	}
 	
 	@Test
-	public void ConvertMovieDtoToEntity_GenreListNull_ReturnsConvertedEntity() throws Exception {
+	public void ConvertMovieDtoToEntity_GenreListNull_ReturnsConvertedEntity() {
 		
 		MovieDTO dto = new MovieDTO();
 		dto.setTitle(TITLE);
@@ -122,7 +122,7 @@ public class MovieServiceHelperTest {
 	}
 	
 	@Test
-	public void ConvertMovieDtoToEntity_GenreListEmpty_ReturnsConvertedEntity() throws Exception {
+	public void ConvertMovieDtoToEntity_GenreListEmpty_ReturnsConvertedEntity() {
 		
 		MovieDTO dto = new MovieDTO();
 		dto.setTitle(TITLE);
@@ -137,7 +137,7 @@ public class MovieServiceHelperTest {
 	}
 	
 	@Test
-	public void ConvertMovieEntityToDto_GenreListNull_ReturnsConvertedDto() throws Exception {
+	public void ConvertMovieEntityToDto_GenreListNull_ReturnsConvertedDto() {
 		Movie movie = new Movie();
 		movie.setTitle(TITLE);
 		movie.setGenres(null);
@@ -151,7 +151,7 @@ public class MovieServiceHelperTest {
 	}
 	
 	@Test
-	public void ConvertMovieEntityToDto_GenreListEmpty_ReturnsConvertedDto() throws Exception {
+	public void ConvertMovieEntityToDto_GenreListEmpty_ReturnsConvertedDto() {
 		Movie movie = new Movie();
 		movie.setTitle(TITLE);
 		movie.setGenres(new ArrayList<>());

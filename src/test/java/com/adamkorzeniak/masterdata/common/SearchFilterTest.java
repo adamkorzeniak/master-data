@@ -20,7 +20,7 @@ import com.adamkorzeniak.masterdata.exception.exceptions.InvalidQueryParamValueE
 public class SearchFilterTest {
 
 	@Test
-	public void CreateSearchTypeFilter_NoIssues_FilterCreated() throws Exception {
+	public void CreateSearchTypeFilter_NoIssues_FilterCreated() {
 		SearchFilterParam filter = new SearchFilterParam("search-title", "Titanic");
 		
 		assertThat(filter).isNotNull();
@@ -30,7 +30,7 @@ public class SearchFilterTest {
 	}	
 	
 	@Test
-	public void CreateMatchTypeFilter_NoIssues_FilterCreated() throws Exception {
+	public void CreateMatchTypeFilter_NoIssues_FilterCreated() {
 		SearchFilterParam filter = new SearchFilterParam("match-title", "Inception");
 		
 		assertThat(filter).isNotNull();
@@ -40,7 +40,7 @@ public class SearchFilterTest {
 	}	
 	
 	@Test
-	public void CreateMinTypeFilter_NoIssues_FilterCreated() throws Exception {
+	public void CreateMinTypeFilter_NoIssues_FilterCreated() {
 		SearchFilterParam filter = new SearchFilterParam("min-year", "2000");
 		
 		assertThat(filter).isNotNull();
@@ -50,7 +50,7 @@ public class SearchFilterTest {
 	}	
 	
 	@Test
-	public void CreateMaxTypeFilter_NoIssues_FilterCreated() throws Exception {
+	public void CreateMaxTypeFilter_NoIssues_FilterCreated() {
 		SearchFilterParam filter = new SearchFilterParam("max-duration", "100");
 		
 		assertThat(filter).isNotNull();
@@ -60,7 +60,7 @@ public class SearchFilterTest {
 	}	
 	
 	@Test
-	public void CreateExistTypeFilter_NoIssues_FilterCreated() throws Exception {
+	public void CreateExistTypeFilter_NoIssues_FilterCreated() {
 		SearchFilterParam filter = new SearchFilterParam("exist-description", "true");
 		
 		assertThat(filter).isNotNull();
@@ -70,7 +70,7 @@ public class SearchFilterTest {
 	}	
 	
 	@Test
-	public void CreateOrderDescTypeFilter_NoIssues_FilterCreated() throws Exception {
+	public void CreateOrderDescTypeFilter_NoIssues_FilterCreated() {
 		SearchFilterParam filter = new SearchFilterParam("order-desc", "year");
 		
 		assertThat(filter).isNotNull();
@@ -80,7 +80,7 @@ public class SearchFilterTest {
 	}	
 	
 	@Test
-	public void CreateOrderAscTypeFilter_NoIssues_FilterCreated() throws Exception {
+	public void CreateOrderAscTypeFilter_NoIssues_FilterCreated() {
 		SearchFilterParam filter = new SearchFilterParam("order-asc", "duration");
 		
 		assertThat(filter).isNotNull();
@@ -90,7 +90,7 @@ public class SearchFilterTest {
 	}	
 	
 	@Test
-	public void CreateOrderTypeFilter_NoIssues_FilterCreated() throws Exception {
+	public void CreateOrderTypeFilter_NoIssues_FilterCreated() {
 		SearchFilterParam filter = new SearchFilterParam("order", "title");
 		
 		assertThat(filter).isNotNull();
@@ -100,66 +100,58 @@ public class SearchFilterTest {
 	}	
 	
 	@Test
-	public void CreateAnyOfTypeFilter_InvalidQueryParam_ExceptionThrown() throws Exception {
+	public void CreateAnyOfTypeFilter_InvalidQueryParam_ExceptionThrown() {
 		
-		assertThatExceptionOfType(InvalidQueryParamException.class).isThrownBy(() -> { 
-			new SearchFilterParam("anyof", "duration"); })
+		assertThatExceptionOfType(InvalidQueryParamException.class).isThrownBy(() -> new SearchFilterParam("anyof", "duration"))
         .withMessage("Invalid query param: anyof");
 	}	
 	
 	@Test
-	public void CreateExistTypeFilter_InvalidQueryParam_ExceptionThrown() throws Exception {
+	public void CreateExistTypeFilter_InvalidQueryParam_ExceptionThrown() {
 		
-		assertThatExceptionOfType(InvalidQueryParamException.class).isThrownBy(() -> { 
-			new SearchFilterParam("exist", "duration"); })
+		assertThatExceptionOfType(InvalidQueryParamException.class).isThrownBy(() -> new SearchFilterParam("exist", "duration"))
         .withMessage("Invalid query param: exist");
 	}		
 	
 	@Test
-	public void CreateMinTypeFilter_InvalidQueryParam_ExceptionThrown() throws Exception {
+	public void CreateMinTypeFilter_InvalidQueryParam_ExceptionThrown() {
 		
-		assertThatExceptionOfType(InvalidQueryParamException.class).isThrownBy(() -> { 
-			new SearchFilterParam("min", "duration"); })
+		assertThatExceptionOfType(InvalidQueryParamException.class).isThrownBy(() -> new SearchFilterParam("min", "duration"))
         .withMessage("Invalid query param: min");
 	}		
 	
 	@Test
-	public void CreateSearchTypeFilter_InvalidQueryParam_ExceptionThrown() throws Exception {
+	public void CreateSearchTypeFilter_InvalidQueryParam_ExceptionThrown() {
 		
-		assertThatExceptionOfType(InvalidQueryParamException.class).isThrownBy(() -> { 
-			new SearchFilterParam("search", "duration"); })
+		assertThatExceptionOfType(InvalidQueryParamException.class).isThrownBy(() -> new SearchFilterParam("search", "duration"))
         .withMessage("Invalid query param: search");
 	}		
 	
 	@Test
-	public void CreateOrderTypeFilter_InvalidQueryParam_ExceptionThrown() throws Exception {
+	public void CreateOrderTypeFilter_InvalidQueryParam_ExceptionThrown() {
 		
-		assertThatExceptionOfType(InvalidQueryParamException.class).isThrownBy(() -> { 
-			new SearchFilterParam("order-asc-desc", "duration"); })
+		assertThatExceptionOfType(InvalidQueryParamException.class).isThrownBy(() -> new SearchFilterParam("order-asc-desc", "duration"))
         .withMessage("Invalid query param: order-asc-desc");
 	}
 	
 	@Test
-	public void CreateExistTypeFilter_InvalidBooleanValue_ExceptionThrown() throws Exception {
+	public void CreateExistTypeFilter_InvalidBooleanValue_ExceptionThrown() {
 		
-		assertThatExceptionOfType(InvalidQueryParamValueException.class).isThrownBy(() -> { 
-			new SearchFilterParam("exist-rating", "duration"); })
+		assertThatExceptionOfType(InvalidQueryParamValueException.class).isThrownBy(() -> new SearchFilterParam("exist-rating", "duration"))
         .withMessage("Invalid query param value for 'exist-rating'. Exist supports only boolean values.");
 	}
 	
 	@Test
-	public void CreateMinTypeFilter_InvalidNumericValue_ExceptionThrown() throws Exception {
+	public void CreateMinTypeFilter_InvalidNumericValue_ExceptionThrown() {
 		
-		assertThatExceptionOfType(InvalidQueryParamValueException.class).isThrownBy(() -> { 
-			new SearchFilterParam("min-rating", "ten"); })
+		assertThatExceptionOfType(InvalidQueryParamValueException.class).isThrownBy(() -> new SearchFilterParam("min-rating", "ten"))
         .withMessage("Invalid query param value for 'min-rating'. Min supports only numeric values.");
 	}
 	
 	@Test
-	public void CreateOrderAlphabeticalTypeFilter_InvalidOrderTypeValue_ExceptionThrown() throws Exception {
+	public void CreateOrderAlphabeticalTypeFilter_InvalidOrderTypeValue_ExceptionThrown() {
 		
-		assertThatExceptionOfType(InvalidQueryParamException.class).isThrownBy(() -> { 
-			new SearchFilterParam("order-alphabetically", "duration"); })
+		assertThatExceptionOfType(InvalidQueryParamException.class).isThrownBy(() -> new SearchFilterParam("order-alphabetically", "duration"))
         .withMessage("Invalid query param: order-alphabetically");
 	}
 }

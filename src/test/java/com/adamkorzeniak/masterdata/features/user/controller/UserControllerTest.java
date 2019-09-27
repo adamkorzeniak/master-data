@@ -44,7 +44,7 @@ public class UserControllerTest {
 	private static final String REGISTER_PATH = "/register";
 	private static final String GET_ME_PATH = "/me";
 
-	private static final Long ID = 123l;
+	private static final Long ID = 123L;
 	private static final String USERNAME = "adam";
 	private static final String PASSWORD = "password";
 	private static final Role ROLE = Role.USER;

@@ -31,8 +31,8 @@ public class FilmwebController {
 	@GetMapping("/movies/filmweb/popular")
 	public ResponseEntity<List<MovieDTO>> retrieveMoviesFromFilmweb(@RequestParam int count) {
 
-		List<String> movieURLs = filmwebService.getPopularMoviesUlrs(count);
-		List<MovieDTO> movieDTOs = movieURLs.stream().map(url -> filmwebService.getMovieDetails(url))
+		List<String> movieURLs = filmwebService.getPopularMoviesUrls(count);
+		List<MovieDTO> movieDTOs = movieURLs.stream().map(filmwebService::getMovieDetails)
 				.collect(Collectors.toList());
 
 		SortedSet<String> genres = new TreeSet<>();

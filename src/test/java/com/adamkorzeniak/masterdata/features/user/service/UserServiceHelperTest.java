@@ -1,18 +1,16 @@
 package com.adamkorzeniak.masterdata.features.user.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import com.adamkorzeniak.masterdata.features.user.model.Role;
+import com.adamkorzeniak.masterdata.features.user.model.User;
+import com.adamkorzeniak.masterdata.features.user.model.dto.UserRequest;
+import com.adamkorzeniak.masterdata.features.user.model.dto.UserResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.features.user.model.Role;
-import com.adamkorzeniak.masterdata.features.user.model.User;
-import com.adamkorzeniak.masterdata.features.user.model.dto.UserRequest;
-import com.adamkorzeniak.masterdata.features.user.model.dto.UserResponse;
-import com.adamkorzeniak.masterdata.features.user.service.UserServiceHelper;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
@@ -25,7 +23,7 @@ public class UserServiceHelperTest {
 	private static final Role ROLE = Role.ADMIN;
 
 	@Test
-	public void ConvertUserDtoToEntity_NoIssuesExpected_ReturnsConvertedEntity() throws Exception {
+	public void ConvertUserDtoToEntity_NoIssuesExpected_ReturnsConvertedEntity() {
 		UserRequest request = new UserRequest();
 		request.setUsername(USERNAME);
 		request.setPassword(PASSWORD);
@@ -41,7 +39,7 @@ public class UserServiceHelperTest {
 	}
 
 	@Test
-	public void ConvertUserEntityToDto_NoIssuesExpected_ReturnsConvertedDto() throws Exception {
+	public void ConvertUserEntityToDto_NoIssuesExpected_ReturnsConvertedDto() {
 		User entity = new User();
 		entity.setId(ID);
 		entity.setUsername(USERNAME);

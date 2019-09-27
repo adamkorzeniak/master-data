@@ -28,7 +28,7 @@ public class ErrorServiceHelperTest {
 	private static final Long TIME = 11111111L;
 
 	@Test
-	public void ConvertErrorDtoToEntity_NoIssuesExpected_ReturnsConvertedEntity() throws Exception {
+	public void ConvertErrorDtoToEntity_NoIssuesExpected_ReturnsConvertedEntity() {
 		ErrorDTO dto = new ErrorDTO();
 		dto.setId(ID);
 		dto.setErrorId(ERROR_ID);
@@ -55,7 +55,7 @@ public class ErrorServiceHelperTest {
 	}
 
 	@Test
-	public void ConvertErrorEntityToDto_NoIssuesExpected_ReturnsConvertedDto() throws Exception {
+	public void ConvertErrorEntityToDto_NoIssuesExpected_ReturnsConvertedDto() {
 		Error entity = new Error();
 		entity.setId(ID);
 		entity.setErrorId(ERROR_ID);

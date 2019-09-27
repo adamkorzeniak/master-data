@@ -18,14 +18,13 @@ import com.adamkorzeniak.masterdata.exception.exceptions.DuplicateUserException;
 import com.adamkorzeniak.masterdata.features.user.model.Role;
 import com.adamkorzeniak.masterdata.features.user.model.User;
 import com.adamkorzeniak.masterdata.features.user.repository.UserRepository;
-import com.adamkorzeniak.masterdata.features.user.service.UserService;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "integration")
 @SpringBootTest
 public class UserServiceTest {
 
-	private static final Long ID = 123l;
+	private static final Long ID = 123L;
 	private static final String USERNAME = "adam";
 	private static final String PASSWORD = "password";
 	private static final String ENCODED_PASSWORD = "$10$encodedpassword";
@@ -44,7 +43,7 @@ public class UserServiceTest {
 	private UserService userService;
 
 	@Test
-	public void RegisterUser_NoIssues_ReturnsUser() throws Exception {
+	public void RegisterUser_NoIssues_ReturnsUser() {
 		User adam = new User();
 		adam.setUsername(USERNAME);
 		adam.setPassword(PASSWORD);
@@ -58,7 +57,7 @@ public class UserServiceTest {
 
 		when(encoder.encode(PASSWORD)).thenReturn(ENCODED_PASSWORD);
 		when(userRepository.findByUsername(USERNAME)).thenReturn(null);
-		when(userRepository.save(ArgumentMatchers.<User>any())).thenReturn(mockedUser);
+		when(userRepository.save(ArgumentMatchers.any())).thenReturn(mockedUser);
 
 		User result = userService.register(adam);
 
@@ -70,7 +69,7 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void RegisterUser_UserAlreadyExists_ThrowsException() throws Exception {
+	public void RegisterUser_UserAlreadyExists_ThrowsException() {
 		User adam = new User();
 		adam.setUsername(USERNAME);
 		adam.setPassword(PASSWORD);
@@ -78,20 +77,16 @@ public class UserServiceTest {
 
 		when(userRepository.findByUsername(USERNAME)).thenReturn(adam);
 
-		assertThatExceptionOfType(DuplicateUserException.class).isThrownBy(() -> {
-			userService.register(adam);
-		}).withMessage(DUPLICATED_USER_MESSAGE);
+		assertThatExceptionOfType(DuplicateUserException.class).isThrownBy(() -> userService.register(adam)).withMessage(DUPLICATED_USER_MESSAGE);
 	}
 
 	@Test
-	public void RegisterUser_NoUser_ThrowsException() throws Exception {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
-			userService.register(null);
-		}).withMessage(null);
+	public void RegisterUser_NoUser_ThrowsException() {
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> userService.register(null)).withMessage(null);
 	}
 
 	@Test
-	public void RetrieveUser_UserExists_ReturnsUser() throws Exception {
+	public void RetrieveUser_UserExists_ReturnsUser() {
 		User adam = new User();
 		adam.setId(ID);
 		adam.setUsername(USERNAME);
@@ -110,10 +105,8 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void RetrieveUser_UserNotExists_ThrowsException() throws Exception {
+	public void RetrieveUser_UserNotExists_ThrowsException() {
 		String username = null;
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
-			userService.getUser(username);
-		}).withMessage(null);
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> userService.getUser(username)).withMessage(null);
 	}
 }

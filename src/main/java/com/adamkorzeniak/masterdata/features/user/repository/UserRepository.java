@@ -8,5 +8,5 @@ import com.adamkorzeniak.masterdata.features.user.model.User;
 @Repository("userRepository")
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	public User findByUsername(String username);
+	User findByUsername(String username);
 }

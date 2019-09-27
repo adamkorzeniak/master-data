@@ -8,7 +8,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class EnumValidatorImpl implements ConstraintValidator<EnumValidator, String> {
 
-	List<String> valueList = null;
+	private List<String> valueList = null;
 	
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
@@ -17,7 +17,7 @@ public class EnumValidatorImpl implements ConstraintValidator<EnumValidator, Str
 
 	@Override
 	public void initialize(EnumValidator constraintAnnotation) {
-		valueList = new ArrayList<String>();
+		valueList = new ArrayList<>();
 		Class<? extends Enum<?>> enumClass = constraintAnnotation.enumClazz();
 
 		Enum[] enumValArr = enumClass.getEnumConstants();

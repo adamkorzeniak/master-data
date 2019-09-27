@@ -3,6 +3,7 @@ package com.adamkorzeniak.masterdata.configuration;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,9 +24,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private static final String[] notSecuredResources = new String[] {};
 
 	@Autowired
-	public SecurityConfiguration(UserDetailsService userDetailsService,
-			PasswordEncoder passwordEncoder,
-			AuthenticationManagerBuilder auth) throws Exception {
+	public SecurityConfiguration(@Qualifier("customUserDetailsService") UserDetailsService userDetailsService,
+								 PasswordEncoder passwordEncoder,
+								 AuthenticationManagerBuilder auth) throws Exception {
 		
 		auth
 			.userDetailsService(userDetailsService)

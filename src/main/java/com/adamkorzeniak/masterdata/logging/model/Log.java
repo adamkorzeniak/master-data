@@ -20,17 +20,15 @@ public class Log {
 	
 	public String toJsonMessage() {
 		ObjectMapper mapper = new ObjectMapper();
-		String jsonInString = "";
 		try {
-			jsonInString = mapper.writeValueAsString(this);
+			return mapper.writeValueAsString(this);
 		} catch (JsonProcessingException e) {
-			jsonInString = buildFailedConvertionErrorLog();
 			e.printStackTrace();
+			return buildFailedConversionErrorLog();
 		}
-		return jsonInString;
 	}
 	
-	private String buildFailedConvertionErrorLog() {
+	private String buildFailedConversionErrorLog() {
 		StringJoiner joiner = new StringJoiner(",\n", "{\n", "\n}");
 		joiner.add(buildJsonField("correlationId", correlationId));
 		joiner.add(buildJsonField("requestURI", requestURI));

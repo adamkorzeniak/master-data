@@ -17,7 +17,7 @@ public class InvalidQueryParamValueException extends RuntimeException {
 	}
 
 	private static String buildMessage(SearchFunctionType function, String queryParam) {
-		String supportedType = "";
+		String supportedType;
 		switch (function) {
 			case EXIST:
 				supportedType = "boolean";

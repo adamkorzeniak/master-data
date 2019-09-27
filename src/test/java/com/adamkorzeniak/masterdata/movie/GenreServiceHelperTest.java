@@ -18,7 +18,7 @@ import com.adamkorzeniak.masterdata.features.movie.service.GenreServiceHelper;
 public class GenreServiceHelperTest {
 
 	@Test
-	public void ConvertGenreDtoToEntity_NoIssuesExpected_ReturnsConvertedEntity() throws Exception {
+	public void ConvertGenreDtoToEntity_NoIssuesExpected_ReturnsConvertedEntity() {
 		Long id = 17L;
 		String name = "Comedy";
 		
@@ -34,7 +34,7 @@ public class GenreServiceHelperTest {
 	}
 
 	@Test
-	public void ConvertGenreEntityToDto_NoIssuesExpected_ReturnsConvertedDto() throws Exception {
+	public void ConvertGenreEntityToDto_NoIssuesExpected_ReturnsConvertedDto() {
 		Long id = 22L;
 		String name = "Horor";
 		

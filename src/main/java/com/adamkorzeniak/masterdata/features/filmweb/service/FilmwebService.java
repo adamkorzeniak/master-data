@@ -8,6 +8,6 @@ public interface FilmwebService {
 
 	MovieDTO getMovieDetails(String movieUrl);
 
-	List<String> getPopularMoviesUlrs(int count);
+	List<String> getPopularMoviesUrls(int count);
 
 }

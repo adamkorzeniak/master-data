@@ -33,7 +33,7 @@ public class SearchFilterServiceTest {
 	private SearchFilterService searchFilterService;
 
 	@Test
-	public void BuildSearchFilters_NoIssue_ReturnsSearchFilters() throws Exception {
+	public void BuildSearchFilters_NoIssue_ReturnsSearchFilters() {
 		Map<String,String> params = new HashMap<>();
 		params.put("match-title", "Titanic");
 		params.put("search-description", "love");
@@ -51,7 +51,7 @@ public class SearchFilterServiceTest {
 	}
 
 	@Test
-	public void BuildMatchSearchFilter_NoIssue_ReturnsSearchFilter() throws Exception {
+	public void BuildMatchSearchFilter_NoIssue_ReturnsSearchFilter() {
 		Map<String,String> params = new HashMap<>();
 		params.put("match-title", "Titanic");
 
@@ -66,7 +66,7 @@ public class SearchFilterServiceTest {
 	}
 
 	@Test
-	public void BuildSearchSearchFilter_NoIssue_ReturnsSearchFilter() throws Exception {
+	public void BuildSearchSearchFilter_NoIssue_ReturnsSearchFilter() {
 		Map<String,String> params = new HashMap<>();
 		params.put("search-description", "love");
 
@@ -81,7 +81,7 @@ public class SearchFilterServiceTest {
 	}
 
 	@Test
-	public void BuildMinSearchFilter_NoIssue_ReturnsSearchFilter() throws Exception {
+	public void BuildMinSearchFilter_NoIssue_ReturnsSearchFilter() {
 		Map<String,String> params = new HashMap<>();
 		params.put("min-duration", "10");
 
@@ -96,7 +96,7 @@ public class SearchFilterServiceTest {
 	}
 
 	@Test
-	public void BuildMaxSearchFilter_NoIssue_ReturnsSearchFilter() throws Exception {
+	public void BuildMaxSearchFilter_NoIssue_ReturnsSearchFilter() {
 		Map<String,String> params = new HashMap<>();
 		params.put("max-year", "2000");
 
@@ -111,7 +111,7 @@ public class SearchFilterServiceTest {
 	}
 
 	@Test
-	public void BuildExistSearchFilter_NoIssue_ReturnsSearchFilter() throws Exception {
+	public void BuildExistSearchFilter_NoIssue_ReturnsSearchFilter() {
 		Map<String,String> params = new HashMap<>();
 		params.put("exist-review", "false");
 
@@ -126,7 +126,7 @@ public class SearchFilterServiceTest {
 	}
 
 	@Test
-	public void BuildOrderAscSearchFilter_NoIssue_ReturnsSearchFilter() throws Exception {
+	public void BuildOrderAscSearchFilter_NoIssue_ReturnsSearchFilter() {
 		Map<String,String> params = new HashMap<>();
 		params.put("order-asc", "watchPriority");
 
@@ -141,7 +141,7 @@ public class SearchFilterServiceTest {
 	}
 
 	@Test
-	public void BuildOrderDescSearchFilter_NoIssue_ReturnsSearchFilter() throws Exception {
+	public void BuildOrderDescSearchFilter_NoIssue_ReturnsSearchFilter() {
 		Map<String,String> params = new HashMap<>();
 		params.put("order-desc", "rating");
 
@@ -156,23 +156,21 @@ public class SearchFilterServiceTest {
 	}
 	
 	@Test
-	public void BuildSearchFilters_FilterNotSupported_ThrowsException() throws Exception {
+	public void BuildSearchFilters_FilterNotSupported_ThrowsException() {
 		Map<String,String> params = new HashMap<>();
 		params.put("max-id", "2000");
 
-		assertThatExceptionOfType(SearchFilterParamNotSupportedException.class).isThrownBy(() -> { 
-			searchFilterService.buildFilters(params, "movie.genres"); })
+		assertThatExceptionOfType(SearchFilterParamNotSupportedException.class).isThrownBy(() -> searchFilterService.buildFilters(params, "movie.genres"))
         .withMessage("This resource doesn't support Max");
 
 	}
 	
 	@Test
-	public void BuildSearchFilters_FilterFieldNotSupported_ThrowsException() throws Exception {
+	public void BuildSearchFilters_FilterFieldNotSupported_ThrowsException() {
 		Map<String,String> params = new HashMap<>();
 		params.put("match-id", "2000");
 
-		assertThatExceptionOfType(FieldFilterNotSupportedException.class).isThrownBy(() -> { 
-			searchFilterService.buildFilters(params, "movie.genres"); })
+		assertThatExceptionOfType(FieldFilterNotSupportedException.class).isThrownBy(() -> searchFilterService.buildFilters(params, "movie.genres"))
         .withMessage("This resource doesn't support Match for field: id");
 
 	}

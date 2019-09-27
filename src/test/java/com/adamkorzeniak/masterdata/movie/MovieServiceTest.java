@@ -37,7 +37,7 @@ public class MovieServiceTest {
 	private MovieService movieService;
 
 	@Test
-	public void SearchMovies_NoGenreParam_ReturnsListOfMovies() throws Exception {
+	public void SearchMovies_NoGenreParam_ReturnsListOfMovies() {
 		Map<String, String> params = new HashMap<>();
 		params.put("search-title", "to the");
 		
@@ -67,7 +67,7 @@ public class MovieServiceTest {
 	}
 	
 	@Test
-	public void SearchMovies_WithGenreParam_ReturnsListOfMoviesForGenre() throws Exception {
+	public void SearchMovies_WithGenreParam_ReturnsListOfMoviesForGenre() {
 		Map<String, String> params = new HashMap<>();
 		params.put("search-title", "to the");
 		params.put("genres", "com");
@@ -97,7 +97,7 @@ public class MovieServiceTest {
 	}
 
 	@Test
-	public void FindMovieById_CorrectIdProvided_ReturnsOptionalOfMovie() throws Exception {
+	public void FindMovieById_CorrectIdProvided_ReturnsOptionalOfMovie() {
 		Long id = 1L;
 		Movie mocked = new Movie();
 		mocked.setTitle("Titanic");
@@ -116,7 +116,7 @@ public class MovieServiceTest {
 	}
 
 	@Test
-	public void FindMovieById_WrongIdProvided_ReturnsEmptyOptional() throws Exception {
+	public void FindMovieById_WrongIdProvided_ReturnsEmptyOptional() {
 		Long id = 1L;
 		Optional<Movie> optional = Optional.empty();
 
@@ -128,13 +128,13 @@ public class MovieServiceTest {
 	}
 	
 	@Test
-	public void AddMovie_MovieValid_ReturnsCreatedMovie() throws Exception {
+	public void AddMovie_MovieValid_ReturnsCreatedMovie() {
 		Long id = 1L;
 		Movie movie = new Movie();
 		movie.setTitle("Titanic");
 		movie.setId(id);
 
-		when(movieRepository.save(ArgumentMatchers.<Movie>any())).thenAnswer(
+		when(movieRepository.save(ArgumentMatchers.any())).thenAnswer(
 			mockRepositorySaveInvocation(movie)
 		);
 
@@ -146,13 +146,13 @@ public class MovieServiceTest {
 	}
 	
 	@Test
-	public void UpdateMovie_MovieValid_ReturnsUpdatedMovie() throws Exception {
+	public void UpdateMovie_MovieValid_ReturnsUpdatedMovie() {
 		Long id = 1L;
 		Movie movie = new Movie();
 		movie.setTitle("Titanic");
 		movie.setId(id);
 
-		when(movieRepository.save(ArgumentMatchers.<Movie>any())).thenAnswer(
+		when(movieRepository.save(ArgumentMatchers.any())).thenAnswer(
 			mockRepositorySaveInvocation(movie)
 		);
 
@@ -163,13 +163,13 @@ public class MovieServiceTest {
 	}
 	
 	@Test
-	public void DeleteMovie_MovieIdValid_DeletesMovie() throws Exception {
+	public void DeleteMovie_MovieIdValid_DeletesMovie() {
 		Long id = 1L;
 		movieService.deleteMovie(id);
 	}
 
 	@Test
-	public void IsMovieExist_MovieValid_ReturnsTrue() throws Exception {
+	public void IsMovieExist_MovieValid_ReturnsTrue() {
 		Long id = 1L;
 		when(movieRepository.existsById(id)).thenReturn(true);
 

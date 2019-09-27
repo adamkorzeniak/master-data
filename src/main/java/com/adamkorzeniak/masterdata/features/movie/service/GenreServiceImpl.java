@@ -71,10 +71,10 @@ public class GenreServiceImpl implements GenreService {
 	public Genre mergeGenres(Long oldGenreId, Long targetGenreId) {
 		Optional<Genre> oldResult = genreRepository.findById(oldGenreId);
 		Optional<Genre> targetResult = genreRepository.findById(targetGenreId);
-		if (!oldResult.isPresent()) {
+		if (oldResult.isEmpty()) {
 			throw new NotFoundException("Genre", oldGenreId);
 		}
-		if (!targetResult.isPresent()) {
+		if (targetResult.isEmpty()) {
 			throw new NotFoundException("Genre", targetGenreId);
 		}
 		Genre oldGenre = oldResult.get();

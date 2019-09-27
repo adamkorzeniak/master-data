@@ -43,7 +43,7 @@ public class GenericSpecificationTest {
 	private SearchFilterService searchFilterService;
 	
 	@Test
-	public void GenericSpecificationInMovieRepository_FilteringOneMovieWithEachCondition_ReturnsListWithOneMovie() throws Exception {
+	public void GenericSpecificationInMovieRepository_FilteringOneMovieWithEachCondition_ReturnsListWithOneMovie() {
 
 		persistMoviesForFiltering();
 		
@@ -71,7 +71,7 @@ public class GenericSpecificationTest {
 	}
 	
 	@Test
-	public void GenericSpecificationInMovieRepository_OrderMoviesAscending_ReturnsSortedList() throws Exception {
+	public void GenericSpecificationInMovieRepository_OrderMoviesAscending_ReturnsSortedList() {
 
 		persistMoviesForOrdering();
 		
@@ -92,7 +92,7 @@ public class GenericSpecificationTest {
 	}
 	
 	@Test
-	public void GenericSpecificationInMovieRepository_OrderMoviesDescending_ReturnsSortedList() throws Exception {
+	public void GenericSpecificationInMovieRepository_OrderMoviesDescending_ReturnsSortedList() {
 
 		persistMoviesForOrdering();
 		

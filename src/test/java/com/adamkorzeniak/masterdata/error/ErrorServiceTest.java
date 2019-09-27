@@ -35,7 +35,7 @@ public class ErrorServiceTest {
 	private ErrorService errorService;
 
 	@Test
-	public void SearchErrors_NoIssues_ReturnsListOfErrors() throws Exception {
+	public void SearchErrors_NoIssues_ReturnsListOfErrors() {
 		Map<String, String> params = new HashMap<>();
 		params.put("search-name", "client");
 		Error error1 = new Error();
@@ -55,13 +55,13 @@ public class ErrorServiceTest {
 	}
 
 	@Test
-	public void AddError_ErrorValid_ReturnsCreatedError() throws Exception {
+	public void AddError_ErrorValid_ReturnsCreatedError() {
 		Long id = 1L;
 		Error error = new Error();
 		error.setId(id);
 		error.setName("ClientError");
 
-		when(errorRepository.save(ArgumentMatchers.<Error>any())).thenAnswer(
+		when(errorRepository.save(ArgumentMatchers.any())).thenAnswer(
 			mockRepositorySaveInvocation(error)
 		);
 
@@ -73,13 +73,13 @@ public class ErrorServiceTest {
 	}
 	
 	@Test
-	public void DeleteError_ErrorIdValid_DeletesError() throws Exception {
+	public void DeleteError_ErrorIdValid_DeletesError() {
 		Long id = 1L;
 		errorService.deleteError(id);
 	}
 
 	@Test
-	public void IsErrorExist_ErrorValid_ReturnsTrue() throws Exception {
+	public void IsErrorExist_ErrorValid_ReturnsTrue() {
 		Long id = 1L;
 		when(errorRepository.existsById(id)).thenReturn(true);
 

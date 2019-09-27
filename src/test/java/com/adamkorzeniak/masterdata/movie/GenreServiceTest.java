@@ -44,7 +44,7 @@ public class GenreServiceTest {
 	private GenreService genreService;
 
 	@Test
-	public void SearchGenres_NoIssues_ReturnsListOfGenres() throws Exception {
+	public void SearchGenres_NoIssues_ReturnsListOfGenres() {
 		Map<String, String> params = new HashMap<>();
 		params.put("search-name", "comedy");
 		Genre comedy = new Genre();
@@ -64,7 +64,7 @@ public class GenreServiceTest {
 	}
 
 	@Test
-	public void FindGenreById_CorrectIdProvided_ReturnsOptionalOfGenre() throws Exception {
+	public void FindGenreById_CorrectIdProvided_ReturnsOptionalOfGenre() {
 		Long id = 1L;
 		Genre mocked = new Genre();
 		mocked.setName("Comedy");
@@ -83,7 +83,7 @@ public class GenreServiceTest {
 	}
 
 	@Test
-	public void FindGenreById_WrongIdProvided_ReturnsEmptyOptional() throws Exception {
+	public void FindGenreById_WrongIdProvided_ReturnsEmptyOptional() {
 		Long id = 1L;
 		Optional<Genre> optional = Optional.empty();
 
@@ -95,13 +95,13 @@ public class GenreServiceTest {
 	}
 
 	@Test
-	public void AddGenre_GenreValid_ReturnsCreatedGenre() throws Exception {
+	public void AddGenre_GenreValid_ReturnsCreatedGenre() {
 		Long id = 1L;
 		Genre genre = new Genre();
 		genre.setName("Comedy");
 		genre.setId(id);
 
-		when(genreRepository.save(ArgumentMatchers.<Genre>any())).thenAnswer(
+		when(genreRepository.save(ArgumentMatchers.any())).thenAnswer(
 			mockRepositorySaveInvocation(genre)
 		);
 
@@ -113,13 +113,13 @@ public class GenreServiceTest {
 	}
 	
 	@Test
-	public void UpdateGenre_GenreValid_ReturnsUpdatedGenre() throws Exception {
+	public void UpdateGenre_GenreValid_ReturnsUpdatedGenre() {
 		Long id = 1L;
 		Genre genre = new Genre();
 		genre.setName("Comedy");
 		genre.setId(id);
 
-		when(genreRepository.save(ArgumentMatchers.<Genre>any())).thenAnswer(
+		when(genreRepository.save(ArgumentMatchers.any())).thenAnswer(
 			mockRepositorySaveInvocation(genre)
 		);
 
@@ -130,13 +130,13 @@ public class GenreServiceTest {
 	}
 	
 	@Test
-	public void DeleteGenre_GenreIdValid_DeletesGenre() throws Exception {
+	public void DeleteGenre_GenreIdValid_DeletesGenre() {
 		Long id = 1L;
 		genreService.deleteGenre(id);
 	}
 
 	@Test
-	public void IsGenreExist_GenreValid_ReturnsTrue() throws Exception {
+	public void IsGenreExist_GenreValid_ReturnsTrue() {
 		Long id = 1L;
 		when(genreRepository.existsById(id)).thenReturn(true);
 
@@ -144,7 +144,7 @@ public class GenreServiceTest {
 	}
 	
 	@Test
-	public void MergeGenres_MovieContainsBothGenres_OldGenreRemovedFromMovieAndReturnsTargerGenre() throws Exception {
+	public void MergeGenres_MovieContainsBothGenres_OldGenreRemovedFromMovieAndReturnsTargerGenre() {
 		Long sourceId = 11L;
 		Long targetId = 22L;
 		
@@ -179,7 +179,7 @@ public class GenreServiceTest {
 	}
 	
 	@Test
-	public void MergeGenres_MovieContainsSourceGenre_GenresReplacedAndReturnsTargerGenre() throws Exception {
+	public void MergeGenres_MovieContainsSourceGenre_GenresReplacedAndReturnsTargerGenre() {
 		Long sourceId = 11L;
 		Long targetId = 22L;
 		
@@ -214,7 +214,7 @@ public class GenreServiceTest {
 	}
 	
 	@Test
-	public void MergeGenres_MovieContainsSourceGenre_OldGenreRemovedFromMovieAndReturnsTargerGenre() throws Exception {
+	public void MergeGenres_MovieContainsSourceGenre_OldGenreRemovedFromMovieAndReturnsTargerGenre() {
 		Long sourceId = 11L;
 		Long targetId = 22L;
 		
@@ -249,7 +249,7 @@ public class GenreServiceTest {
 	}
 	
 	@Test
-	public void MergeGenres_SourceGenreNotExists_ThrowsException() throws Exception {
+	public void MergeGenres_SourceGenreNotExists_ThrowsException() {
 		Long sourceId = 11L;
 		Long targetId = 22L;
 
@@ -262,13 +262,12 @@ public class GenreServiceTest {
 		when(genreRepository.findById(targetId)).thenReturn(Optional.of(genre));
 
 
-		assertThatExceptionOfType(NotFoundException.class).isThrownBy(() -> { 
-			genreService.mergeGenres(sourceId, targetId); })
+		assertThatExceptionOfType(NotFoundException.class).isThrownBy(() -> genreService.mergeGenres(sourceId, targetId))
         .withMessage("Genre not found: id=11");
 	}
 	
 	@Test
-	public void MergeGenres_TargetGenreNotExists_ThrowsException() throws Exception {
+	public void MergeGenres_TargetGenreNotExists_ThrowsException() {
 		Long sourceId = 11L;
 		Long targetId = 22L;
 		
@@ -279,8 +278,7 @@ public class GenreServiceTest {
 		when(genreRepository.findById(sourceId)).thenReturn(Optional.of(genre));
 		when(genreRepository.findById(targetId)).thenReturn(Optional.empty());
 
-		assertThatExceptionOfType(NotFoundException.class).isThrownBy(() -> { 
-			genreService.mergeGenres(sourceId, targetId); })
+		assertThatExceptionOfType(NotFoundException.class).isThrownBy(() -> genreService.mergeGenres(sourceId, targetId))
         .withMessage("Genre not found: id=22");
 	}
 

@@ -60,7 +60,7 @@ public class UserIntegrationTest {
 	}
 	
 	@Test
-	public void GetUserDetails_NoIssues_ReturnUserDetails() throws Exception {
+	public void GetUserDetails_NoIssues_ReturnUserDetails() {
 		
 		when()
 			.get(GET_ME_PATH)
@@ -73,7 +73,7 @@ public class UserIntegrationTest {
 	}
 
 	@Test
-	public void RegisterUser_NoIssues_ReturnsAddedUser() throws Exception {
+	public void RegisterUser_NoIssues_ReturnsAddedUser() {
 		
 		UserRequest requestBody = new UserRequest();
 		requestBody.setUsername(NEW_USER_USERNAME);
@@ -94,32 +94,32 @@ public class UserIntegrationTest {
 	}
 
 //	@Test
-	public void RegisterUser_UserAlreadyExists_ReturnConflictErrorResponse() throws Exception {
+	public void RegisterUser_UserAlreadyExists_ReturnConflictErrorResponse() {
 		fail();
 	}
 	
 //	@Test
-	public void RegisterUser_AllFieldsMissing_ReturnsValidationErrorResponse() throws Exception {
+	public void RegisterUser_AllFieldsMissing_ReturnsValidationErrorResponse() {
 		fail();
 	}
 	
 //	@Test
-	public void RegisterUser_UsernameMissing_ReturnsValidationErrorResponse() throws Exception {
+	public void RegisterUser_UsernameMissing_ReturnsValidationErrorResponse() {
 		fail();
 	}
 	
 //	@Test
-	public void RegisterUser_PasswordMissing_ReturnsValidationErrorResponse() throws Exception {
+	public void RegisterUser_PasswordMissing_ReturnsValidationErrorResponse() {
 		fail();
 	}
 	
 //	@Test
-	public void RegisterUser_RoleMissing_ReturnsValidationErrorResponse() throws Exception {
+	public void RegisterUser_RoleMissing_ReturnsValidationErrorResponse() {
 		fail();
 	}
 	
 //	@Test
-	public void RegisterUser_RoleInvalid_ReturnsValidationErrorResponse() throws Exception {
+	public void RegisterUser_RoleInvalid_ReturnsValidationErrorResponse() {
 		fail();
 	}
 }

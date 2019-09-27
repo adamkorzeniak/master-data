@@ -180,7 +180,7 @@ public class FilmwebServiceImpl implements FilmwebService {
 	}
 
 	@Override
-	public List<String> getPopularMoviesUlrs(int count) {
+	public List<String> getPopularMoviesUrls(int count) {
 
 		List<String> movieUrls = new ArrayList<>();
 

@@ -16,7 +16,9 @@ import com.adamkorzeniak.masterdata.features.metadata.model.openapi.Metadata;
 import com.adamkorzeniak.masterdata.features.metadata.model.openapi.Operation;
 import com.adamkorzeniak.masterdata.features.metadata.model.openapi.Tag;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MetadataServiceImpl implements MetadataService {
 	
 	private static final String FILE_PATH = "/docs/api-docs/adam-korzeniak-master-data-0.0.1-swagger.json";

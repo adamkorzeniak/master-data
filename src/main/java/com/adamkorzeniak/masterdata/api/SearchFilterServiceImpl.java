@@ -1,23 +1,21 @@
 package com.adamkorzeniak.masterdata.api;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.adamkorzeniak.masterdata.exception.exceptions.FieldFilterNotSupportedException;
+import com.adamkorzeniak.masterdata.exception.exceptions.SearchFilterParamNotSupportedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import com.adamkorzeniak.masterdata.exception.exceptions.FieldFilterNotSupportedException;
-import com.adamkorzeniak.masterdata.exception.exceptions.SearchFilterParamNotSupportedException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 @Service
 public class SearchFilterServiceImpl implements SearchFilterService {
 
-	public final Environment env;
+	private final Environment env;
 	
 	@Autowired
     public SearchFilterServiceImpl(Environment env){
@@ -27,9 +25,7 @@ public class SearchFilterServiceImpl implements SearchFilterService {
 	@Override
 	public List<SearchFilterParam> buildFilters(Map<String, String> params, String propertyString) {
 		List<SearchFilterParam> filters = new ArrayList<>();
-		Iterator<Entry<String, String>> it = params.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<String, String> pair = it.next();
+		for (Entry<String, String> pair : params.entrySet()) {
 			SearchFilterParam filter = new SearchFilterParam(pair.getKey(), pair.getValue());
 			validate(filter, propertyString);
 			filters.add(filter);

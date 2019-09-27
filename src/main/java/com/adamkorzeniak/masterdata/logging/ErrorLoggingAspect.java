@@ -9,10 +9,9 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import com.adamkorzeniak.masterdata.logging.model.ErrorOccuredLog;
+import com.adamkorzeniak.masterdata.logging.model.ErrorOccurredLog;
 import com.adamkorzeniak.masterdata.logging.model.ErrorResponseLog;
 import com.adamkorzeniak.masterdata.logging.model.Log;
 import com.adamkorzeniak.masterdata.logging.model.LogType;
@@ -34,8 +33,8 @@ public class ErrorLoggingAspect {
 	 * After exception is handled in logs message and clears uuid
 	 * 
 	 */
-	@AfterReturning(pointcut = "PointcutDefinitions.exceptionHandlers()", returning = "errorResult")
-	public void successfullyExitingController(JoinPoint joinPoint, ResponseEntity<Object> errorResult) {
+	@AfterReturning(pointcut = "PointcutDefinitions.exceptionHandlers()")
+	public void successfullyExitingController() {
 		int httpStatus = loggingService.getHTTPStatus();
 		LogType logType = new ErrorResponseLog(httpStatus);
 		Log log = loggingService.generateLog(logType);
@@ -56,7 +55,7 @@ public class ErrorLoggingAspect {
 			errors.add(error);
 			error = error.getCause();
 		}
-		LogType logType = new ErrorOccuredLog(methodName, errors);
+		LogType logType = new ErrorOccurredLog(methodName, errors);
 		Log log = loggingService.generateLog(logType);
 		logger.debug(log.toJsonMessage());
 	}

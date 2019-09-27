@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ComponentSchema {
-	
+
 	private String type;
 	private String description;
 	private List<String> required;

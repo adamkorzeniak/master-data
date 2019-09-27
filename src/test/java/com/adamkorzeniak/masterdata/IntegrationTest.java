@@ -38,7 +38,7 @@ public class IntegrationTest {
 	}
 
 	@Test
-	public void RequestSend_NotFoundPath_ReturnsNotFoundErrorResponse() throws Exception {
+	public void RequestSend_NotFoundPath_ReturnsNotFoundErrorResponse() {
 		
 		when()
 			.get(DUMMY_PATH)
@@ -47,7 +47,7 @@ public class IntegrationTest {
 	}
 
 	@Test
-	public void RequestSend_MethodNotAllowed_ReturnsNotAllowedErrorResponse() throws Exception {
+	public void RequestSend_MethodNotAllowed_ReturnsNotAllowedErrorResponse() {
 		
 		when()
 			.get(REGISTER_USER_PATH)
@@ -56,7 +56,7 @@ public class IntegrationTest {
 	}
 
 	@Test
-	public void RequestSend_AcceptHeaderInvalid_ReturnsErrorResponse() throws Exception {
+	public void RequestSend_AcceptHeaderInvalid_ReturnsErrorResponse() {
 
 		given()
 			.header(ACCEPT_PARAM_NAME, ACCEPT_PARAM_INVALID_VALUE)

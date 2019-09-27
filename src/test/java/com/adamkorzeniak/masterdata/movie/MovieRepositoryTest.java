@@ -45,14 +45,14 @@ public class MovieRepositoryTest {
 	}
 
 	@Test
-	public void FindMovieContainingGenre_NoMoviesContainingGenre_ReturnsEmptyList() throws Exception {
+	public void FindMovieContainingGenre_NoMoviesContainingGenre_ReturnsEmptyList() {
 		Genre genre = findGenreByName("Horror");
 		List<Movie> movies = movieRepository.findByGenresContaining(genre);
 		assertThat(movies.size()).isEqualTo(0);
 	}
 
 	@Test
-	public void FindMovieContainingGenre_OneMovieContainingGenre_ReturnsListWithOneElement() throws Exception {
+	public void FindMovieContainingGenre_OneMovieContainingGenre_ReturnsListWithOneElement() {
 		Genre genre = findGenreByName("Romance");
 		List<Movie> movies = movieRepository.findByGenresContaining(genre);
 		assertThat(movies.size()).isEqualTo(1);
@@ -60,7 +60,7 @@ public class MovieRepositoryTest {
 	}
 
 	@Test
-	public void FindMovieContainingGenre_TwoMoviesContainingGenre_ReturnsListWithTwoElements() throws Exception {
+	public void FindMovieContainingGenre_TwoMoviesContainingGenre_ReturnsListWithTwoElements() {
 		Genre genre = findGenreByName("Thriller");
 		List<Movie> movies = movieRepository.findByGenresContaining(genre);
 		assertThat(movies.size()).isEqualTo(2);
@@ -93,17 +93,16 @@ public class MovieRepositoryTest {
 		persistedGenres =  genres;		
 	}
 	
-	private Movie persistMovie(String title, String... genreNames) {
+	private void persistMovie(String title, String... genreNames) {
 		Movie movie = new Movie();
 		movie.setTitle(title);
 		movie.setYear(2000);
 		movie.setDuration(120);
-		List<Genre> genres = Arrays.asList(genreNames).stream()
-				.map(genre -> findGenreByName(genre))
+		List<Genre> genres = Arrays.stream(genreNames)
+				.map(this::findGenreByName)
 				.collect(Collectors.toList());
 		movie.setGenres(genres);
 		this.entityManager.persist(movie);
-		return movie;
 	}
 	
 	private Genre findGenreByName(String name) {
@@ -116,8 +115,8 @@ public class MovieRepositoryTest {
 	private Movie createMovie(String title, String... genreNames) {
 		Movie movie = new Movie();
 		movie.setTitle(title);
-		List<Genre> genres = Arrays.asList(genreNames).stream()
-				.map(name -> createGenre(name))
+		List<Genre> genres = Arrays.stream(genreNames)
+				.map(this::createGenre)
 				.collect(Collectors.toList());
 		movie.setGenres(genres);
 		return movie;
