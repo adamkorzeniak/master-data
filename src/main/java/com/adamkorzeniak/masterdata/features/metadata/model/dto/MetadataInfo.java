@@ -7,10 +7,10 @@ import lombok.Setter;
 @Setter
 public class MetadataInfo {
 
-	private String title;
-	private String description;
-	private String version;
-	private String contactName;
-	private String contactEmail;
-	private String contactUrl;
+    private String title;
+    private String description;
+    private String version;
+    private String contactName;
+    private String contactEmail;
+    private String contactUrl;
 }

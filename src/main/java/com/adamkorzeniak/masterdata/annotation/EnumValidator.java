@@ -19,11 +19,11 @@ import javax.validation.constraints.NotNull;
 @ReportAsSingleViolation
 public @interface EnumValidator {
 
-	Class<? extends Enum<?>> enumClazz();
-	
-	String message() default "is not valid";
+    Class<? extends Enum<?>> enumClazz();
 
-  	Class<?>[] groups() default {};
+    String message() default "is not valid";
 
-  	Class<? extends Payload>[] payload() default {};
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 }

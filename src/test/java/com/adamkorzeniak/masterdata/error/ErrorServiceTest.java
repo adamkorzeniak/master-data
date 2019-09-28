@@ -28,76 +28,76 @@ import com.adamkorzeniak.masterdata.features.error.service.ErrorService;
 @SpringBootTest
 public class ErrorServiceTest {
 
-	@MockBean
-	private ErrorRepository errorRepository;
+    @MockBean
+    private ErrorRepository errorRepository;
 
-	@Autowired
-	private ErrorService errorService;
+    @Autowired
+    private ErrorService errorService;
 
-	@Test
-	public void SearchErrors_NoIssues_ReturnsListOfErrors() {
-		Map<String, String> params = new HashMap<>();
-		params.put("search-name", "client");
-		Error error1 = new Error();
-		error1.setName("Client error");
-		Error error2 = new Error();
-		error2.setName("Client failure");
-		List<Error> errors = Arrays.asList(error1, error2);
+    @Test
+    public void SearchErrors_NoIssues_ReturnsListOfErrors() {
+        Map<String, String> params = new HashMap<>();
+        params.put("search-name", "client");
+        Error error1 = new Error();
+        error1.setName("Client error");
+        Error error2 = new Error();
+        error2.setName("Client failure");
+        List<Error> errors = Arrays.asList(error1, error2);
 
-		when(errorRepository.findAll(ArgumentMatchers.<Specification<Error>>any())).thenReturn(errors);
+        when(errorRepository.findAll(ArgumentMatchers.<Specification<Error>>any())).thenReturn(errors);
 
-		List<Error> result = errorService.searchErrors(params);
-		assertThat(result).isNotNull();
-		assertThat(result).hasSize(2);
-		assertThat(result.get(0).getName()).isEqualTo("Client error");
-		assertThat(result.get(1).getName()).isEqualTo("Client failure");
+        List<Error> result = errorService.searchErrors(params);
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getName()).isEqualTo("Client error");
+        assertThat(result.get(1).getName()).isEqualTo("Client failure");
 
-	}
+    }
 
-	@Test
-	public void AddError_ErrorValid_ReturnsCreatedError() {
-		Long id = 1L;
-		Error error = new Error();
-		error.setId(id);
-		error.setName("ClientError");
+    @Test
+    public void AddError_ErrorValid_ReturnsCreatedError() {
+        Long id = 1L;
+        Error error = new Error();
+        error.setId(id);
+        error.setName("ClientError");
 
-		when(errorRepository.save(ArgumentMatchers.any())).thenAnswer(
-			mockRepositorySaveInvocation(error)
-		);
+        when(errorRepository.save(ArgumentMatchers.any())).thenAnswer(
+            mockRepositorySaveInvocation(error)
+        );
 
-		Error result = errorService.addError(error);
-		assertThat(result).isNotNull();
-		assertThat(result.getName()).isEqualTo("ClientError");
-		assertThat(result.getId()).isEqualTo(100L);
-		
-	}
-	
-	@Test
-	public void DeleteError_ErrorIdValid_DeletesError() {
-		Long id = 1L;
-		errorService.deleteError(id);
-	}
+        Error result = errorService.addError(error);
+        assertThat(result).isNotNull();
+        assertThat(result.getName()).isEqualTo("ClientError");
+        assertThat(result.getId()).isEqualTo(100L);
 
-	@Test
-	public void IsErrorExist_ErrorValid_ReturnsTrue() {
-		Long id = 1L;
-		when(errorRepository.existsById(id)).thenReturn(true);
+    }
 
-		assertThat(errorService.isErrorExist(id)).isTrue();
-	}
-	
-	private Answer<?> mockRepositorySaveInvocation(Error error) {
-		return invocation -> {
-		    Object argument = invocation.getArguments()[0];
-		    Error receivedError = (Error) argument;
-		    if (receivedError.getId() >= 0 ) {
-		        return error;
-		    } else {
-		    	Error newError = new Error();
-		    	newError.setId(100L);
-		    	newError.setName(error.getName());
-		        return newError;
-		    }
-		};
-	}
+    @Test
+    public void DeleteError_ErrorIdValid_DeletesError() {
+        Long id = 1L;
+        errorService.deleteError(id);
+    }
+
+    @Test
+    public void IsErrorExist_ErrorValid_ReturnsTrue() {
+        Long id = 1L;
+        when(errorRepository.existsById(id)).thenReturn(true);
+
+        assertThat(errorService.isErrorExist(id)).isTrue();
+    }
+
+    private Answer<?> mockRepositorySaveInvocation(Error error) {
+        return invocation -> {
+            Object argument = invocation.getArguments()[0];
+            Error receivedError = (Error) argument;
+            if (receivedError.getId() >= 0) {
+                return error;
+            } else {
+                Error newError = new Error();
+                newError.setId(100L);
+                newError.setName(error.getName());
+                return newError;
+            }
+        };
+    }
 }

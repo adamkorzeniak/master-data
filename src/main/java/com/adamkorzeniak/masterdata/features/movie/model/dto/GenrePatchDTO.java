@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class GenrePatchDTO {
 
-	private String op;
-	private Long targetGenreId;
+    private String op;
+    private Long targetGenreId;
 
 }

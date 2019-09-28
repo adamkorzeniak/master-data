@@ -14,51 +14,51 @@ import com.adamkorzeniak.masterdata.features.user.repository.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
 
-	private final UserRepository userRepository;
-	private final PasswordEncoder encoder;
-	
-	@Autowired
-	public UserServiceImpl(UserRepository userRepository, PasswordEncoder encoder) {
-		this.userRepository = userRepository;
-		this.encoder = encoder;
-	}
-	
-	@Override
-	public User register(User user) {
-		if (user == null) {
-			throw new IllegalArgumentException();
-		}
-		ifUserNotExistsAlready(user.getUsername());
+    private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
 
-		User newUser = new User();
-		newUser.setUsername(user.getUsername());
-		newUser.setPassword(encoder.encode(user.getPassword()));
-		newUser.setRole(user.getRole());
-		if (newUser.getRole() == null) {
-			newUser.setRole(Role.USER);
-		}
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder encoder) {
+        this.userRepository = userRepository;
+        this.encoder = encoder;
+    }
 
-		return userRepository.save(newUser);
-	}
+    @Override
+    public User register(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException();
+        }
+        ifUserNotExistsAlready(user.getUsername());
 
-	@Override
-	public User getUser(String username) {
-		if (username == null) {
-			throw new IllegalArgumentException();
-		}
-		return userRepository.findByUsername(username);
-	}
+        User newUser = new User();
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(encoder.encode(user.getPassword()));
+        newUser.setRole(user.getRole());
+        if (newUser.getRole() == null) {
+            newUser.setRole(Role.USER);
+        }
 
-	private void ifUserNotExistsAlready(String username) {
-		User user = userRepository.findByUsername(username);
-		if (user != null) {
-			throw new DuplicateUserException(username);
-		}
-	}
+        return userRepository.save(newUser);
+    }
 
-	@Override
-	public User getUser(Principal user) {
-		return getUser(user.getName());
-	}
+    @Override
+    public User getUser(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException();
+        }
+        return userRepository.findByUsername(username);
+    }
+
+    private void ifUserNotExistsAlready(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            throw new DuplicateUserException(username);
+        }
+    }
+
+    @Override
+    public User getUser(Principal user) {
+        return getUser(user.getName());
+    }
 
 }

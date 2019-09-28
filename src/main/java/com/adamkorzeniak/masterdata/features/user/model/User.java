@@ -17,17 +17,17 @@ import lombok.Setter;
 @Table(name = "users")
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@NotEmpty
-	private String username;
+    @NotEmpty
+    private String username;
 
-	@NotEmpty
-	private String password;
+    @NotEmpty
+    private String password;
 
-	@NotNull
-	private Role role;
+    @NotNull
+    private Role role;
 
 }

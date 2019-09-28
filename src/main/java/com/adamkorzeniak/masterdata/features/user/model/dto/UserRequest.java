@@ -12,12 +12,12 @@ import lombok.Setter;
 @Setter
 public class UserRequest {
 
-	@NotEmpty
-	private String username;
+    @NotEmpty
+    private String username;
 
-	@NotEmpty
-	private String password;
+    @NotEmpty
+    private String password;
 
-	@EnumValidator(enumClazz = Role.class)
-	private String role;
+    @EnumValidator(enumClazz = Role.class)
+    private String role;
 }

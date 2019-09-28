@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 public class Resource {
 
-	private String url;
-	private List<OperationResponse> operations;
+    private String url;
+    private List<OperationResponse> operations;
 }

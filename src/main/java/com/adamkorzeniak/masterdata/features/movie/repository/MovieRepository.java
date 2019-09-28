@@ -12,13 +12,12 @@ import com.adamkorzeniak.masterdata.features.movie.model.Movie;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long>, JpaSpecificationExecutor<Movie> {
 
-	/**
-	 * Returns list of movies that contains given genre.
-	 * If no movies found returns empty list.
-	 * 
-	 * @param genre Must be in managed (persisted) state.
-	 * 
-	 * @return List of movies for given genre
-	 */
-	List<Movie> findByGenresContaining(Genre genre);
+    /**
+     * Returns list of movies that contains given genre.
+     * If no movies found returns empty list.
+     *
+     * @param genre Must be in managed (persisted) state.
+     * @return List of movies for given genre
+     */
+    List<Movie> findByGenresContaining(Genre genre);
 }

@@ -13,8 +13,8 @@ import lombok.Setter;
 @JsonIgnoreProperties(value = {"openapi", "security", "servers"})
 public class Metadata {
 
-	private Info info;
-	private List<Tag> tags;
-	private Map<String, Map<String, Operation>> paths;
-	private MetadataComponent components;
+    private Info info;
+    private List<Tag> tags;
+    private Map<String, Map<String, Operation>> paths;
+    private MetadataComponent components;
 }

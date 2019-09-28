@@ -11,8 +11,8 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(value = {"securitySchemes"})
 public class MetadataComponent {
-	
-	private Map<String, ComponentSchema> schemas;
-	private Map<String, Example> examples;
-	private Map<String, Response> responses;
+
+    private Map<String, ComponentSchema> schemas;
+    private Map<String, Example> examples;
+    private Map<String, Response> responses;
 }

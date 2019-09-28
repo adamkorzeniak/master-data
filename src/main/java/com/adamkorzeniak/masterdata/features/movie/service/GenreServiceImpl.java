@@ -20,76 +20,76 @@ import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
 @Service
 public class GenreServiceImpl implements GenreService {
 
-	private final GenreRepository genreRepository;
-	private final MovieRepository movieRepository;
-	private final SearchFilterService searchFilterService;
-	
-	@Autowired
-	public GenreServiceImpl(GenreRepository genreRepository,
-			MovieRepository movieRepository,
-			SearchFilterService searchFilterService) {
-		this.genreRepository = genreRepository;
-		this.movieRepository = movieRepository;
-		this.searchFilterService = searchFilterService;
-	}
+    private final GenreRepository genreRepository;
+    private final MovieRepository movieRepository;
+    private final SearchFilterService searchFilterService;
 
-	@Override
-	public List<Genre> searchGenres(Map<String, String> requestParams) {
-		List<SearchFilterParam> filters = searchFilterService.buildFilters(requestParams, "movie.genres");
-		Specification<Genre> spec = new GenericSpecification<>(filters);
-		return genreRepository.findAll(spec);
-	}
+    @Autowired
+    public GenreServiceImpl(GenreRepository genreRepository,
+                            MovieRepository movieRepository,
+                            SearchFilterService searchFilterService) {
+        this.genreRepository = genreRepository;
+        this.movieRepository = movieRepository;
+        this.searchFilterService = searchFilterService;
+    }
 
-	@Override
-	public Optional<Genre> findGenreById(Long id) {
-		return genreRepository.findById(id);
-	}
+    @Override
+    public List<Genre> searchGenres(Map<String, String> requestParams) {
+        List<SearchFilterParam> filters = searchFilterService.buildFilters(requestParams, "movie.genres");
+        Specification<Genre> spec = new GenericSpecification<>(filters);
+        return genreRepository.findAll(spec);
+    }
 
-	@Override
-	public Genre addGenre(Genre genre) {
-		genre.setId(-1L);
-		return genreRepository.save(genre);
-	}
+    @Override
+    public Optional<Genre> findGenreById(Long id) {
+        return genreRepository.findById(id);
+    }
 
-	@Override
-	public Genre updateGenre(Long id, Genre genre) {
-		genre.setId(id);
-		return genreRepository.save(genre);
-	}
+    @Override
+    public Genre addGenre(Genre genre) {
+        genre.setId(-1L);
+        return genreRepository.save(genre);
+    }
 
-	@Override
-	public void deleteGenre(Long id) {
-		genreRepository.deleteById(id);
-	}
+    @Override
+    public Genre updateGenre(Long id, Genre genre) {
+        genre.setId(id);
+        return genreRepository.save(genre);
+    }
 
-	@Override
-	public boolean isGenreExist(Long id) {
-		return genreRepository.existsById(id);
-	}
+    @Override
+    public void deleteGenre(Long id) {
+        genreRepository.deleteById(id);
+    }
 
-	@Override
-	public Genre mergeGenres(Long oldGenreId, Long targetGenreId) {
-		Optional<Genre> oldResult = genreRepository.findById(oldGenreId);
-		Optional<Genre> targetResult = genreRepository.findById(targetGenreId);
-		if (oldResult.isEmpty()) {
-			throw new NotFoundException("Genre", oldGenreId);
-		}
-		if (targetResult.isEmpty()) {
-			throw new NotFoundException("Genre", targetGenreId);
-		}
-		Genre oldGenre = oldResult.get();
-		Genre targetGenre = targetResult.get();
-		List<Movie> movies = movieRepository.findByGenresContaining(oldGenre);
-		for (Movie movie : movies) {
-			List<Genre> genres = movie.getGenres();
-			int index = genres.indexOf(oldGenre);
-			if (genres.contains(targetGenre)) {
-				genres.remove(index);
-			} else {
-				genres.set(index, targetGenre);
-			}
-		}
-		return targetGenre;
-	}
+    @Override
+    public boolean isGenreExist(Long id) {
+        return genreRepository.existsById(id);
+    }
+
+    @Override
+    public Genre mergeGenres(Long oldGenreId, Long targetGenreId) {
+        Optional<Genre> oldResult = genreRepository.findById(oldGenreId);
+        Optional<Genre> targetResult = genreRepository.findById(targetGenreId);
+        if (oldResult.isEmpty()) {
+            throw new NotFoundException("Genre", oldGenreId);
+        }
+        if (targetResult.isEmpty()) {
+            throw new NotFoundException("Genre", targetGenreId);
+        }
+        Genre oldGenre = oldResult.get();
+        Genre targetGenre = targetResult.get();
+        List<Movie> movies = movieRepository.findByGenresContaining(oldGenre);
+        for (Movie movie : movies) {
+            List<Genre> genres = movie.getGenres();
+            int index = genres.indexOf(oldGenre);
+            if (genres.contains(targetGenre)) {
+                genres.remove(index);
+            } else {
+                genres.set(index, targetGenre);
+            }
+        }
+        return targetGenre;
+    }
 
 }

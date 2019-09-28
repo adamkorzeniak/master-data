@@ -17,46 +17,46 @@ import com.adamkorzeniak.masterdata.features.diet.repository.FoodUnitRepository;
 @Service
 public class FoodUnitServiceImpl implements FoodUnitService {
 
-	private final FoodUnitRepository foodUnitRepository;
-	private final SearchFilterService searchFilterService;
-	
-	@Autowired
-	public FoodUnitServiceImpl(FoodUnitRepository foodUnitRepository, SearchFilterService searchFilterService) {
-		this.foodUnitRepository = foodUnitRepository;
-		this.searchFilterService = searchFilterService;
-	}
+    private final FoodUnitRepository foodUnitRepository;
+    private final SearchFilterService searchFilterService;
 
-	@Override
-	public List<FoodUnit> searchFoodUnits(Map<String, String> requestParams) {
-		List<SearchFilterParam> filters = searchFilterService.buildFilters(requestParams, "diet.foodUnits");
-		Specification<FoodUnit> spec = new GenericSpecification<>(filters);
-		return foodUnitRepository.findAll(spec);
-	}
+    @Autowired
+    public FoodUnitServiceImpl(FoodUnitRepository foodUnitRepository, SearchFilterService searchFilterService) {
+        this.foodUnitRepository = foodUnitRepository;
+        this.searchFilterService = searchFilterService;
+    }
 
-	@Override
-	public Optional<FoodUnit> findFoodUnitById(Long id) {
-		return foodUnitRepository.findById(id);
-	}
+    @Override
+    public List<FoodUnit> searchFoodUnits(Map<String, String> requestParams) {
+        List<SearchFilterParam> filters = searchFilterService.buildFilters(requestParams, "diet.foodUnits");
+        Specification<FoodUnit> spec = new GenericSpecification<>(filters);
+        return foodUnitRepository.findAll(spec);
+    }
 
-	@Override
-	public FoodUnit addFoodUnit(FoodUnit foodUnit) {
-		foodUnit.setId(-1L);
-		return foodUnitRepository.save(foodUnit);
-	}
+    @Override
+    public Optional<FoodUnit> findFoodUnitById(Long id) {
+        return foodUnitRepository.findById(id);
+    }
 
-	@Override
-	public FoodUnit updateFoodUnit(Long id, FoodUnit foodUnit) {
-		foodUnit.setId(id);
-		return foodUnitRepository.save(foodUnit);
-	}
+    @Override
+    public FoodUnit addFoodUnit(FoodUnit foodUnit) {
+        foodUnit.setId(-1L);
+        return foodUnitRepository.save(foodUnit);
+    }
 
-	@Override
-	public void deleteFoodUnit(Long id) {
-		foodUnitRepository.deleteById(id);
-	}
+    @Override
+    public FoodUnit updateFoodUnit(Long id, FoodUnit foodUnit) {
+        foodUnit.setId(id);
+        return foodUnitRepository.save(foodUnit);
+    }
 
-	@Override
-	public boolean isFoodUnitExist(Long id) {
-		return foodUnitRepository.existsById(id);
-	}
+    @Override
+    public void deleteFoodUnit(Long id) {
+        foodUnitRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean isFoodUnitExist(Long id) {
+        return foodUnitRepository.existsById(id);
+    }
 }

@@ -11,11 +11,11 @@ import lombok.Setter;
 @Setter
 public class ComponentSchemaProperty {
 
-	private String description;
-	private String type;
-	private String example;
-	@JsonProperty("enum")
-	private List<String> enums;
-	private boolean readOnly;
-	private boolean writeOnly;
+    private String description;
+    private String type;
+    private String example;
+    @JsonProperty("enum")
+    private List<String> enums;
+    private boolean readOnly;
+    private boolean writeOnly;
 }

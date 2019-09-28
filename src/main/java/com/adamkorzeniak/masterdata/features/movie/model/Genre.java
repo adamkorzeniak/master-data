@@ -22,19 +22,19 @@ import lombok.Setter;
 @Table(name = "movie__genres")
 public class Genre {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	@NotBlank
-	@NotNull
-	@Column(name = "name")
-	private String name;
+    @NotBlank
+    @NotNull
+    @Column(name = "name")
+    private String name;
 
-	@Override
-	public String toString() {
-		return name;
-	}
+    @Override
+    public String toString() {
+        return name;
+    }
 
 }

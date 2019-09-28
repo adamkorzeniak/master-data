@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ExampleValue {
 
-	private String code;
-	private String title;
-	private String message;
+    private String code;
+    private String title;
+    private String message;
 }

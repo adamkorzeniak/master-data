@@ -6,9 +6,9 @@ import com.adamkorzeniak.masterdata.features.user.model.User;
 
 public interface UserService {
 
-	User getUser(String username);
-	
-	User getUser(Principal user);
+    User getUser(String username);
 
-	User register(User user);
+    User getUser(Principal user);
+
+    User register(User user);
 }

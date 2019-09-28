@@ -17,34 +17,34 @@ import lombok.Setter;
 @Table(name = "error__errors")
 public class Error {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	@NotBlank
-	@Column(name = "error_id")
-	private String errorId;
+    @NotBlank
+    @Column(name = "error_id")
+    private String errorId;
 
-	@NotBlank
-	@Column(name = "app_id")
-	private String appId;
+    @NotBlank
+    @Column(name = "app_id")
+    private String appId;
 
-	@Column(name = "name")
-	private String name;
+    @Column(name = "name")
+    private String name;
 
-	@Column(name = "details")
-	private String details;
+    @Column(name = "details")
+    private String details;
 
-	@Column(name = "status")
-	private String status;
+    @Column(name = "status")
+    private String status;
 
-	@Column(name = "url")
-	private String url;
+    @Column(name = "url")
+    private String url;
 
-	@Column(name = "stack")
-	private String stack;
+    @Column(name = "stack")
+    private String stack;
 
-	@Column(name = "time")
-	private Long time;
+    @Column(name = "time")
+    private Long time;
 }

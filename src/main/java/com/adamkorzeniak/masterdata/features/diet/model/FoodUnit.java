@@ -24,23 +24,23 @@ import lombok.ToString;
 @Table(name = "diet__food_units")
 public class FoodUnit {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	@NotBlank
-	@NotNull
-	@Column(name = "name")
-	private String name;
+    @NotBlank
+    @NotNull
+    @Column(name = "name")
+    private String name;
 
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "product_id")
-	private Product product;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
-	@NotNull
-	@Column(name = "multiplier")
-	private Double multiplier;
+    @NotNull
+    @Column(name = "multiplier")
+    private Double multiplier;
 
 }

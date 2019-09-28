@@ -27,56 +27,51 @@ import com.adamkorzeniak.masterdata.features.error.service.ErrorServiceHelper;
 @RestController
 @RequestMapping("/v0/Error")
 public class ErrorController {
-	
-	private final ErrorService errorService;
-	
-	@Autowired
-	public ErrorController(ErrorService errorService) {
-		this.errorService = errorService;
-	}
 
-	/**
-	 * Returns list of errors with 200 OK.
-	 * <p>
-	 * If there are no errors it returns empty list with 204 No Content
-	 * 
-	 */
-	@GetMapping("/errors")
-	public ResponseEntity<List<ErrorDTO>> findErrors(@RequestParam Map<String, String> allRequestParams) {
+    private final ErrorService errorService;
 
-		List<ErrorDTO> dtos = errorService.searchErrors(allRequestParams).stream().map(ErrorServiceHelper::convertToDTO)
-				.collect(Collectors.toList());
+    @Autowired
+    public ErrorController(ErrorService errorService) {
+        this.errorService = errorService;
+    }
 
-		if (dtos.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<>(dtos, HttpStatus.OK);
-	}
+    /**
+     * Returns list of errors with 200 OK.
+     * <p>
+     * If there are no errors it returns empty list with 204 No Content
+     */
+    @GetMapping("/errors")
+    public ResponseEntity<List<ErrorDTO>> findErrors(@RequestParam Map<String, String> allRequestParams) {
 
-	/**
-	 * 
-	 * Creates a error in database. Returns created error with 201 Created.
-	 * 
-	 */
-	@PostMapping("/errors")
-	public ResponseEntity<ErrorDTO> addError(@RequestBody @Valid ErrorDTO dto) {
-		Error error = ErrorServiceHelper.convertToEntity(dto);
-		Error newError = errorService.addError(error);
-		return new ResponseEntity<>(ErrorServiceHelper.convertToDTO(newError), HttpStatus.CREATED);
-	}
+        List<ErrorDTO> dtos = errorService.searchErrors(allRequestParams).stream().map(ErrorServiceHelper::convertToDTO)
+            .collect(Collectors.toList());
 
-	/**
-	 * 
-	 * Deletes a error with given id. Returns empty response with 204 No Content.
-	 * 
-	 */
-	@DeleteMapping("/errors/{errorId}")
-	public ResponseEntity<Void> deleteError(@PathVariable Long errorId) {
-		boolean exists = errorService.isErrorExist(errorId);
-		if (!exists) {
-			throw new NotFoundException("Error", errorId);
-		}
-		errorService.deleteError(errorId);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+        if (dtos.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
+    /**
+     * Creates a error in database. Returns created error with 201 Created.
+     */
+    @PostMapping("/errors")
+    public ResponseEntity<ErrorDTO> addError(@RequestBody @Valid ErrorDTO dto) {
+        Error error = ErrorServiceHelper.convertToEntity(dto);
+        Error newError = errorService.addError(error);
+        return new ResponseEntity<>(ErrorServiceHelper.convertToDTO(newError), HttpStatus.CREATED);
+    }
+
+    /**
+     * Deletes a error with given id. Returns empty response with 204 No Content.
+     */
+    @DeleteMapping("/errors/{errorId}")
+    public ResponseEntity<Void> deleteError(@PathVariable Long errorId) {
+        boolean exists = errorService.isErrorExist(errorId);
+        if (!exists) {
+            throw new NotFoundException("Error", errorId);
+        }
+        errorService.deleteError(errorId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

@@ -20,23 +20,23 @@ import lombok.ToString;
 //@Table(name = "diet__consumption_goals")
 public class ConsumptionGoal {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	@NotBlank
-	@NotNull
-	@Column(name = "calories")
-	private Double calories;
+    @NotBlank
+    @NotNull
+    @Column(name = "calories")
+    private Double calories;
 
-	@Column(name = "carbs")
-	private Double carbs;
+    @Column(name = "carbs")
+    private Double carbs;
 
-	@Column(name = "fats")
-	private Double fats;
+    @Column(name = "fats")
+    private Double fats;
 
-	@Column(name = "proteins")
-	private Double proteins;
+    @Column(name = "proteins")
+    private Double proteins;
 
 }

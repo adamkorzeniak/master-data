@@ -7,11 +7,11 @@ import com.adamkorzeniak.masterdata.features.error.model.Error;
 
 public interface ErrorService {
 
-	List<Error> searchErrors(Map<String, String> requestParams);
+    List<Error> searchErrors(Map<String, String> requestParams);
 
-	Error addError(Error error);
+    Error addError(Error error);
 
-	void deleteError(Long id);
+    void deleteError(Long id);
 
-	boolean isErrorExist(Long errorId);
+    boolean isErrorExist(Long errorId);
 }

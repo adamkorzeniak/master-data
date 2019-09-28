@@ -17,35 +17,35 @@ import com.adamkorzeniak.masterdata.features.movie.service.GenreServiceHelper;
 @SpringBootTest
 public class GenreServiceHelperTest {
 
-	@Test
-	public void ConvertGenreDtoToEntity_NoIssuesExpected_ReturnsConvertedEntity() {
-		Long id = 17L;
-		String name = "Comedy";
-		
-		GenreDTO dto = new GenreDTO();
-		dto.setId(id);
-		dto.setName(name);
-		
-		Genre genre = GenreServiceHelper.convertToEntity(dto);
-		
-		assertThat(genre).isNotNull();
-		assertThat(genre.getId()).isEqualTo(id);
-		assertThat(genre.getName()).isEqualTo(name);
-	}
+    @Test
+    public void ConvertGenreDtoToEntity_NoIssuesExpected_ReturnsConvertedEntity() {
+        Long id = 17L;
+        String name = "Comedy";
 
-	@Test
-	public void ConvertGenreEntityToDto_NoIssuesExpected_ReturnsConvertedDto() {
-		Long id = 22L;
-		String name = "Horor";
-		
-		Genre genre = new Genre();
-		genre.setId(id);
-		genre.setName(name);
-		
-		GenreDTO dto = GenreServiceHelper.convertToDTO(genre);
-		
-		assertThat(dto).isNotNull();
-		assertThat(dto.getId()).isEqualTo(id);
-		assertThat(dto.getName()).isEqualTo(name);
-	}
+        GenreDTO dto = new GenreDTO();
+        dto.setId(id);
+        dto.setName(name);
+
+        Genre genre = GenreServiceHelper.convertToEntity(dto);
+
+        assertThat(genre).isNotNull();
+        assertThat(genre.getId()).isEqualTo(id);
+        assertThat(genre.getName()).isEqualTo(name);
+    }
+
+    @Test
+    public void ConvertGenreEntityToDto_NoIssuesExpected_ReturnsConvertedDto() {
+        Long id = 22L;
+        String name = "Horor";
+
+        Genre genre = new Genre();
+        genre.setId(id);
+        genre.setName(name);
+
+        GenreDTO dto = GenreServiceHelper.convertToDTO(genre);
+
+        assertThat(dto).isNotNull();
+        assertThat(dto.getId()).isEqualTo(id);
+        assertThat(dto.getName()).isEqualTo(name);
+    }
 }

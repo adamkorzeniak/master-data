@@ -10,8 +10,8 @@ import lombok.Setter;
 @Setter
 public class ComponentSchema {
 
-	private String type;
-	private String description;
-	private List<String> required;
-	private Map<String, ComponentSchemaProperty> properties;
+    private String type;
+    private String description;
+    private List<String> required;
+    private Map<String, ComponentSchemaProperty> properties;
 }

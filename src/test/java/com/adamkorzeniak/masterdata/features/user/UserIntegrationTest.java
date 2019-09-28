@@ -31,95 +31,95 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 @Sql({"/sql/test-user-data.sql"})
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class UserIntegrationTest {
-	
-	private static final String REGISTER_USER_PATH = "/v0/User/register";
-	private static final String GET_ME_PATH = "/v0/User/me";
-	
-	private static final String CONTENT_TYPE_PARAM_NAME = "Content-Type";
-	private static final String CONTENT_TYPE_PARAM_VALUE = "application/json";
 
-	private static final String ROOT_OBJECT = "$";
-	private static final String ID_FIELD = "id";
-	private static final String USERNAME_FIELD = "username";
-	private static final String PASSWORD_FIELD = "password";
-	private static final String ROLE_FIELD = "role";
-	
-	private static final String EXISTING_USER_USERNAME = "admin";
-	private static final Role EXISTING_USER_ROLE = Role.USER;
-	
-	private static final String NEW_USER_USERNAME = "adam";
-	private static final String NEW_USER_PASSWORD = "admin";
-	private static final Role NEW_USER_ROLE = Role.USER;
-	
-	@Autowired
-	private WebApplicationContext webApplicationContext;
-	
-	@BeforeEach
-	public void initialiseRestAssuredMockMvcWebApplicationContext() {
-	    RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
-	}
-	
-	@Test
-	public void GetUserDetails_NoIssues_ReturnUserDetails() {
-		
-		when()
-			.get(GET_ME_PATH)
-		.then()
-			.statusCode(200)
-			.body(ID_FIELD, notNullValue())
-			.body(USERNAME_FIELD, equalTo(EXISTING_USER_USERNAME))
-			.body(ROOT_OBJECT, not(hasKey(PASSWORD_FIELD)))
-			.body(ROLE_FIELD, equalTo(EXISTING_USER_ROLE.toString()));
-	}
+    private static final String REGISTER_USER_PATH = "/v0/User/register";
+    private static final String GET_ME_PATH = "/v0/User/me";
 
-	@Test
-	public void RegisterUser_NoIssues_ReturnsAddedUser() {
-		
-		UserRequest requestBody = new UserRequest();
-		requestBody.setUsername(NEW_USER_USERNAME);
-		requestBody.setPassword(NEW_USER_PASSWORD);
-		requestBody.setRole(NEW_USER_ROLE.toString());
-		
-		given()
-			.header(CONTENT_TYPE_PARAM_NAME, CONTENT_TYPE_PARAM_VALUE)
-			.body(requestBody)
-		.when()
-			.post(REGISTER_USER_PATH)
-		.then()
-			.statusCode(201)
-			.body(ID_FIELD, notNullValue())
-			.body(USERNAME_FIELD, equalTo(NEW_USER_USERNAME))
-			.body(ROOT_OBJECT, not(hasKey(PASSWORD_FIELD)))
-			.body(ROLE_FIELD, equalTo(NEW_USER_ROLE.toString())); 
-	}
+    private static final String CONTENT_TYPE_PARAM_NAME = "Content-Type";
+    private static final String CONTENT_TYPE_PARAM_VALUE = "application/json";
 
-//	@Test
-	public void RegisterUser_UserAlreadyExists_ReturnConflictErrorResponse() {
-		fail();
-	}
-	
-//	@Test
-	public void RegisterUser_AllFieldsMissing_ReturnsValidationErrorResponse() {
-		fail();
-	}
-	
-//	@Test
-	public void RegisterUser_UsernameMissing_ReturnsValidationErrorResponse() {
-		fail();
-	}
-	
-//	@Test
-	public void RegisterUser_PasswordMissing_ReturnsValidationErrorResponse() {
-		fail();
-	}
-	
-//	@Test
-	public void RegisterUser_RoleMissing_ReturnsValidationErrorResponse() {
-		fail();
-	}
-	
-//	@Test
-	public void RegisterUser_RoleInvalid_ReturnsValidationErrorResponse() {
-		fail();
-	}
+    private static final String ROOT_OBJECT = "$";
+    private static final String ID_FIELD = "id";
+    private static final String USERNAME_FIELD = "username";
+    private static final String PASSWORD_FIELD = "password";
+    private static final String ROLE_FIELD = "role";
+
+    private static final String EXISTING_USER_USERNAME = "admin";
+    private static final Role EXISTING_USER_ROLE = Role.USER;
+
+    private static final String NEW_USER_USERNAME = "adam";
+    private static final String NEW_USER_PASSWORD = "admin";
+    private static final Role NEW_USER_ROLE = Role.USER;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
+    @BeforeEach
+    public void initialiseRestAssuredMockMvcWebApplicationContext() {
+        RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
+    }
+
+    @Test
+    public void GetUserDetails_NoIssues_ReturnUserDetails() {
+
+        when()
+            .get(GET_ME_PATH)
+            .then()
+            .statusCode(200)
+            .body(ID_FIELD, notNullValue())
+            .body(USERNAME_FIELD, equalTo(EXISTING_USER_USERNAME))
+            .body(ROOT_OBJECT, not(hasKey(PASSWORD_FIELD)))
+            .body(ROLE_FIELD, equalTo(EXISTING_USER_ROLE.toString()));
+    }
+
+    @Test
+    public void RegisterUser_NoIssues_ReturnsAddedUser() {
+
+        UserRequest requestBody = new UserRequest();
+        requestBody.setUsername(NEW_USER_USERNAME);
+        requestBody.setPassword(NEW_USER_PASSWORD);
+        requestBody.setRole(NEW_USER_ROLE.toString());
+
+        given()
+            .header(CONTENT_TYPE_PARAM_NAME, CONTENT_TYPE_PARAM_VALUE)
+            .body(requestBody)
+            .when()
+            .post(REGISTER_USER_PATH)
+            .then()
+            .statusCode(201)
+            .body(ID_FIELD, notNullValue())
+            .body(USERNAME_FIELD, equalTo(NEW_USER_USERNAME))
+            .body(ROOT_OBJECT, not(hasKey(PASSWORD_FIELD)))
+            .body(ROLE_FIELD, equalTo(NEW_USER_ROLE.toString()));
+    }
+
+    //	@Test
+    public void RegisterUser_UserAlreadyExists_ReturnConflictErrorResponse() {
+        fail();
+    }
+
+    //	@Test
+    public void RegisterUser_AllFieldsMissing_ReturnsValidationErrorResponse() {
+        fail();
+    }
+
+    //	@Test
+    public void RegisterUser_UsernameMissing_ReturnsValidationErrorResponse() {
+        fail();
+    }
+
+    //	@Test
+    public void RegisterUser_PasswordMissing_ReturnsValidationErrorResponse() {
+        fail();
+    }
+
+    //	@Test
+    public void RegisterUser_RoleMissing_ReturnsValidationErrorResponse() {
+        fail();
+    }
+
+    //	@Test
+    public void RegisterUser_RoleInvalid_ReturnsValidationErrorResponse() {
+        fail();
+    }
 }

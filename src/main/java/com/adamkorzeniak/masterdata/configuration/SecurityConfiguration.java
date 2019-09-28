@@ -21,49 +21,49 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	private static final String[] notSecuredResources = new String[] {};
+    private static final String[] notSecuredResources = new String[]{};
 
-	@Autowired
-	public SecurityConfiguration(@Qualifier("customUserDetailsService") UserDetailsService userDetailsService,
-								 PasswordEncoder passwordEncoder,
-								 AuthenticationManagerBuilder auth) throws Exception {
-		
-		auth
-			.userDetailsService(userDetailsService)
-			.passwordEncoder(passwordEncoder);
-	}
+    @Autowired
+    public SecurityConfiguration(@Qualifier("customUserDetailsService") UserDetailsService userDetailsService,
+                                 PasswordEncoder passwordEncoder,
+                                 AuthenticationManagerBuilder auth) throws Exception {
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+        auth
+            .userDetailsService(userDetailsService)
+            .passwordEncoder(passwordEncoder);
+    }
 
-		http
-			.httpBasic()
-			.and()
-				.authorizeRequests()
-				.antMatchers(notSecuredResources)
-				.permitAll()
-			.anyRequest()
-				.authenticated()
-			.and()
-				.csrf()
-				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 
-		http.cors().and().csrf().disable();
+        http
+            .httpBasic()
+            .and()
+            .authorizeRequests()
+            .antMatchers(notSecuredResources)
+            .permitAll()
+            .anyRequest()
+            .authenticated()
+            .and()
+            .csrf()
+            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
-		// TODO: check what to do about cors
-		// TODO: check what to do about CSRF
-	}
+        http.cors().and().csrf().disable();
 
-	@Bean
-	public CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("*"));
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-		configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
-		configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
-		return source;
-	}
+        // TODO: check what to do about cors
+        // TODO: check what to do about CSRF
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+        configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
 }

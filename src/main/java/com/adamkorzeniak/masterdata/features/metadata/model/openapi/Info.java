@@ -7,8 +7,8 @@ import lombok.Setter;
 @Setter
 public class Info {
 
-	private String title;
-	private String description;
-	private String version;
-	private InfoContact contact;
+    private String title;
+    private String description;
+    private String version;
+    private InfoContact contact;
 }

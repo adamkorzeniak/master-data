@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class Module {
 
-	private String name;
-	private String description;
-	private List<Resource> resources;
+    private String name;
+    private String description;
+    private List<Resource> resources;
 }

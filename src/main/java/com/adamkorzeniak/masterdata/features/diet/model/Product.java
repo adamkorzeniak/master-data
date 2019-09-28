@@ -22,44 +22,44 @@ import lombok.ToString;
 @Table(name = "diet__products")
 public class Product {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	@NotBlank
-	@NotNull
-	@Column(name = "name")
-	private String name;
+    @NotBlank
+    @NotNull
+    @Column(name = "name")
+    private String name;
 
-	@NotBlank
-	@Column(name = "characteristic")
-	private String characteristic;
+    @NotBlank
+    @Column(name = "characteristic")
+    private String characteristic;
 
-	@NotNull
-	@Column(name = "baseUnit")
-	private UnitType baseUnit;
+    @NotNull
+    @Column(name = "baseUnit")
+    private UnitType baseUnit;
 
-	@NotNull
-	@Column(name = "calories")
-	private Double calories;
+    @NotNull
+    @Column(name = "calories")
+    private Double calories;
 
-	@NotNull
-	@Column(name = "carbs")
-	private Double carbs;
+    @NotNull
+    @Column(name = "carbs")
+    private Double carbs;
 
-	@NotNull
-	@Column(name = "fats")
-	private Double fats;
+    @NotNull
+    @Column(name = "fats")
+    private Double fats;
 
-	@NotNull
-	@Column(name = "proteins")
-	private Double proteins;
+    @NotNull
+    @Column(name = "proteins")
+    private Double proteins;
 
-	@Column(name = "roughage")
-	private Double roughage;
+    @Column(name = "roughage")
+    private Double roughage;
 
-	@Column(name = "salt")
-	private Double salt;
+    @Column(name = "salt")
+    private Double salt;
 
 }

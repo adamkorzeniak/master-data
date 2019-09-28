@@ -5,10 +5,8 @@ import java.util.Map;
 
 public interface SearchFilterService {
 
-	/**
-	 * 
-	 * Builds list of API Search Query Params object representation
-	 * 
-	 */
-	List<SearchFilterParam> buildFilters(Map<String, String> map, String propertyLocation);
+    /**
+     * Builds list of API Search Query Params object representation
+     */
+    List<SearchFilterParam> buildFilters(Map<String, String> map, String propertyLocation);
 }

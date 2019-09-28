@@ -1,10 +1,10 @@
 package com.adamkorzeniak.masterdata.features.diet.model;
 
 public enum UnitType {
-	GRAM, MILILITR;
+    GRAM, MILILITR;
 
-	@Override
-	public String toString() {
-		return name().toLowerCase();
-	}
+    @Override
+    public String toString() {
+        return name().toLowerCase();
+    }
 }

@@ -6,8 +6,8 @@ import com.adamkorzeniak.masterdata.features.movie.model.dto.MovieDTO;
 
 public interface FilmwebService {
 
-	MovieDTO getMovieDetails(String movieUrl);
+    MovieDTO getMovieDetails(String movieUrl);
 
-	List<String> getPopularMoviesUrls(int count);
+    List<String> getPopularMoviesUrls(int count);
 
 }

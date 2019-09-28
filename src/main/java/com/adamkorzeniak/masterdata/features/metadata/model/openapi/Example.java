@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class Example {
 
-	private ExampleValue value;
+    private ExampleValue value;
 }

@@ -23,109 +23,109 @@ import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
 @ActiveProfiles(profiles = "test")
 @DataJpaTest
 public class MovieRepositoryTest {
-	
-	private Movie titanic;
-	private Movie inception;
-	private Movie seven;
-	private List<Genre> persistedGenres;
 
-	@Autowired
-	private MovieRepository movieRepository;
+    private Movie titanic;
+    private Movie inception;
+    private Movie seven;
+    private List<Genre> persistedGenres;
 
-	@Autowired
-	private TestEntityManager entityManager;
-	
-	@BeforeEach
-	public void createSampleMovies() {
-		titanic = createMovie("Titanic", "Drama", "Romance");
-		inception = createMovie("Inception", "Thriller", "Sci-fi");
-		seven = createMovie("Seven", "Thriller", "Crime");
-		
-		populateRepository();
-	}
+    @Autowired
+    private MovieRepository movieRepository;
 
-	@Test
-	public void FindMovieContainingGenre_NoMoviesContainingGenre_ReturnsEmptyList() {
-		Genre genre = findGenreByName("Horror");
-		List<Movie> movies = movieRepository.findByGenresContaining(genre);
-		assertThat(movies.size()).isEqualTo(0);
-	}
+    @Autowired
+    private TestEntityManager entityManager;
 
-	@Test
-	public void FindMovieContainingGenre_OneMovieContainingGenre_ReturnsListWithOneElement() {
-		Genre genre = findGenreByName("Romance");
-		List<Movie> movies = movieRepository.findByGenresContaining(genre);
-		assertThat(movies.size()).isEqualTo(1);
-		assertThat(movies.get(0).getTitle()).isEqualTo(titanic.getTitle());
-	}
+    @BeforeEach
+    public void createSampleMovies() {
+        titanic = createMovie("Titanic", "Drama", "Romance");
+        inception = createMovie("Inception", "Thriller", "Sci-fi");
+        seven = createMovie("Seven", "Thriller", "Crime");
 
-	@Test
-	public void FindMovieContainingGenre_TwoMoviesContainingGenre_ReturnsListWithTwoElements() {
-		Genre genre = findGenreByName("Thriller");
-		List<Movie> movies = movieRepository.findByGenresContaining(genre);
-		assertThat(movies.size()).isEqualTo(2);
-		Movie movie1 = movies.get(0);
-		Movie movie2 = movies.get(1);
-		assertThat(movie1.getTitle())
-			.isIn(Arrays.asList(inception.getTitle(), seven.getTitle()));
-		assertThat(movie2.getTitle())
-			.isIn(Arrays.asList(inception.getTitle(), seven.getTitle()));
-		assertThat(movie1.getTitle()).isNotEqualTo(movie2.getTitle());
-	
-	}
+        populateRepository();
+    }
 
-	private void populateRepository() {
-		persistAndFlushGenres();
-		persistMovie("Titanic", "Drama", "Romance");
-		persistMovie("Inception", "Thriller", "Sci-fi");
-		persistMovie("Seven", "Thriller", "Crime");
-		persistMovie("No Genre");
-		this.entityManager.flush();
-	}
-	
-	private void persistAndFlushGenres() {
-		List<String> genreList = Arrays.asList("Drama", "Romance", "Thriller", "Sci-fi", "Crime", "Horror");
-		List<Genre> genres = genreList.stream()
-			.map(this::createGenre)
-			.collect(Collectors.toList());
-		genres.forEach(entityManager::persist);
-		this.entityManager.flush();
-		persistedGenres =  genres;		
-	}
-	
-	private void persistMovie(String title, String... genreNames) {
-		Movie movie = new Movie();
-		movie.setTitle(title);
-		movie.setYear(2000);
-		movie.setDuration(120);
-		List<Genre> genres = Arrays.stream(genreNames)
-				.map(this::findGenreByName)
-				.collect(Collectors.toList());
-		movie.setGenres(genres);
-		this.entityManager.persist(movie);
-	}
-	
-	private Genre findGenreByName(String name) {
-		return persistedGenres.stream()
-			.filter(genre -> genre.getName().equals(name))
-			.findFirst()
-			.orElse(null);
-	}
-	
-	private Movie createMovie(String title, String... genreNames) {
-		Movie movie = new Movie();
-		movie.setTitle(title);
-		List<Genre> genres = Arrays.stream(genreNames)
-				.map(this::createGenre)
-				.collect(Collectors.toList());
-		movie.setGenres(genres);
-		return movie;
-	}
+    @Test
+    public void FindMovieContainingGenre_NoMoviesContainingGenre_ReturnsEmptyList() {
+        Genre genre = findGenreByName("Horror");
+        List<Movie> movies = movieRepository.findByGenresContaining(genre);
+        assertThat(movies.size()).isEqualTo(0);
+    }
 
-	private Genre createGenre(String name) {
-		Genre genre = new Genre();
-		genre.setName(name);
-		return genre;
-	}
+    @Test
+    public void FindMovieContainingGenre_OneMovieContainingGenre_ReturnsListWithOneElement() {
+        Genre genre = findGenreByName("Romance");
+        List<Movie> movies = movieRepository.findByGenresContaining(genre);
+        assertThat(movies.size()).isEqualTo(1);
+        assertThat(movies.get(0).getTitle()).isEqualTo(titanic.getTitle());
+    }
+
+    @Test
+    public void FindMovieContainingGenre_TwoMoviesContainingGenre_ReturnsListWithTwoElements() {
+        Genre genre = findGenreByName("Thriller");
+        List<Movie> movies = movieRepository.findByGenresContaining(genre);
+        assertThat(movies.size()).isEqualTo(2);
+        Movie movie1 = movies.get(0);
+        Movie movie2 = movies.get(1);
+        assertThat(movie1.getTitle())
+            .isIn(Arrays.asList(inception.getTitle(), seven.getTitle()));
+        assertThat(movie2.getTitle())
+            .isIn(Arrays.asList(inception.getTitle(), seven.getTitle()));
+        assertThat(movie1.getTitle()).isNotEqualTo(movie2.getTitle());
+
+    }
+
+    private void populateRepository() {
+        persistAndFlushGenres();
+        persistMovie("Titanic", "Drama", "Romance");
+        persistMovie("Inception", "Thriller", "Sci-fi");
+        persistMovie("Seven", "Thriller", "Crime");
+        persistMovie("No Genre");
+        this.entityManager.flush();
+    }
+
+    private void persistAndFlushGenres() {
+        List<String> genreList = Arrays.asList("Drama", "Romance", "Thriller", "Sci-fi", "Crime", "Horror");
+        List<Genre> genres = genreList.stream()
+            .map(this::createGenre)
+            .collect(Collectors.toList());
+        genres.forEach(entityManager::persist);
+        this.entityManager.flush();
+        persistedGenres = genres;
+    }
+
+    private void persistMovie(String title, String... genreNames) {
+        Movie movie = new Movie();
+        movie.setTitle(title);
+        movie.setYear(2000);
+        movie.setDuration(120);
+        List<Genre> genres = Arrays.stream(genreNames)
+            .map(this::findGenreByName)
+            .collect(Collectors.toList());
+        movie.setGenres(genres);
+        this.entityManager.persist(movie);
+    }
+
+    private Genre findGenreByName(String name) {
+        return persistedGenres.stream()
+            .filter(genre -> genre.getName().equals(name))
+            .findFirst()
+            .orElse(null);
+    }
+
+    private Movie createMovie(String title, String... genreNames) {
+        Movie movie = new Movie();
+        movie.setTitle(title);
+        List<Genre> genres = Arrays.stream(genreNames)
+            .map(this::createGenre)
+            .collect(Collectors.toList());
+        movie.setGenres(genres);
+        return movie;
+    }
+
+    private Genre createGenre(String name) {
+        Genre genre = new Genre();
+        genre.setName(name);
+        return genre;
+    }
 
 }

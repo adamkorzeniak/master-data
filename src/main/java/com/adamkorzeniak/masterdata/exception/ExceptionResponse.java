@@ -5,16 +5,14 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
- * 
  * @author Representation of API Exception Response
- *
  */
 @Getter
 @ToString
 @AllArgsConstructor
 class ExceptionResponse {
 
-	private final String code;
-	private final String title;
-	private final String message;
+    private final String code;
+    private final String title;
+    private final String message;
 }

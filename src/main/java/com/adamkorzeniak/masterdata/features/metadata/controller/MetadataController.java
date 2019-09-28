@@ -15,24 +15,24 @@ import com.adamkorzeniak.masterdata.features.metadata.service.MetadataService;
 @RestController
 @RequestMapping("/v0")
 public class MetadataController {
-	
-	private final MetadataService metadataService;
-	
-	@Autowired
-	public MetadataController(MetadataService metadataService) {
-		this.metadataService = metadataService;
-	}
 
-	@GetMapping("/Metadata")
-	public ResponseEntity<Metadata> retrieveMetadata() throws Exception {
-		Metadata metadata = metadataService.buildMetadata();
-		return new ResponseEntity<>(metadata, HttpStatus.OK);
-	}
+    private final MetadataService metadataService;
 
-	@GetMapping("/Metadata2")
-	public ResponseEntity<MetadataResponse> retrieveMetadataResponse() throws Exception {
-		Metadata metadata = metadataService.buildMetadata();
-		MetadataResponse response = metadataService.buildResponse(metadata);
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
+    @Autowired
+    public MetadataController(MetadataService metadataService) {
+        this.metadataService = metadataService;
+    }
+
+    @GetMapping("/Metadata")
+    public ResponseEntity<Metadata> retrieveMetadata() throws Exception {
+        Metadata metadata = metadataService.buildMetadata();
+        return new ResponseEntity<>(metadata, HttpStatus.OK);
+    }
+
+    @GetMapping("/Metadata2")
+    public ResponseEntity<MetadataResponse> retrieveMetadataResponse() throws Exception {
+        Metadata metadata = metadataService.buildMetadata();
+        MetadataResponse response = metadataService.buildResponse(metadata);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

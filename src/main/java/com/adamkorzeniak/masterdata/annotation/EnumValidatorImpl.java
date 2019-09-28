@@ -8,22 +8,22 @@ import javax.validation.ConstraintValidatorContext;
 
 public class EnumValidatorImpl implements ConstraintValidator<EnumValidator, String> {
 
-	private List<String> valueList = null;
-	
-	@Override
-	public boolean isValid(String value, ConstraintValidatorContext context) {
-		return valueList.contains(value.toUpperCase());
-	}
+    private List<String> valueList = null;
 
-	@Override
-	public void initialize(EnumValidator constraintAnnotation) {
-		valueList = new ArrayList<>();
-		Class<? extends Enum<?>> enumClass = constraintAnnotation.enumClazz();
+    @Override
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        return valueList.contains(value.toUpperCase());
+    }
 
-		Enum[] enumValArr = enumClass.getEnumConstants();
-		for (Enum enumVal : enumValArr) {
-			valueList.add(enumVal.toString().toUpperCase());
-		}
+    @Override
+    public void initialize(EnumValidator constraintAnnotation) {
+        valueList = new ArrayList<>();
+        Class<? extends Enum<?>> enumClass = constraintAnnotation.enumClazz();
 
-	}
+        Enum[] enumValArr = enumClass.getEnumConstants();
+        for (Enum enumVal : enumValArr) {
+            valueList.add(enumVal.toString().toUpperCase());
+        }
+
+    }
 }

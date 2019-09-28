@@ -33,51 +33,51 @@ import lombok.ToString;
 @Table(name = "movie__movies")
 public class Movie {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	@NotBlank
-	@NotNull
-	@Column(name = "title")
-	private String title;
+    @NotBlank
+    @NotNull
+    @Column(name = "title")
+    private String title;
 
-	@Min(1800)
-	@Max(2999)
-	@NotNull
-	@Column(name = "year")
-	private Integer year;
+    @Min(1800)
+    @Max(2999)
+    @NotNull
+    @Column(name = "year")
+    private Integer year;
 
-	@Min(0)
-	@Max(1000)
-	@NotNull
-	@Column(name = "duration")
-	private Integer duration;
+    @Min(0)
+    @Max(1000)
+    @NotNull
+    @Column(name = "duration")
+    private Integer duration;
 
-	@Min(0)
-	@Max(10)
-	@Column(name = "rating")
-	private Integer rating;
+    @Min(0)
+    @Max(10)
+    @Column(name = "rating")
+    private Integer rating;
 
-	@Min(0)
-	@Max(5)
-	@Column(name = "watch_priority")
-	private Integer watchPriority;
+    @Min(0)
+    @Max(5)
+    @Column(name = "watch_priority")
+    private Integer watchPriority;
 
-	@Column(name = "description")
-	private String description;
+    @Column(name = "description")
+    private String description;
 
-	@Column(name = "review")
-	private String review;
+    @Column(name = "review")
+    private String review;
 
-	@Column(name = "plot_summary")
-	private String plotSummary;
+    @Column(name = "plot_summary")
+    private String plotSummary;
 
-	@Column(name = "review_date")
-	private LocalDate reviewDate;
+    @Column(name = "review_date")
+    private LocalDate reviewDate;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "movie__movie_genres", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
-	private List<Genre> genres;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "movie__movie_genres", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private List<Genre> genres;
 }

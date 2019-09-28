@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 public class MetadataResponse {
 
-	private MetadataInfo info;
-	private List<Module> modules;
+    private MetadataInfo info;
+    private List<Module> modules;
 }

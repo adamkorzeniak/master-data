@@ -7,10 +7,10 @@ import lombok.Setter;
 @Setter
 public class OperationResponse {
 
-	
-	private String summary;
-	private String operationId;
-	private String description;
+
+    private String summary;
+    private String operationId;
+    private String description;
 //	private List<Parameter> parameters;
 
 }

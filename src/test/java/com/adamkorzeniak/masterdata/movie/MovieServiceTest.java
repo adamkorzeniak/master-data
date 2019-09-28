@@ -30,165 +30,165 @@ import com.adamkorzeniak.masterdata.features.movie.service.MovieService;
 @SpringBootTest
 public class MovieServiceTest {
 
-	@MockBean
-	private MovieRepository movieRepository;
+    @MockBean
+    private MovieRepository movieRepository;
 
-	@Autowired
-	private MovieService movieService;
+    @Autowired
+    private MovieService movieService;
 
-	@Test
-	public void SearchMovies_NoGenreParam_ReturnsListOfMovies() {
-		Map<String, String> params = new HashMap<>();
-		params.put("search-title", "to the");
-		
-		Movie movie1 = new Movie();
-		movie1.setTitle("Back to the Future");
-		Genre genre1 = new Genre();
-		genre1.setName("Drama");
-		movie1.setGenres(Arrays.asList(genre1));
-		
-		Movie movie2 = new Movie();
-		movie2.setTitle("Back to the Future 2");
-		Genre genre2 = new Genre();
-		genre2.setName("Comedy");
-		movie2.setGenres(Arrays.asList(genre2));
-		
-		List<Movie> movies = Arrays.asList(movie1, movie2);
+    @Test
+    public void SearchMovies_NoGenreParam_ReturnsListOfMovies() {
+        Map<String, String> params = new HashMap<>();
+        params.put("search-title", "to the");
 
-		when(movieRepository.findAll(ArgumentMatchers.<Specification<Movie>>any())).thenReturn(movies);
+        Movie movie1 = new Movie();
+        movie1.setTitle("Back to the Future");
+        Genre genre1 = new Genre();
+        genre1.setName("Drama");
+        movie1.setGenres(Arrays.asList(genre1));
 
-		List<Movie> result = movieService.searchMovies(params);
-		
-		assertThat(params).hasSize(1);
-		assertThat(result).isNotNull();
-		assertThat(result).hasSize(2);
-		assertThat(result.get(0).getTitle()).isEqualTo("Back to the Future");
-		assertThat(result.get(1).getTitle()).isEqualTo("Back to the Future 2");
-	}
-	
-	@Test
-	public void SearchMovies_WithGenreParam_ReturnsListOfMoviesForGenre() {
-		Map<String, String> params = new HashMap<>();
-		params.put("search-title", "to the");
-		params.put("genres", "com");
-		
-		Movie movie1 = new Movie();
-		movie1.setTitle("Back to the Future");
-		Genre genre1 = new Genre();
-		genre1.setName("Drama");
-		movie1.setGenres(Arrays.asList(genre1));
-		
-		Movie movie2 = new Movie();
-		movie2.setTitle("Back to the Future 2");
-		Genre genre2 = new Genre();
-		genre2.setName("Comedy");
-		movie2.setGenres(Arrays.asList(genre2));
-		
-		List<Movie> movies = Arrays.asList(movie1, movie2);
+        Movie movie2 = new Movie();
+        movie2.setTitle("Back to the Future 2");
+        Genre genre2 = new Genre();
+        genre2.setName("Comedy");
+        movie2.setGenres(Arrays.asList(genre2));
 
-		when(movieRepository.findAll(ArgumentMatchers.<Specification<Movie>>any())).thenReturn(movies);
+        List<Movie> movies = Arrays.asList(movie1, movie2);
 
-		List<Movie> result = movieService.searchMovies(params);
-		
-		assertThat(params).hasSize(1);
-		assertThat(result).isNotNull();
-		assertThat(result).hasSize(1);
-		assertThat(result.get(0).getTitle()).isEqualTo("Back to the Future 2");
-	}
+        when(movieRepository.findAll(ArgumentMatchers.<Specification<Movie>>any())).thenReturn(movies);
 
-	@Test
-	public void FindMovieById_CorrectIdProvided_ReturnsOptionalOfMovie() {
-		Long id = 1L;
-		Movie mocked = new Movie();
-		mocked.setTitle("Titanic");
-		mocked.setId(id);
-		Optional<Movie> optional = Optional.of(mocked);
+        List<Movie> result = movieService.searchMovies(params);
 
-		when(movieRepository.findById(id)).thenReturn(optional);
+        assertThat(params).hasSize(1);
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getTitle()).isEqualTo("Back to the Future");
+        assertThat(result.get(1).getTitle()).isEqualTo("Back to the Future 2");
+    }
 
-		Optional<Movie> result = movieService.findMovieById(id);
+    @Test
+    public void SearchMovies_WithGenreParam_ReturnsListOfMoviesForGenre() {
+        Map<String, String> params = new HashMap<>();
+        params.put("search-title", "to the");
+        params.put("genres", "com");
 
-		assertThat(result.isPresent()).isTrue();
-		Movie movie = result.get();
-		assertThat(movie.getTitle()).isEqualTo("Titanic");
-		assertThat(movie.getId()).isEqualTo(id);
+        Movie movie1 = new Movie();
+        movie1.setTitle("Back to the Future");
+        Genre genre1 = new Genre();
+        genre1.setName("Drama");
+        movie1.setGenres(Arrays.asList(genre1));
 
-	}
+        Movie movie2 = new Movie();
+        movie2.setTitle("Back to the Future 2");
+        Genre genre2 = new Genre();
+        genre2.setName("Comedy");
+        movie2.setGenres(Arrays.asList(genre2));
 
-	@Test
-	public void FindMovieById_WrongIdProvided_ReturnsEmptyOptional() {
-		Long id = 1L;
-		Optional<Movie> optional = Optional.empty();
+        List<Movie> movies = Arrays.asList(movie1, movie2);
 
-		when(movieRepository.findById(id)).thenReturn(optional);
+        when(movieRepository.findAll(ArgumentMatchers.<Specification<Movie>>any())).thenReturn(movies);
 
-		Optional<Movie> result = movieService.findMovieById(id);
+        List<Movie> result = movieService.searchMovies(params);
 
-		assertThat(result.isPresent()).isFalse();
-	}
-	
-	@Test
-	public void AddMovie_MovieValid_ReturnsCreatedMovie() {
-		Long id = 1L;
-		Movie movie = new Movie();
-		movie.setTitle("Titanic");
-		movie.setId(id);
+        assertThat(params).hasSize(1);
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getTitle()).isEqualTo("Back to the Future 2");
+    }
 
-		when(movieRepository.save(ArgumentMatchers.any())).thenAnswer(
-			mockRepositorySaveInvocation(movie)
-		);
+    @Test
+    public void FindMovieById_CorrectIdProvided_ReturnsOptionalOfMovie() {
+        Long id = 1L;
+        Movie mocked = new Movie();
+        mocked.setTitle("Titanic");
+        mocked.setId(id);
+        Optional<Movie> optional = Optional.of(mocked);
 
-		Movie result = movieService.addMovie(movie);
-		assertThat(result).isNotNull();
-		assertThat(result.getTitle()).isEqualTo("Titanic");
-		assertThat(result.getId()).isEqualTo(100L);
-		
-	}
-	
-	@Test
-	public void UpdateMovie_MovieValid_ReturnsUpdatedMovie() {
-		Long id = 1L;
-		Movie movie = new Movie();
-		movie.setTitle("Titanic");
-		movie.setId(id);
+        when(movieRepository.findById(id)).thenReturn(optional);
 
-		when(movieRepository.save(ArgumentMatchers.any())).thenAnswer(
-			mockRepositorySaveInvocation(movie)
-		);
+        Optional<Movie> result = movieService.findMovieById(id);
 
-		Movie result = movieService.updateMovie(id, movie);
-		assertThat(result).isNotNull();
-		assertThat(result.getTitle()).isEqualTo("Titanic");
-		assertThat(result.getId()).isEqualTo(id);
-	}
-	
-	@Test
-	public void DeleteMovie_MovieIdValid_DeletesMovie() {
-		Long id = 1L;
-		movieService.deleteMovie(id);
-	}
+        assertThat(result.isPresent()).isTrue();
+        Movie movie = result.get();
+        assertThat(movie.getTitle()).isEqualTo("Titanic");
+        assertThat(movie.getId()).isEqualTo(id);
 
-	@Test
-	public void IsMovieExist_MovieValid_ReturnsTrue() {
-		Long id = 1L;
-		when(movieRepository.existsById(id)).thenReturn(true);
+    }
 
-		assertThat(movieService.isMovieExist(id)).isTrue();
-	}
+    @Test
+    public void FindMovieById_WrongIdProvided_ReturnsEmptyOptional() {
+        Long id = 1L;
+        Optional<Movie> optional = Optional.empty();
 
-	private Answer<?> mockRepositorySaveInvocation(Movie movie) {
-		return invocation -> {
-		    Object argument = invocation.getArguments()[0];
-		    Movie receivedMovie = (Movie) argument;
-		    if (receivedMovie.getId() >= 0 ) {
-		        return movie;
-		    } else {
-		    	Movie newMovie = new Movie();
-		    	newMovie.setId(100L);
-		    	newMovie.setTitle(movie.getTitle());
-		        return newMovie;
-		    }
-		};
-	}
-	
+        when(movieRepository.findById(id)).thenReturn(optional);
+
+        Optional<Movie> result = movieService.findMovieById(id);
+
+        assertThat(result.isPresent()).isFalse();
+    }
+
+    @Test
+    public void AddMovie_MovieValid_ReturnsCreatedMovie() {
+        Long id = 1L;
+        Movie movie = new Movie();
+        movie.setTitle("Titanic");
+        movie.setId(id);
+
+        when(movieRepository.save(ArgumentMatchers.any())).thenAnswer(
+            mockRepositorySaveInvocation(movie)
+        );
+
+        Movie result = movieService.addMovie(movie);
+        assertThat(result).isNotNull();
+        assertThat(result.getTitle()).isEqualTo("Titanic");
+        assertThat(result.getId()).isEqualTo(100L);
+
+    }
+
+    @Test
+    public void UpdateMovie_MovieValid_ReturnsUpdatedMovie() {
+        Long id = 1L;
+        Movie movie = new Movie();
+        movie.setTitle("Titanic");
+        movie.setId(id);
+
+        when(movieRepository.save(ArgumentMatchers.any())).thenAnswer(
+            mockRepositorySaveInvocation(movie)
+        );
+
+        Movie result = movieService.updateMovie(id, movie);
+        assertThat(result).isNotNull();
+        assertThat(result.getTitle()).isEqualTo("Titanic");
+        assertThat(result.getId()).isEqualTo(id);
+    }
+
+    @Test
+    public void DeleteMovie_MovieIdValid_DeletesMovie() {
+        Long id = 1L;
+        movieService.deleteMovie(id);
+    }
+
+    @Test
+    public void IsMovieExist_MovieValid_ReturnsTrue() {
+        Long id = 1L;
+        when(movieRepository.existsById(id)).thenReturn(true);
+
+        assertThat(movieService.isMovieExist(id)).isTrue();
+    }
+
+    private Answer<?> mockRepositorySaveInvocation(Movie movie) {
+        return invocation -> {
+            Object argument = invocation.getArguments()[0];
+            Movie receivedMovie = (Movie) argument;
+            if (receivedMovie.getId() >= 0) {
+                return movie;
+            } else {
+                Movie newMovie = new Movie();
+                newMovie.setId(100L);
+                newMovie.setTitle(movie.getTitle());
+                return newMovie;
+            }
+        };
+    }
+
 }

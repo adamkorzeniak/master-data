@@ -5,18 +5,18 @@ import com.adamkorzeniak.masterdata.logging.model.LogType;
 
 public interface LoggingService {
 
-	void initializeContext();
+    void initializeContext();
 
-	String retrieveCorrelationId();
+    String retrieveCorrelationId();
 
-	String retrieveRequestURI();
+    String retrieveRequestURI();
 
-	String retrieveRequestMethod();
+    String retrieveRequestMethod();
 
-	int getHTTPStatus();
+    int getHTTPStatus();
 
-	Log generateLog(LogType logType);
+    Log generateLog(LogType logType);
 
-	void clearContext();
+    void clearContext();
 
 }

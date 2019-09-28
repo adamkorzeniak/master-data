@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class InfoContact {
 
-	private String name;
-	private String email;
-	private String url;
+    private String name;
+    private String email;
+    private String url;
 }

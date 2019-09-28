@@ -13,8 +13,8 @@ import lombok.ToString;
 @ToString
 public class GenreDTO {
 
-	private Long id;
-	@NotBlank
-	private String name;
+    private Long id;
+    @NotBlank
+    private String name;
 
 }

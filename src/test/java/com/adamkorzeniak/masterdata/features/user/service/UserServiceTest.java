@@ -24,89 +24,89 @@ import com.adamkorzeniak.masterdata.features.user.repository.UserRepository;
 @SpringBootTest
 public class UserServiceTest {
 
-	private static final Long ID = 123L;
-	private static final String USERNAME = "adam";
-	private static final String PASSWORD = "password";
-	private static final String ENCODED_PASSWORD = "$10$encodedpassword";
-	private static final Role ROLE = Role.USER;
-	
-	private static final String DUPLICATED_USER_MESSAGE = 
-			String.format("User with username '%s' already exists", USERNAME);
+    private static final Long ID = 123L;
+    private static final String USERNAME = "adam";
+    private static final String PASSWORD = "password";
+    private static final String ENCODED_PASSWORD = "$10$encodedpassword";
+    private static final Role ROLE = Role.USER;
 
-	@MockBean
-	private PasswordEncoder encoder;
+    private static final String DUPLICATED_USER_MESSAGE =
+        String.format("User with username '%s' already exists", USERNAME);
 
-	@MockBean
-	private UserRepository userRepository;
+    @MockBean
+    private PasswordEncoder encoder;
 
-	@Autowired
-	private UserService userService;
+    @MockBean
+    private UserRepository userRepository;
 
-	@Test
-	public void RegisterUser_NoIssues_ReturnsUser() {
-		User adam = new User();
-		adam.setUsername(USERNAME);
-		adam.setPassword(PASSWORD);
-		adam.setRole(ROLE);
-		
-		User mockedUser = new User();
-		mockedUser.setId(ID);
-		mockedUser.setUsername(USERNAME);
-		mockedUser.setPassword(ENCODED_PASSWORD);
-		mockedUser.setRole(ROLE);
+    @Autowired
+    private UserService userService;
 
-		when(encoder.encode(PASSWORD)).thenReturn(ENCODED_PASSWORD);
-		when(userRepository.findByUsername(USERNAME)).thenReturn(null);
-		when(userRepository.save(ArgumentMatchers.any())).thenReturn(mockedUser);
+    @Test
+    public void RegisterUser_NoIssues_ReturnsUser() {
+        User adam = new User();
+        adam.setUsername(USERNAME);
+        adam.setPassword(PASSWORD);
+        adam.setRole(ROLE);
 
-		User result = userService.register(adam);
+        User mockedUser = new User();
+        mockedUser.setId(ID);
+        mockedUser.setUsername(USERNAME);
+        mockedUser.setPassword(ENCODED_PASSWORD);
+        mockedUser.setRole(ROLE);
 
-		assertThat(result).isNotNull();
-		assertThat(result.getId()).isEqualTo(ID.intValue());
-		assertThat(result.getUsername()).isEqualTo(USERNAME);
-		assertThat(result.getPassword()).isEqualTo(ENCODED_PASSWORD);
-		assertThat(result.getRole()).isEqualTo(ROLE);
-	}
+        when(encoder.encode(PASSWORD)).thenReturn(ENCODED_PASSWORD);
+        when(userRepository.findByUsername(USERNAME)).thenReturn(null);
+        when(userRepository.save(ArgumentMatchers.any())).thenReturn(mockedUser);
 
-	@Test
-	public void RegisterUser_UserAlreadyExists_ThrowsException() {
-		User adam = new User();
-		adam.setUsername(USERNAME);
-		adam.setPassword(PASSWORD);
-		adam.setRole(ROLE);
+        User result = userService.register(adam);
 
-		when(userRepository.findByUsername(USERNAME)).thenReturn(adam);
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(ID.intValue());
+        assertThat(result.getUsername()).isEqualTo(USERNAME);
+        assertThat(result.getPassword()).isEqualTo(ENCODED_PASSWORD);
+        assertThat(result.getRole()).isEqualTo(ROLE);
+    }
 
-		assertThatExceptionOfType(DuplicateUserException.class).isThrownBy(() -> userService.register(adam)).withMessage(DUPLICATED_USER_MESSAGE);
-	}
+    @Test
+    public void RegisterUser_UserAlreadyExists_ThrowsException() {
+        User adam = new User();
+        adam.setUsername(USERNAME);
+        adam.setPassword(PASSWORD);
+        adam.setRole(ROLE);
 
-	@Test
-	public void RegisterUser_NoUser_ThrowsException() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> userService.register(null)).withMessage(null);
-	}
+        when(userRepository.findByUsername(USERNAME)).thenReturn(adam);
 
-	@Test
-	public void RetrieveUser_UserExists_ReturnsUser() {
-		User adam = new User();
-		adam.setId(ID);
-		adam.setUsername(USERNAME);
-		adam.setPassword(PASSWORD);
-		adam.setRole(ROLE);
-		
-		when(userRepository.findByUsername(USERNAME)).thenReturn(adam);
+        assertThatExceptionOfType(DuplicateUserException.class).isThrownBy(() -> userService.register(adam)).withMessage(DUPLICATED_USER_MESSAGE);
+    }
 
-		User result = userService.getUser(USERNAME);
+    @Test
+    public void RegisterUser_NoUser_ThrowsException() {
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> userService.register(null)).withMessage(null);
+    }
 
-		assertThat(result).isNotNull();
-		assertThat(result.getId()).isEqualTo(ID);
-		assertThat(result.getUsername()).isEqualTo(USERNAME);
-		assertThat(result.getPassword()).isEqualTo(PASSWORD);
-		assertThat(result.getRole()).isEqualTo(ROLE);
-	}
+    @Test
+    public void RetrieveUser_UserExists_ReturnsUser() {
+        User adam = new User();
+        adam.setId(ID);
+        adam.setUsername(USERNAME);
+        adam.setPassword(PASSWORD);
+        adam.setRole(ROLE);
 
-	@Test
-	public void RetrieveUser_UserNotExists_ThrowsException() {
-		String username = null;
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> userService.getUser(username)).withMessage(null);
-	}
+        when(userRepository.findByUsername(USERNAME)).thenReturn(adam);
+
+        User result = userService.getUser(USERNAME);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(ID);
+        assertThat(result.getUsername()).isEqualTo(USERNAME);
+        assertThat(result.getPassword()).isEqualTo(PASSWORD);
+        assertThat(result.getRole()).isEqualTo(ROLE);
+    }
+
+    @Test
+    public void RetrieveUser_UserNotExists_ThrowsException() {
+        String username = null;
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> userService.getUser(username)).withMessage(null);
+    }
 }

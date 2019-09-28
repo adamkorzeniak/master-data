@@ -11,9 +11,9 @@ import lombok.Setter;
 @Setter
 public class ParameterSchema {
 
-	private String type;
-	private String example;
-	private String format;
-	@JsonProperty("enum")
-	private List<String> enums;
+    private String type;
+    private String example;
+    private String format;
+    @JsonProperty("enum")
+    private List<String> enums;
 }

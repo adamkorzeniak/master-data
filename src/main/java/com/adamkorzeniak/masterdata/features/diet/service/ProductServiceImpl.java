@@ -17,46 +17,46 @@ import com.adamkorzeniak.masterdata.features.diet.repository.ProductRepository;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-	private final ProductRepository productRepository;
-	private final SearchFilterService searchFilterService;
-	
-	@Autowired
-	public ProductServiceImpl(ProductRepository productRepository, SearchFilterService searchFilterService) {
-		this.productRepository = productRepository;
-		this.searchFilterService = searchFilterService;
-	}
+    private final ProductRepository productRepository;
+    private final SearchFilterService searchFilterService;
 
-	@Override
-	public List<Product> searchProducts(Map<String, String> requestParams) {
-		List<SearchFilterParam> filters = searchFilterService.buildFilters(requestParams, "diet.products");
-		Specification<Product> spec = new GenericSpecification<>(filters);
-		return productRepository.findAll(spec);
-	}
+    @Autowired
+    public ProductServiceImpl(ProductRepository productRepository, SearchFilterService searchFilterService) {
+        this.productRepository = productRepository;
+        this.searchFilterService = searchFilterService;
+    }
 
-	@Override
-	public Optional<Product> findProductById(Long id) {
-		return productRepository.findById(id);
-	}
+    @Override
+    public List<Product> searchProducts(Map<String, String> requestParams) {
+        List<SearchFilterParam> filters = searchFilterService.buildFilters(requestParams, "diet.products");
+        Specification<Product> spec = new GenericSpecification<>(filters);
+        return productRepository.findAll(spec);
+    }
 
-	@Override
-	public Product addProduct(Product product) {
-		product.setId(-1L);
-		return productRepository.save(product);
-	}
+    @Override
+    public Optional<Product> findProductById(Long id) {
+        return productRepository.findById(id);
+    }
 
-	@Override
-	public Product updateProduct(Long id, Product product) {
-		product.setId(id);
-		return productRepository.save(product);
-	}
+    @Override
+    public Product addProduct(Product product) {
+        product.setId(-1L);
+        return productRepository.save(product);
+    }
 
-	@Override
-	public void deleteProduct(Long id) {
-		productRepository.deleteById(id);
-	}
+    @Override
+    public Product updateProduct(Long id, Product product) {
+        product.setId(id);
+        return productRepository.save(product);
+    }
 
-	@Override
-	public boolean isProductExist(Long id) {
-		return productRepository.existsById(id);
-	}
+    @Override
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean isProductExist(Long id) {
+        return productRepository.existsById(id);
+    }
 }

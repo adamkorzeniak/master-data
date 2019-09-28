@@ -9,23 +9,23 @@ import lombok.Setter;
 @Setter
 public class ErrorDTO {
 
-	private Long id;
+    private Long id;
 
-	@NotBlank
-	private String errorId;
+    @NotBlank
+    private String errorId;
 
-	@NotBlank
-	private String appId;
+    @NotBlank
+    private String appId;
 
-	private String name;
+    private String name;
 
-	private String details;
+    private String details;
 
-	private String status;
+    private String status;
 
-	private String url;
+    private String url;
 
-	private String stack;
+    private String stack;
 
-	private Long time;
+    private Long time;
 }

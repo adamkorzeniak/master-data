@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 public class UserResponse {
 
-	@NotEmpty
-	private Long id;
+    @NotEmpty
+    private Long id;
 
-	@NotEmpty
-	private String username;
+    @NotEmpty
+    private String username;
 
-	@NotEmpty
-	private String role;
+    @NotEmpty
+    private String role;
 }

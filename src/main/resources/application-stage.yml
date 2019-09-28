@@ -4,7 +4,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ENC(RX+vnag/AvPEXA7mgzyb/lbZVuE9FuI7)
     password: ENC(yZXJWfmrcIFTxci3LLZUzNLU9Ce9J3Mhsd3GD3uZFd8=)
-    
+
   jpa:
     hibernate.ddl-auto: validate
     database-platform: org.hibernate.dialect.MySQL5Dialect

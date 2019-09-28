@@ -16,36 +16,36 @@ import com.adamkorzeniak.masterdata.features.error.repository.ErrorRepository;
 @Service
 public class ErrorServiceImpl implements ErrorService {
 
-	private final ErrorRepository errorRepository;
-	private final SearchFilterService searchFilterService;
-	
-	@Autowired
-	public ErrorServiceImpl(ErrorRepository errorRepository, SearchFilterService searchFilterService) {
-		this.errorRepository = errorRepository;
-		this.searchFilterService = searchFilterService;
-	}
+    private final ErrorRepository errorRepository;
+    private final SearchFilterService searchFilterService;
 
-	@Override
-	public List<Error> searchErrors(Map<String, String> requestParams) {
-		List<SearchFilterParam> filters = searchFilterService.buildFilters(requestParams, "movie.genres");
-		Specification<Error> spec = new GenericSpecification<>(filters);
-		return errorRepository.findAll(spec);
-	}
+    @Autowired
+    public ErrorServiceImpl(ErrorRepository errorRepository, SearchFilterService searchFilterService) {
+        this.errorRepository = errorRepository;
+        this.searchFilterService = searchFilterService;
+    }
 
-	@Override
-	public Error addError(com.adamkorzeniak.masterdata.features.error.model.Error error) {
-		error.setId(-1L);
-		return errorRepository.save(error);
-	}
+    @Override
+    public List<Error> searchErrors(Map<String, String> requestParams) {
+        List<SearchFilterParam> filters = searchFilterService.buildFilters(requestParams, "movie.genres");
+        Specification<Error> spec = new GenericSpecification<>(filters);
+        return errorRepository.findAll(spec);
+    }
 
-	@Override
-	public void deleteError(Long id) {
-		errorRepository.deleteById(id);
-	}
+    @Override
+    public Error addError(com.adamkorzeniak.masterdata.features.error.model.Error error) {
+        error.setId(-1L);
+        return errorRepository.save(error);
+    }
 
-	@Override
-	public boolean isErrorExist(Long errorId) {
-		return errorRepository.existsById(errorId);
-	}
+    @Override
+    public void deleteError(Long id) {
+        errorRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean isErrorExist(Long errorId) {
+        return errorRepository.existsById(errorId);
+    }
 
 }

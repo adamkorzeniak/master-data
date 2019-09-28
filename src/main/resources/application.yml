@@ -8,7 +8,7 @@ logging:
     com.adamkorzeniak: DEBUG
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
-    
+
 params:
   movie:
     movies:
