@@ -13,6 +13,8 @@ public class ComponentSchemaProperty {
 
     private String description;
     private String type;
+    private String format;
+    private ComponentReference items;
     private String example;
     @JsonProperty("enum")
     private List<String> enums;

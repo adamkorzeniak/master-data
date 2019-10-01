@@ -9,6 +9,10 @@ logging:
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
 
+api:
+  yaml:
+    file: file:docs/api-docs/master-data-swagger.json
+
 params:
   movie:
     movies:

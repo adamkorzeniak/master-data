@@ -1,13 +1,11 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/dev_master_data_dev?useLegacyDatetimeCode=false&serverTimezone=Europe/Warsaw&autoReconnect=true&useSSL=false
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: ENC(4sZS5/oGTUwJN+MWSUPDaNBIFZh6D6yzpUbd59FykJI=)
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: admin
+    password: admin
 
-  jpa:
-    hibernate.ddl-auto: validate
-    database-platform: org.hibernate.dialect.MySQL5Dialect
+  jpa.hibernate.ddl-auto: create
 
 server:
   port: 8443

@@ -3,7 +3,7 @@
   "info" : {
     "title" : "Master Data",
     "description" : "Personal Master Data API.",
-    "version" : "0.0.1",
+    "version" : "0.1.0",
     "contact" : {
       "name" : "Adam Korzeniak",
       "email" : "korzeniak.adam@gmail.com",
@@ -16,10 +16,13 @@
   } ],
   "tags" : [ {
     "name" : "User",
-    "description" : "User management - register and get details about user"
+    "description" : "User details management - register and get details about user"
   }, {
     "name" : "Movie",
-    "description" : "Movie database"
+    "description" : "Movie details management"
+  }, {
+    "name" : "Error",
+    "description" : "Error details management - filter, create, delete"
   } ],
   "paths" : {
     "/User/me" : {
@@ -30,14 +33,7 @@
         "description" : "Retrieves details of user whose credentials were passed in request",
         "responses" : {
           "200" : {
-            "description" : "User details returned",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/User"
-                }
-              }
-            }
+            "$ref" : "#/components/responses/userDetails"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -64,26 +60,11 @@
         "operationId" : "registerUser",
         "description" : "Registers an user with provided details",
         "requestBody" : {
-          "description" : "User details",
-          "required" : true,
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/User"
-              }
-            }
-          }
+          "$ref" : "#/components/requestBodies/userRegistrationDetails"
         },
         "responses" : {
           "200" : {
-            "description" : "Registered user details returned",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/User"
-                }
-              }
-            }
+            "$ref" : "#/components/responses/userRegisteredDetails"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -115,7 +96,7 @@
         "parameters" : [ {
           "in" : "query",
           "name" : "genres",
-          "description" : "Pass a comma-limited list of values. Each of those values must be contained by name of at least one genre of movie. So for \"com,ram\" com is contained in Comedy and ram is contained in Drama.\n",
+          "description" : "Pass a comma-limited list of values. Each of those values must be contained by name of at least one genre of movie. So for \"com,ram\" com is contained in Comedy and ram is contained in Drama.",
           "required" : false,
           "schema" : {
             "type" : "string",
@@ -315,17 +296,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "List of movies returned",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Movie"
-                  }
-                }
-              }
-            }
+            "$ref" : "#/components/responses/moviesDetails"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -347,29 +318,14 @@
       "post" : {
         "tags" : [ "Movie" ],
         "summary" : "Adds a movie",
-        "description" : "Creates a movie in database with provided details",
+        "description" : "Creates a movie with provided details",
         "operationId" : "addMovie",
         "requestBody" : {
-          "description" : "Movie details",
-          "required" : true,
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Movie"
-              }
-            }
-          }
+          "$ref" : "#/components/requestBodies/movieRequestDetails"
         },
         "responses" : {
           "201" : {
-            "description" : "Created movie details returned",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Movie"
-                }
-              }
-            }
+            "$ref" : "#/components/responses/movieDetails"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -392,8 +348,9 @@
     "/Movie/movies/{movieId}" : {
       "get" : {
         "tags" : [ "Movie" ],
-        "description" : "Retrieve movie for given id",
+        "summary" : "Retrieves a movie for given id",
         "operationId" : "getMovie",
+        "description" : "Retrieves a movie for given id",
         "parameters" : [ {
           "name" : "movieId",
           "in" : "path",
@@ -406,17 +363,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "movie details returned",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Movie"
-                  }
-                }
-              }
-            }
+            "$ref" : "#/components/responses/movieDetails"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -437,8 +384,9 @@
       },
       "put" : {
         "tags" : [ "Movie" ],
-        "description" : "Updates a movie",
+        "summary" : "Updates a movie",
         "operationId" : "updateMovie",
+        "description" : "Updates a movie with provided details",
         "parameters" : [ {
           "name" : "movieId",
           "in" : "path",
@@ -450,25 +398,11 @@
           }
         } ],
         "requestBody" : {
-          "required" : true,
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Movie"
-              }
-            }
-          }
+          "$ref" : "#/components/requestBodies/movieRequestDetails"
         },
         "responses" : {
           "200" : {
-            "description" : "Movie updated",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Movie"
-                }
-              }
-            }
+            "$ref" : "#/components/responses/movieDetails"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -489,8 +423,9 @@
       },
       "delete" : {
         "tags" : [ "Movie" ],
-        "description" : "Delete movie with given id",
+        "summary" : "Deletes a movie",
         "operationId" : "deleteMovie",
+        "description" : "Deletes a movie with given id",
         "parameters" : [ {
           "name" : "movieId",
           "in" : "path",
@@ -503,7 +438,7 @@
         } ],
         "responses" : {
           "204" : {
-            "description" : "movie removed"
+            "$ref" : "#/components/responses/movieRemoved"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -528,7 +463,7 @@
         "tags" : [ "Movie" ],
         "summary" : "Searches genres",
         "operationId" : "searchGenres",
-        "description" : "Search for genres by adding search parameters\n",
+        "description" : "Searches for genres using search parameters",
         "parameters" : [ {
           "in" : "query",
           "name" : "match-name",
@@ -589,17 +524,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "list of genres returned",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Genre"
-                  }
-                }
-              }
-            }
+            "$ref" : "#/components/responses/genresDetails"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -620,28 +545,15 @@
       },
       "post" : {
         "tags" : [ "Movie" ],
-        "description" : "Adds a genre",
+        "summary" : "Adds a genre",
         "operationId" : "addGenre",
+        "description" : "Creates a genre with provided details",
         "requestBody" : {
-          "required" : true,
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Genre"
-              }
-            }
-          }
+          "$ref" : "#/components/requestBodies/genreRequestDetails"
         },
         "responses" : {
           "201" : {
-            "description" : "Genre created",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Genre"
-                }
-              }
-            }
+            "$ref" : "#/components/responses/genreDetails"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -664,13 +576,14 @@
     "/Movie/genres/{genreId}" : {
       "get" : {
         "tags" : [ "Movie" ],
-        "description" : "Retrieve genre for given id",
+        "summary" : "Retrieves a genre for given id",
         "operationId" : "getGenre",
+        "description" : "Retrieves a genre for given id",
         "parameters" : [ {
           "name" : "genreId",
           "in" : "path",
           "required" : true,
-          "description" : "Return genre with specific id",
+          "description" : "Return a genre with specific id",
           "schema" : {
             "type" : "integer",
             "example" : 42
@@ -678,17 +591,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "genre details returned",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Genre"
-                  }
-                }
-              }
-            }
+            "$ref" : "#/components/responses/genreDetails"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -709,8 +612,9 @@
       },
       "put" : {
         "tags" : [ "Movie" ],
-        "description" : "Updates a genre",
+        "summary" : "Updates a genre",
         "operationId" : "updateGenre",
+        "description" : "Updates a genre with provided details",
         "parameters" : [ {
           "name" : "genreId",
           "in" : "path",
@@ -722,25 +626,11 @@
           }
         } ],
         "requestBody" : {
-          "required" : true,
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Genre"
-              }
-            }
-          }
+          "$ref" : "#/components/requestBodies/genreRequestDetails"
         },
         "responses" : {
           "200" : {
-            "description" : "Genre updated",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Genre"
-                }
-              }
-            }
+            "$ref" : "#/components/responses/genreDetails"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -761,8 +651,9 @@
       },
       "delete" : {
         "tags" : [ "Movie" ],
-        "description" : "Delete genre with given id",
+        "summary" : "Deletes a genre",
         "operationId" : "deleteGenre",
+        "description" : "Deletes a genre with given id",
         "parameters" : [ {
           "name" : "genreId",
           "in" : "path",
@@ -775,7 +666,7 @@
         } ],
         "responses" : {
           "204" : {
-            "description" : "genre removed"
+            "$ref" : "#/components/responses/genreRemoved"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -800,7 +691,7 @@
         "tags" : [ "Error" ],
         "summary" : "Searches errors",
         "operationId" : "searchErrors",
-        "description" : "Search for errors by adding search parameters\n",
+        "description" : "Search for errors using search parameters",
         "parameters" : [ {
           "in" : "query",
           "name" : "match-errorId",
@@ -944,17 +835,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "list of errors returned",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Error"
-                  }
-                }
-              }
-            }
+            "$ref" : "#/components/responses/errorsDetails"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -975,28 +856,15 @@
       },
       "post" : {
         "tags" : [ "Error" ],
-        "description" : "Adds an error",
+        "summary" : "Adds an error",
         "operationId" : "addError",
+        "description" : "Creates an error with provided details",
         "requestBody" : {
-          "required" : true,
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Error"
-              }
-            }
-          }
+          "$ref" : "#/components/requestBodies/errorDetails"
         },
         "responses" : {
           "201" : {
-            "description" : "Error created",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref" : "#/components/responses/errorDetails"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -1019,8 +887,9 @@
     "/Error/errors/{errorId}" : {
       "delete" : {
         "tags" : [ "Error" ],
-        "description" : "Delete error with given id",
+        "summary" : "Deletes an error",
         "operationId" : "deleteError",
+        "description" : "Deletes an error with given id",
         "parameters" : [ {
           "name" : "errorId",
           "in" : "path",
@@ -1033,7 +902,7 @@
         } ],
         "responses" : {
           "204" : {
-            "description" : "error removed"
+            "$ref" : "#/components/responses/errorRemoved"
           },
           "400" : {
             "$ref" : "#/components/responses/badRequest"
@@ -1280,9 +1149,156 @@
         }
       }
     },
+    "requestBodies" : {
+      "userRegistrationDetails" : {
+        "description" : "User details",
+        "required" : true,
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "movieRequestDetails" : {
+        "description" : "Movie details",
+        "required" : true,
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Movie"
+            }
+          }
+        }
+      },
+      "genreRequestDetails" : {
+        "description" : "Genre details",
+        "required" : true,
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Genre"
+            }
+          }
+        }
+      },
+      "errorDetails" : {
+        "description" : "Error details",
+        "required" : true,
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
     "responses" : {
+      "userDetails" : {
+        "description" : "User details returned",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "movieDetails" : {
+        "description" : "Created movie details returned",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Movie"
+            }
+          }
+        }
+      },
+      "moviesDetails" : {
+        "description" : "List of movies returned",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/components/schemas/Movie"
+              }
+            }
+          }
+        }
+      },
+      "movieRemoved" : {
+        "description" : "Movie removed"
+      },
+      "genreDetails" : {
+        "description" : "Genre details returned",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/components/schemas/Genre"
+              }
+            }
+          }
+        }
+      },
+      "genresDetails" : {
+        "description" : "List of genres returned",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/components/schemas/Genre"
+              }
+            }
+          }
+        }
+      },
+      "genreRemoved" : {
+        "description" : "Genre removed"
+      },
+      "errorsDetails" : {
+        "description" : "List of errors returned",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/components/schemas/Error"
+              }
+            }
+          }
+        }
+      },
+      "errorDetails" : {
+        "description" : "Created error details returned",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "errorRemoved" : {
+        "description" : "Error removed"
+      },
+      "userRegisteredDetails" : {
+        "description" : "Registered user details returned",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/User"
+            }
+          }
+        }
+      },
       "badRequest" : {
-        "description" : "The request could not be understood by the server due to malformed syntax\n",
+        "description" : "The request could not be understood by the server due to malformed syntax",
         "content" : {
           "application/json" : {
             "examples" : {
@@ -1342,7 +1358,7 @@
         }
       },
       "conflict" : {
-        "description" : "Data to be created already exists.\n",
+        "description" : "Data to be created already exists.",
         "content" : {
           "application/json" : {
             "examples" : {
@@ -1357,7 +1373,7 @@
         }
       },
       "internalError" : {
-        "description" : "The server encountered an unexpected condition which prevented it from fulfilling the request.\n",
+        "description" : "The server encountered an unexpected condition which prevented it from fulfilling the request.",
         "content" : {
           "application/json" : {
             "examples" : {

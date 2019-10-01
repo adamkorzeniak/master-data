@@ -1,7 +1,6 @@
 package com.adamkorzeniak.masterdata.features.metadata.service;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,16 +15,19 @@ import com.adamkorzeniak.masterdata.features.metadata.model.openapi.Metadata;
 import com.adamkorzeniak.masterdata.features.metadata.model.openapi.Operation;
 import com.adamkorzeniak.masterdata.features.metadata.model.openapi.Tag;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 @Service
 public class MetadataServiceImpl implements MetadataService {
 
-    private static final String FILE_PATH = "/docs/api-docs/adam-korzeniak-master-data-0.0.1-swagger.json";
+    @Value("${api.yaml.file}")
+    private String FILE_PATH;
 
     @Override
     public Metadata buildMetadata() {
-        Metadata metadata = readMetadataFromFile(FILE_PATH);
+        Metadata metadata = readMetadataFromFile();
         validate(metadata);
         return metadata;
     }
@@ -98,12 +100,15 @@ public class MetadataServiceImpl implements MetadataService {
         return infoResponse;
     }
 
-    private Metadata readMetadataFromFile(String filePath) {
+    private Metadata readMetadataFromFile() {
         ObjectMapper mapper = new ObjectMapper();
-        InputStream is = Metadata.class.getResourceAsStream(filePath);
+        InputStream is = null;
         try {
+            File file = ResourceUtils.getFile(FILE_PATH);
+            is = new FileInputStream(file);
             return mapper.readValue(is, Metadata.class);
         } catch (IOException e) {
+            e.printStackTrace();
             throw new MetadataResourceException();
         }
     }

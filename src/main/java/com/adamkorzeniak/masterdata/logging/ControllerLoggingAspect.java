@@ -1,9 +1,13 @@
 package com.adamkorzeniak.masterdata.logging;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.adamkorzeniak.masterdata.logging.model.Log;
 import com.adamkorzeniak.masterdata.logging.model.LogType;
 import com.adamkorzeniak.masterdata.logging.model.RequestReceivedLog;
 import com.adamkorzeniak.masterdata.logging.model.ResponseReturnedLog;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -15,36 +19,46 @@ import org.springframework.stereotype.Component;
 @Component
 public class ControllerLoggingAspect {
 
-    private final Logger logger = Logger.getLogger(ControllerLoggingAspect.class.getName());
-    private final LoggingService loggingService;
+	private final HttpServletRequest request;
+	private final HttpServletResponse response;
 
-    @Autowired
-    public ControllerLoggingAspect(LoggingServiceImpl loggingService) {
-        this.loggingService = loggingService;
-    }
+	@Autowired
+	public ControllerLoggingAspect(HttpServletRequest request, HttpServletResponse response) {
+		this.request = request;
+		this.response = response;
+	}
 
+	private Logger logger = Logger.getLogger(ControllerLoggingAspect.class.getName());
 
-    /**
-     * After request is received in controller it creates request uuid and logs
-     * details.
-     */
-    @Before("PointcutDefinitions.controllers()")
-    public void enteringController() {
-        loggingService.initializeContext();
-        LogType logType = new RequestReceivedLog();
-        Log log = loggingService.generateLog(logType);
-        logger.debug(log.toJsonMessage());
-    }
+	/**
+	 * After request is received in controller it creates request uuid and logs
+	 * details
+	 */
+	@Before("PointcutDefinitions.controllers()")
+	public void enteringController(JoinPoint joinPoint) {
+		LoggingHelper.initializeContext(request);
+		LogType logType = new RequestReceivedLog();
+		Log log = LoggingHelper.generateLog(logType);
+		logger.debug(log.toJsonMessage());
+	}
 
-    /**
-     * Before sending response from controller it logs details and clears uuid
-     */
-    @AfterReturning("PointcutDefinitions.controllers()")
-    public void successfullyExitingController() {
-        int httpStatus = loggingService.getHTTPStatus();
-        LogType logType = new ResponseReturnedLog(httpStatus);
-        Log log = loggingService.generateLog(logType);
-        loggingService.clearContext();
-        logger.debug(log.toJsonMessage());
-    }
+	/**
+	 * Before sending response from controller it logs details and clears uuid
+	 */
+	@AfterReturning("PointcutDefinitions.controllers()")
+	public void successfullyExitingController(JoinPoint joinPoint) {
+		int httpStatus = response.getStatus();
+		LogType logType = new ResponseReturnedLog(httpStatus);
+		Log log = LoggingHelper.generateLog(logType);
+		LoggingHelper.clearContext();
+		logger.debug(log.toJsonMessage());
+	}
+
+	private String getRequestURL() {
+		String requestURL = request.getRequestURI();
+		if (request.getQueryString() != null) {
+			requestURL += "?" + request.getQueryString();
+		}
+		return requestURL;
+	}
 }

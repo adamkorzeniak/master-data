@@ -21,7 +21,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private static final String[] notSecuredResources = new String[]{};
+    private static final String[] notSecuredResources = new String[] {
+            "/v0/User/register",
+            "/v0/Metadata"
+    };
 
     @Autowired
     public SecurityConfiguration(@Qualifier("customUserDetailsService") UserDetailsService userDetailsService,

@@ -3,7 +3,7 @@ openapi: 3.0.0
 info:
   title: Master Data
   description: Personal Master Data API.
-  version: 0.0.1
+  version: 0.1.0
   contact:
     name: Adam Korzeniak
     email: korzeniak.adam@gmail.com
@@ -15,9 +15,11 @@ servers:
 
 tags:
   - name: User
-    description: User management - register and get details about user
+    description: User details management - register and get details about user
   - name: Movie
-    description: Movie database
+    description: Movie details management
+  - name: Error
+    description: Error details management - filter, create, delete
 paths:
 
   /User/me:
@@ -29,11 +31,7 @@ paths:
       description: Retrieves details of user whose credentials were passed in request
       responses:
         '200':
-          description: User details returned
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
+          $ref: '#/components/responses/userDetails'
         '400':
           $ref: '#/components/responses/badRequest'
         '401':
@@ -53,19 +51,10 @@ paths:
       operationId: registerUser
       description: Registers an user with provided details
       requestBody:
-        description: User details
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
+        $ref: '#/components/requestBodies/userRegistrationDetails'
       responses:
         '200':
-          description: Registered user details returned
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
+          $ref: '#/components/responses/userRegisteredDetails'
         '400':
           $ref: '#/components/responses/badRequest'
         '401':
@@ -78,7 +67,7 @@ paths:
           $ref: '#/components/responses/conflict'
         '500':
           $ref: '#/components/responses/internalError'
-          
+
 
   /Movie/movies:
     get:
@@ -90,8 +79,7 @@ paths:
       parameters:
         - in: query
           name: genres
-          description: |
-            Pass a comma-limited list of values. Each of those values must be contained by name of at least one genre of movie. So for "com,ram" com is contained in Comedy and ram is contained in Drama.
+          description: 'Pass a comma-limited list of values. Each of those values must be contained by name of at least one genre of movie. So for "com,ram" com is contained in Comedy and ram is contained in Drama.'
           required: false
           schema:
             type: string
@@ -266,61 +254,47 @@ paths:
               watchPriority
             ]
       responses:
-        200:
-          description: List of movies returned
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Movie'
-        400:
+        '200':
+          $ref: '#/components/responses/moviesDetails'
+        '400':
           $ref: '#/components/responses/badRequest'
-        401:
+        '401':
           $ref: '#/components/responses/unauthorized'
-        404:
+        '404':
           $ref: '#/components/responses/notFound'
-        405:
+        '405':
           $ref: '#/components/responses/methodNotAllowed'
-        500:
+        '500':
           $ref: '#/components/responses/internalError'
     post:
       tags:
         - Movie
       summary: Adds a movie
-      description: Creates a movie in database with provided details
+      description: Creates a movie with provided details
       operationId: addMovie
       requestBody:
-        description: Movie details
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Movie'
+        $ref: '#/components/requestBodies/movieRequestDetails'
       responses:
-        201:
-          description: Created movie details returned
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Movie'
-        400:
+        '201':
+          $ref: '#/components/responses/movieDetails'
+        '400':
           $ref: '#/components/responses/badRequest'
-        401:
+        '401':
           $ref: '#/components/responses/unauthorized'
-        404:
+        '404':
           $ref: '#/components/responses/notFound'
-        405:
+        '405':
           $ref: '#/components/responses/methodNotAllowed'
-        500:
+        '500':
           $ref: '#/components/responses/internalError'
-          
+
   /Movie/movies/{movieId}:
     get:
       tags:
         - Movie
-      description: Retrieve movie for given id
+      summary: Retrieves a movie for given id
       operationId: getMovie
+      description: Retrieves a movie for given id
       parameters:
         - name: movieId
           in: path
@@ -330,30 +304,25 @@ paths:
             type: integer
             example: 42
       responses:
-        200:
-          description: movie details returned
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Movie'
-        400:
+        '200':
+          $ref: '#/components/responses/movieDetails'
+        '400':
           $ref: '#/components/responses/badRequest'
-        401:
+        '401':
           $ref: '#/components/responses/unauthorized'
-        404:
+        '404':
           $ref: '#/components/responses/notFound'
-        405:
+        '405':
           $ref: '#/components/responses/methodNotAllowed'
-        500:
+        '500':
           $ref: '#/components/responses/internalError'
-          
+
     put:
       tags:
         - Movie
-      description: Updates a movie
+      summary: Updates a movie
       operationId: updateMovie
+      description: Updates a movie with provided details
       parameters:
         - name: movieId
           in: path
@@ -363,33 +332,26 @@ paths:
             type: integer
             example: 42
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Movie'
+        $ref: '#/components/requestBodies/movieRequestDetails'
       responses:
-        200:
-          description: Movie updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Movie'
-        400:
+        '200':
+          $ref: '#/components/responses/movieDetails'
+        '400':
           $ref: '#/components/responses/badRequest'
-        401:
+        '401':
           $ref: '#/components/responses/unauthorized'
-        404:
+        '404':
           $ref: '#/components/responses/notFound'
-        405:
+        '405':
           $ref: '#/components/responses/methodNotAllowed'
-        500:
+        '500':
           $ref: '#/components/responses/internalError'
     delete:
       tags:
         - Movie
-      description: Delete movie with given id
+      summary: Deletes a movie
       operationId: deleteMovie
+      description: Deletes a movie with given id
       parameters:
         - name: movieId
           in: path
@@ -399,27 +361,26 @@ paths:
             type: integer
             example: 42
       responses:
-        204:
-          description: movie removed
-        400:
+        '204':
+          $ref: '#/components/responses/movieRemoved'
+        '400':
           $ref: '#/components/responses/badRequest'
-        401:
+        '401':
           $ref: '#/components/responses/unauthorized'
-        404:
+        '404':
           $ref: '#/components/responses/notFound'
-        405:
+        '405':
           $ref: '#/components/responses/methodNotAllowed'
-        500:
+        '500':
           $ref: '#/components/responses/internalError'
-          
+
   /Movie/genres:
     get:
       tags:
         - Movie
       summary: Searches genres
       operationId: searchGenres
-      description: |
-        Search for genres by adding search parameters
+      description: Searches for genres using search parameters
       parameters:
         - in: query
           name: match-name
@@ -473,92 +434,75 @@ paths:
               name
             ]
       responses:
-        200:
-          description: list of genres returned
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Genre'
-        400:
+        '200':
+          $ref: '#/components/responses/genresDetails'
+        '400':
           $ref: '#/components/responses/badRequest'
-        401:
+        '401':
           $ref: '#/components/responses/unauthorized'
-        404:
+        '404':
           $ref: '#/components/responses/notFound'
-        405:
+        '405':
           $ref: '#/components/responses/methodNotAllowed'
-        500:
+        '500':
           $ref: '#/components/responses/internalError'
     post:
       tags:
         - Movie
-      description: Adds a genre
+      summary: Adds a genre
       operationId: addGenre
+      description: Creates a genre with provided details
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Genre'
+        $ref: '#/components/requestBodies/genreRequestDetails'
       responses:
-        201:
-          description: Genre created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Genre'
-        400:
+        '201':
+          $ref: '#/components/responses/genreDetails'
+        '400':
           $ref: '#/components/responses/badRequest'
-        401:
+        '401':
           $ref: '#/components/responses/unauthorized'
-        404:
+        '404':
           $ref: '#/components/responses/notFound'
-        405:
+        '405':
           $ref: '#/components/responses/methodNotAllowed'
-        500:
+        '500':
           $ref: '#/components/responses/internalError'
-          
+
   /Movie/genres/{genreId}:
     get:
       tags:
         - Movie
-      description: Retrieve genre for given id
+      summary: Retrieves a genre for given id
       operationId: getGenre
+      description: Retrieves a genre for given id
       parameters:
         - name: genreId
           in: path
           required: true
-          description: Return genre with specific id
+          description: Return a genre with specific id
           schema:
             type: integer
             example: 42
       responses:
-        200:
-          description: genre details returned
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Genre'
-        400:
+        '200':
+          $ref: '#/components/responses/genreDetails'
+        '400':
           $ref: '#/components/responses/badRequest'
-        401:
+        '401':
           $ref: '#/components/responses/unauthorized'
-        404:
+        '404':
           $ref: '#/components/responses/notFound'
-        405:
+        '405':
           $ref: '#/components/responses/methodNotAllowed'
-        500:
+        '500':
           $ref: '#/components/responses/internalError'
-          
+
     put:
       tags:
         - Movie
-      description: Updates a genre
+      summary: Updates a genre
       operationId: updateGenre
+      description: Updates a genre with provided details
       parameters:
         - name: genreId
           in: path
@@ -568,33 +512,26 @@ paths:
             type: integer
             example: 42
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Genre'
+        $ref: '#/components/requestBodies/genreRequestDetails'
       responses:
-        200:
-          description: Genre updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Genre'
-        400:
+        '200':
+          $ref: '#/components/responses/genreDetails'
+        '400':
           $ref: '#/components/responses/badRequest'
-        401:
+        '401':
           $ref: '#/components/responses/unauthorized'
-        404:
+        '404':
           $ref: '#/components/responses/notFound'
-        405:
+        '405':
           $ref: '#/components/responses/methodNotAllowed'
-        500:
+        '500':
           $ref: '#/components/responses/internalError'
     delete:
       tags:
         - Movie
-      description: Delete genre with given id
+      summary: Deletes a genre
       operationId: deleteGenre
+      description: Deletes a genre with given id
       parameters:
         - name: genreId
           in: path
@@ -604,19 +541,19 @@ paths:
             type: integer
             example: 42
       responses:
-        204:
-          description: genre removed
-        400:
+        '204':
+          $ref: '#/components/responses/genreRemoved'
+        '400':
           $ref: '#/components/responses/badRequest'
-        401:
+        '401':
           $ref: '#/components/responses/unauthorized'
-        404:
+        '404':
           $ref: '#/components/responses/notFound'
-        405:
+        '405':
           $ref: '#/components/responses/methodNotAllowed'
-        500:
-          $ref: '#/components/responses/internalError'  
-          
+        '500':
+          $ref: '#/components/responses/internalError'
+
     # patch:
     #   tags:
     #     - Movie
@@ -652,16 +589,15 @@ paths:
     #     405:
     #       $ref: '#/components/responses/methodNotAllowed'
     #     500:
-    #       $ref: '#/components/responses/internalError'        
-    
+    #       $ref: '#/components/responses/internalError'
+
   /Error/errors:
     get:
       tags:
         - Error
       summary: Searches errors
       operationId: searchErrors
-      description: |
-        Search for errors by adding search parameters
+      description: Search for errors using search parameters
       parameters:
         - in: query
           name: match-errorId
@@ -789,59 +725,47 @@ paths:
               time
             ]
       responses:
-        200:
-          description: list of errors returned
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Error'
-        400:
+        '200':
+          $ref: '#/components/responses/errorsDetails'
+        '400':
           $ref: '#/components/responses/badRequest'
-        401:
+        '401':
           $ref: '#/components/responses/unauthorized'
-        404:
+        '404':
           $ref: '#/components/responses/notFound'
-        405:
+        '405':
           $ref: '#/components/responses/methodNotAllowed'
-        500:
+        '500':
           $ref: '#/components/responses/internalError'
     post:
       tags:
         - Error
-      description: Adds an error
+      summary: Adds an error
       operationId: addError
+      description: Creates an error with provided details
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Error'
+        $ref: '#/components/requestBodies/errorDetails'
       responses:
-        201:
-          description: Error created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        400:
+        '201':
+          $ref: '#/components/responses/errorDetails'
+        '400':
           $ref: '#/components/responses/badRequest'
-        401:
+        '401':
           $ref: '#/components/responses/unauthorized'
-        404:
+        '404':
           $ref: '#/components/responses/notFound'
-        405:
+        '405':
           $ref: '#/components/responses/methodNotAllowed'
-        500:
+        '500':
           $ref: '#/components/responses/internalError'
-          
+
   /Error/errors/{errorId}:
     delete:
       tags:
         - Error
-      description: Delete error with given id
+      summary: Deletes an error
       operationId: deleteError
+      description: Deletes an error with given id
       parameters:
         - name: errorId
           in: path
@@ -851,29 +775,29 @@ paths:
             type: integer
             example: 42
       responses:
-        204:
-          description: error removed
-        400:
+        '204':
+          $ref: '#/components/responses/errorRemoved'
+        '400':
           $ref: '#/components/responses/badRequest'
-        401:
+        '401':
           $ref: '#/components/responses/unauthorized'
-        404:
+        '404':
           $ref: '#/components/responses/notFound'
-        405:
+        '405':
           $ref: '#/components/responses/methodNotAllowed'
-        500:
-          $ref: '#/components/responses/internalError' 
+        '500':
+          $ref: '#/components/responses/internalError'
 
 
 security:
   - basicAuth: []
-    
+
 components:
   securitySchemes:
     basicAuth:
       type: http
       scheme: basic
-      description: "For Stage environment use below credentials:<br>Username: <b>test</b><br>Password: <b>test123</b><br><br>"
+      description: 'For Stage environment use below credentials:<br>Username: <b>test</b><br>Password: <b>test123</b><br><br>'
   schemas:
     User:
       type: object
@@ -933,7 +857,7 @@ components:
           example: Great movie
         genres:
           type: array
-          items: 
+          items:
             $ref: '#/components/schemas/Genre'
         rating:
           type: integer
@@ -952,7 +876,7 @@ components:
         reviewDate:
           type: string
           format: yyyy-mm-dd
-          example: "2019-02-03"
+          example: '2019-02-03'
     Genre:
       type: object
       required:
@@ -1012,7 +936,7 @@ components:
           description: error message
           type: string
           example: Missing field title
-          
+
   examples:
     BadRequestErrorResponse:
       value:
@@ -1044,11 +968,102 @@ components:
         code: INTERNAL_ERROR
         title: Not Found
         message: Not Found
-  
+
+  requestBodies:
+    userRegistrationDetails:
+      description: User details
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+    movieRequestDetails:
+      description: Movie details
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Movie'
+    genreRequestDetails:
+      description: Genre details
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Genre'
+    errorDetails:
+      description: Error details
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
   responses:
+    userDetails:
+      description: User details returned
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+    movieDetails:
+      description: Created movie details returned
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Movie'
+    moviesDetails:
+      description: List of movies returned
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Movie'
+    movieRemoved:
+      description: Movie removed
+    genreDetails:
+      description: Genre details returned
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Genre'
+    genresDetails:
+      description: List of genres returned
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Genre'
+    genreRemoved:
+      description: Genre removed
+    errorsDetails:
+      description: List of errors returned
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Error'
+    errorDetails:
+      description: Created error details returned
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    errorRemoved:
+      description: Error removed
+    userRegisteredDetails:
+      description: Registered user details returned
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
     badRequest:
-      description: |
-        The request could not be understood by the server due to malformed syntax
+      description: The request could not be understood by the server due to malformed syntax
       content:
         application/json:
           examples:
@@ -1084,8 +1099,7 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     conflict:
-      description: |
-        Data to be created already exists.
+      description: Data to be created already exists.
       content:
         application/json:
           examples:
@@ -1094,8 +1108,7 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     internalError:
-      description: |
-        The server encountered an unexpected condition which prevented it from fulfilling the request.
+      description: The server encountered an unexpected condition which prevented it from fulfilling the request.
       content:
         application/json:
           examples:

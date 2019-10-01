@@ -14,5 +14,6 @@ public class MetadataComponent {
 
     private Map<String, ComponentSchema> schemas;
     private Map<String, Example> examples;
+    private Map<String, RequestBody> requestBodies;
     private Map<String, Response> responses;
 }
