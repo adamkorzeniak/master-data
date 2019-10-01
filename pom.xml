@@ -7,11 +7,11 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.8.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<relativePath />
 	</parent>
 	<groupId>com.adamkorzeniak</groupId>
 	<artifactId>master-data</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<name>master-data</name>
 	<description>Master Data</description>
 
@@ -29,7 +29,6 @@
 			**/model/**/*,
 			**/diet/**/*
 		</sonar.coverage.exclusions>
-		<!-- Use most recent failsafe and surefire plugin versions -->
 	</properties>
 
 	<dependencies>
@@ -92,13 +91,11 @@
 			<artifactId>spring-mock-mvc</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- Provide JUnit 5 API -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- and the engine for surefire and failsafe -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
@@ -109,7 +106,6 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
 		<dependency>
 		    <groupId>org.jsoup</groupId>
 		    <artifactId>jsoup</artifactId>
@@ -128,12 +124,10 @@
 				</configuration>
 			</plugin>
 
-			<!-- Spring Boot configures surefire by default, but not failsafe -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 			</plugin>
-			<!-- JaCoCo configuration -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>

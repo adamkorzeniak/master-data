@@ -66,7 +66,7 @@ public class GenreController {
     @GetMapping("/genres/{genreId}")
     public ResponseEntity<GenreDTO> findGenreById(@PathVariable("genreId") Long genreId) {
         Optional<Genre> result = genreService.findGenreById(genreId);
-        if (!result.isPresent()) {
+        if (result.isEmpty()) {
             throw new NotFoundException(GENRE_RESOURCE_NAME, genreId);
         }
         GenreDTO dto = GenreServiceHelper.convertToDTO(result.get());

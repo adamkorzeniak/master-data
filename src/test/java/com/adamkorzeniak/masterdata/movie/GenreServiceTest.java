@@ -1,16 +1,11 @@
 package com.adamkorzeniak.masterdata.movie;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
+import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
+import com.adamkorzeniak.masterdata.features.movie.model.Genre;
+import com.adamkorzeniak.masterdata.features.movie.model.Movie;
+import com.adamkorzeniak.masterdata.features.movie.repository.GenreRepository;
+import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
+import com.adamkorzeniak.masterdata.features.movie.service.GenreService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -22,12 +17,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
-import com.adamkorzeniak.masterdata.features.movie.model.Genre;
-import com.adamkorzeniak.masterdata.features.movie.model.Movie;
-import com.adamkorzeniak.masterdata.features.movie.repository.GenreRepository;
-import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
-import com.adamkorzeniak.masterdata.features.movie.service.GenreService;
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
@@ -164,7 +158,7 @@ public class GenreServiceTest {
 
         when(genreRepository.findById(sourceId)).thenReturn(Optional.of(sourceGenre));
         when(genreRepository.findById(targetId)).thenReturn(Optional.of(targetGenre));
-        when(movieRepository.findByGenresContaining(sourceGenre)).thenReturn(Arrays.asList(movie));
+        when(movieRepository.findByGenresContaining(sourceGenre)).thenReturn(Collections.singletonList(movie));
 
         Genre result = genreService.mergeGenres(sourceId, targetId);
 
@@ -195,11 +189,11 @@ public class GenreServiceTest {
         movie.setTitle("Titanic");
         movie.setDuration(100);
         movie.setYear(2000);
-        movie.setGenres(Arrays.asList(sourceGenre));
+        movie.setGenres(Collections.singletonList(sourceGenre));
 
         when(genreRepository.findById(sourceId)).thenReturn(Optional.of(sourceGenre));
         when(genreRepository.findById(targetId)).thenReturn(Optional.of(targetGenre));
-        when(movieRepository.findByGenresContaining(sourceGenre)).thenReturn(Arrays.asList(movie));
+        when(movieRepository.findByGenresContaining(sourceGenre)).thenReturn(Collections.singletonList(movie));
 
         Genre result = genreService.mergeGenres(sourceId, targetId);
 
@@ -230,11 +224,11 @@ public class GenreServiceTest {
         movie.setTitle("Titanic");
         movie.setDuration(100);
         movie.setYear(2000);
-        movie.setGenres(Arrays.asList(sourceGenre));
+        movie.setGenres(Collections.singletonList(sourceGenre));
 
         when(genreRepository.findById(sourceId)).thenReturn(Optional.of(sourceGenre));
         when(genreRepository.findById(targetId)).thenReturn(Optional.of(targetGenre));
-        when(movieRepository.findByGenresContaining(sourceGenre)).thenReturn(Arrays.asList(movie));
+        when(movieRepository.findByGenresContaining(sourceGenre)).thenReturn(Collections.singletonList(movie));
 
         Genre result = genreService.mergeGenres(sourceId, targetId);
 

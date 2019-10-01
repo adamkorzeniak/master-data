@@ -24,13 +24,13 @@ public class MetadataController {
     }
 
     @GetMapping("/Metadata")
-    public ResponseEntity<Metadata> retrieveMetadata() throws Exception {
+    public ResponseEntity<Metadata> retrieveMetadata() {
         Metadata metadata = metadataService.buildMetadata();
         return new ResponseEntity<>(metadata, HttpStatus.OK);
     }
 
     @GetMapping("/Metadata2")
-    public ResponseEntity<MetadataResponse> retrieveMetadataResponse() throws Exception {
+    public ResponseEntity<MetadataResponse> retrieveMetadataResponse() {
         Metadata metadata = metadataService.buildMetadata();
         MetadataResponse response = metadataService.buildResponse(metadata);
         return new ResponseEntity<>(response, HttpStatus.OK);

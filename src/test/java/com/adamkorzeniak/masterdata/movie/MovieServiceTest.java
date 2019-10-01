@@ -1,14 +1,9 @@
 package com.adamkorzeniak.masterdata.movie;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
+import com.adamkorzeniak.masterdata.features.movie.model.Genre;
+import com.adamkorzeniak.masterdata.features.movie.model.Movie;
+import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
+import com.adamkorzeniak.masterdata.features.movie.service.MovieService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -20,10 +15,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.features.movie.model.Genre;
-import com.adamkorzeniak.masterdata.features.movie.model.Movie;
-import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
-import com.adamkorzeniak.masterdata.features.movie.service.MovieService;
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
@@ -45,13 +40,13 @@ public class MovieServiceTest {
         movie1.setTitle("Back to the Future");
         Genre genre1 = new Genre();
         genre1.setName("Drama");
-        movie1.setGenres(Arrays.asList(genre1));
+        movie1.setGenres(Collections.singletonList(genre1));
 
         Movie movie2 = new Movie();
         movie2.setTitle("Back to the Future 2");
         Genre genre2 = new Genre();
         genre2.setName("Comedy");
-        movie2.setGenres(Arrays.asList(genre2));
+        movie2.setGenres(Collections.singletonList(genre2));
 
         List<Movie> movies = Arrays.asList(movie1, movie2);
 
@@ -76,13 +71,13 @@ public class MovieServiceTest {
         movie1.setTitle("Back to the Future");
         Genre genre1 = new Genre();
         genre1.setName("Drama");
-        movie1.setGenres(Arrays.asList(genre1));
+        movie1.setGenres(Collections.singletonList(genre1));
 
         Movie movie2 = new Movie();
         movie2.setTitle("Back to the Future 2");
         Genre genre2 = new Genre();
         genre2.setName("Comedy");
-        movie2.setGenres(Arrays.asList(genre2));
+        movie2.setGenres(Collections.singletonList(genre2));
 
         List<Movie> movies = Arrays.asList(movie1, movie2);
 
