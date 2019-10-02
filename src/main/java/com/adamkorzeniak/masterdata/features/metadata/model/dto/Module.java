@@ -11,5 +11,5 @@ public class Module {
 
     private String name;
     private String description;
-    private List<Resource> resources;
+    private List<Operation2> operations;
 }

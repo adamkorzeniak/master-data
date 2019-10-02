@@ -1,13 +1,12 @@
 package com.adamkorzeniak.masterdata.features.metadata.model.dto;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class MetadataResponse {
+public class RequestBody {
 
-    private List<Module> modules;
+	private String description;
+	private String schema;
 }
