@@ -18,6 +18,6 @@ public class ComponentSchemaProperty {
     private String example;
     @JsonProperty("enum")
     private List<String> enums;
-    private boolean readOnly;
-    private boolean writeOnly;
+    private Boolean readOnly;
+    private Boolean writeOnly;
 }

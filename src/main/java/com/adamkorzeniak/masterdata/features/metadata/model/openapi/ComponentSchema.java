@@ -12,6 +12,7 @@ public class ComponentSchema {
 
     private String type;
     private String description;
+    private ComponentReference items;
     private List<String> required;
     private Map<String, ComponentSchemaProperty> properties;
 }

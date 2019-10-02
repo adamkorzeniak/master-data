@@ -10,6 +10,6 @@ public class Parameter {
     private String in;
     private String name;
     private String description;
-    private boolean required;
+    private Boolean required;
     private ParameterSchema schema;
 }
