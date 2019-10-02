@@ -35,3 +35,11 @@ params:
       MAX: time
       EXIST: details
       ORDER: errorId,appId,name,time
+  diet:
+    products:
+      MATCH: name,baseUnit
+      SEARCH: name
+      MIN: calories,carbs,fats,proteins
+      MAX: calories,carbs,fats,proteins
+      EXIST: details
+      ORDER: name,calories,carbs,fats,proteins
