@@ -13,6 +13,7 @@ import com.adamkorzeniak.masterdata.features.metadata.model.dto.Module;
 import com.adamkorzeniak.masterdata.features.metadata.model.dto.Operation2;
 import com.adamkorzeniak.masterdata.features.metadata.model.dto.OperationResponse;
 import com.adamkorzeniak.masterdata.features.metadata.model.dto.RequestBody;
+import com.adamkorzeniak.masterdata.features.metadata.model.openapi.ComponentSchema;
 import com.adamkorzeniak.masterdata.features.metadata.model.openapi.Info;
 import com.adamkorzeniak.masterdata.features.metadata.model.openapi.Metadata;
 import com.adamkorzeniak.masterdata.features.metadata.model.openapi.Operation;
@@ -52,7 +53,7 @@ public class MetadataServiceImpl implements MetadataService {
 			Map<String, Operation> operations = entry.getValue();
 			for (Map.Entry<String, Operation> operation : operations.entrySet()) {
 				Operation2 op2 = new Operation2();
-				op2.setMethod(operation.getKey());
+				op2.setMethod(operation.getKey().toUpperCase());
 				op2.setPath(resourceUrl);
 				op2.setDescription(operation.getValue().getDescription());
 				op2.setOperationId(operation.getValue().getOperationId());
@@ -68,7 +69,11 @@ public class MetadataServiceImpl implements MetadataService {
 							.map(b -> b.getValue()).get();
 					
 					body.setDescription(requestBody.getDescription());
-					body.setSchema(requestBody.getContent().get("application/json").getSchema().getRef());
+					String schemaReference = requestBody.getContent().get("application/json").getSchema().getRef().replace("#/components/schemas/", "");
+                    ComponentSchema componentSchema = metadata.getComponents().getSchemas().entrySet().stream()
+                            .filter(s -> schemaReference.equals(s.getKey()))
+                            .findFirst()
+                            .map(s -> s.getValue()).get();
 					op2.setRequestBody(body);
 				}
 				

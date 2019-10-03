@@ -15,11 +15,11 @@ servers:
 
 tags:
   - name: User
-    description: User details management - register and get details about user
+    description: User details management - Register and get details about user
   - name: Movie
-    description: Movie details management
+    description: Movie details management - Search, get, create, update, delete movie details
   - name: Error
-    description: Error details management - filter, create, delete
+    description: Error details management - Search, create, delete error details
 paths:
 
   /User/me:
@@ -816,18 +816,20 @@ components:
           description: User username
           type: string
           example: adam
+          minLength: 1
         password:
           description: User password
           type: string
           example: Pa5$w0rd
+          minLength: 1
           writeOnly: true
         role:
           description: User role
           type: string
+          example: USER
           enum:
             - USER
             - ADMIN
-          example: USER
     Movie:
       type: object
       required:
@@ -848,10 +850,14 @@ components:
           type: integer
           format: int32
           example: 1997
+          minimum: 1800
+          maximum: 2999
         duration:
           type: integer
           format: int32
           example: 194
+          minimum: 0
+          maximum: 1000
         description:
           type: string
           example: Great movie
@@ -863,10 +869,14 @@ components:
           type: integer
           format: int32
           example: 8
+          minimum: 0
+          maximum: 10
         watchPriority:
           type: integer
           format: int32
           example: 0
+          minimum: 0
+          maximum: 5
         review:
           type: string
           example: Titanic
@@ -890,8 +900,10 @@ components:
           type: integer
           format: int64
           example: 789
+          readOnly: true
         name:
           type: string
+          minLength: 1
           example: Drama
     GenreList:
       type: array
@@ -899,6 +911,10 @@ components:
         $ref: '#/components/schemas/Genre'
     Error:
       type: object
+      required:
+        - id
+        - errorId
+        - appId
       properties:
         id:
           type: integer

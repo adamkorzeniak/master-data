@@ -1,6 +1,8 @@
 package com.adamkorzeniak.masterdata.features.error.model;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,12 +11,13 @@ import lombok.Setter;
 @Setter
 public class ErrorDTO {
 
+    @NotNull
     private Long id;
 
-    @NotBlank
+    @NotEmpty
     private String errorId;
 
-    @NotBlank
+    @NotEmpty
     private String appId;
 
     private String name;

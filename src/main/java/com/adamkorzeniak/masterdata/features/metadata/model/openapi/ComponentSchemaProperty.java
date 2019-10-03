@@ -16,6 +16,10 @@ public class ComponentSchemaProperty {
     private String format;
     private ComponentReference items;
     private String example;
+    private Integer minLength;
+    private Integer maxLength;
+    private Integer minimum;
+    private Integer maximum;
     @JsonProperty("enum")
     private List<String> enums;
     private Boolean readOnly;

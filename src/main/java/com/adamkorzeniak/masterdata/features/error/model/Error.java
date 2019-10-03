@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,11 +23,11 @@ public class Error {
     @Column(name = "id")
     private Long id;
 
-    @NotBlank
+    @NotEmpty
     @Column(name = "error_id")
     private String errorId;
 
-    @NotBlank
+    @NotEmpty
     @Column(name = "app_id")
     private String appId;
 
