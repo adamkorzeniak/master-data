@@ -5,11 +5,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Parameter {
+public class OpenapiParameter {
 
     private String in;
     private String name;
     private String description;
     private Boolean required;
-    private ComponentSchema schema;
+    private OpenapiSchemaComponent schema;
+
+    @Override
+    public String toString() {
+        return String.format("%s: %s", name, description);
+    }
 }

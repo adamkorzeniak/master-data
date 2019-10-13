@@ -71,8 +71,8 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exc,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
         String message = exc.getBindingResult().getFieldErrors().stream()
-            .map(this::buildModelFieldErrorMessage)
-            .collect(Collectors.joining("\n"));
+                .map(this::buildModelFieldErrorMessage)
+                .collect(Collectors.joining("\n"));
         ExceptionResponse bodyOfResponse = new ExceptionResponse(BAD_REQUEST_CODE, BAD_REQUEST_TITLE, message);
         return handleExceptionInternal(exc, bodyOfResponse, headers, status, request);
     }
@@ -81,7 +81,7 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
                                                                          HttpHeaders headers, HttpStatus status, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(METHOD_NOT_ALLOWED_CODE, METHOD_NOT_ALLOWED_TITLE,
-            ex.getMessage());
+                ex.getMessage());
         return handleExceptionInternal(ex, bodyOfResponse, headers, status, request);
     }
 
@@ -90,7 +90,7 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
         String message = ex.getMessage();
         ExceptionResponse bodyOfResponse = new ExceptionResponse(MESSAGE_NOT_READABLE_CODE, MESSAGE_NOT_READABLE_TITLE,
-            message);
+                message);
         return handleExceptionInternal(ex, bodyOfResponse, headers, status, request);
     }
 
@@ -98,14 +98,14 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
                                                                      HttpHeaders headers, HttpStatus status, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(MEDIA_TYPE_NOT_SUPPORTED_CODE,
-            MEDIA_TYPE_NOT_SUPPORTED_TITLE, ex.getMessage());
+                MEDIA_TYPE_NOT_SUPPORTED_TITLE, ex.getMessage());
         return handleExceptionInternal(ex, bodyOfResponse, headers, status, request);
     }
 
     @ExceptionHandler(value = {DuplicateUserException.class})
     protected ResponseEntity<Object> duplicateUser(Exception exc, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(DUPLICATE_ENTRY_CODE, DUPLICATE_ENTRY_TITLE,
-            exc.getMessage());
+                exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
@@ -118,72 +118,72 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler(value = {InvalidQueryParamException.class})
     protected ResponseEntity<Object> invalidQueryParamException(Exception exc, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(INVALID_QUERY_PARAM_CODE, INVALID_QUERY_PARAM_TITLE,
-            exc.getMessage());
+                exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(value = {InvalidQueryParamValueException.class})
     protected ResponseEntity<Object> invalidQueryParamValueException(Exception exc, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(INVALID_QUERY_PARAM_VALUE_CODE,
-            INVALID_QUERY_PARAM_VALUE_TITLE, exc.getMessage());
+                INVALID_QUERY_PARAM_VALUE_TITLE, exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(value = {SearchFilterParamNotSupportedException.class})
     protected ResponseEntity<Object> filterNotSupportedException(Exception exc, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(FILTER_NOT_SUPPORTED_CODE, FILTER_NOT_SUPPORTED_TITLE,
-            exc.getMessage());
+                exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(value = {FieldFilterNotSupportedException.class})
     protected ResponseEntity<Object> filterFieldNotSupportedException(Exception exc, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(FIELD_FILTER_NOT_SUPPORTED_CODE,
-            FIELD_FILTER_NOT_SUPPORTED_TITLE, exc.getMessage());
+                FIELD_FILTER_NOT_SUPPORTED_TITLE, exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(value = {PatchOperationNotSupportedException.class})
     protected ResponseEntity<Object> patchOperationNotSupportedException(Exception exc, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(PATCH_OPERATION_NOT_SUPPORTED_CODE,
-            PATCH_OPERATION_NOT_SUPPORTED_TITLE, exc.getMessage());
+                PATCH_OPERATION_NOT_SUPPORTED_TITLE, exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(value = {FunctionUnsupportedValueMessageNotDefinedException.class})
     protected ResponseEntity<Object> functionUnsupportedValueMessageNotDefined(Exception exc, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(ERROR_UNSUPPORTED_FUNCTION_MESSAGE_CODE,
-            ERROR_UNSUPPORTED_FUNCTION_MESSAGE_TITLE, exc.getMessage());
+                ERROR_UNSUPPORTED_FUNCTION_MESSAGE_TITLE, exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
-            request);
+                request);
     }
 
     @ExceptionHandler(value = {SearchFilterParamsNotInitializedException.class})
     protected ResponseEntity<Object> searchFilterParamsNotInitialized(Exception exc, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(ERROR_SEARCH_PARAMS_NOT_INITIALIZED_CODE,
-            ERROR_SEARCH_PARAMS_NOT_INITIALIZED_TITLE, exc.getMessage());
+                ERROR_SEARCH_PARAMS_NOT_INITIALIZED_TITLE, exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
-            request);
+                request);
     }
 
     @ExceptionHandler(value = {MetadataResourceException.class})
     protected ResponseEntity<Object> metadataResourceException(Exception exc, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(METADATA_RESOURCE_ERROR_CODE,
-            METADATA_RESOURCE_ERROR_TITLE, exc.getMessage());
+                METADATA_RESOURCE_ERROR_TITLE, exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
-            request);
+                request);
     }
 
     @ExceptionHandler(value = {Throwable.class})
     protected ResponseEntity<Object> defaultException(Exception exc, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(INTERNAL_SERVER_ERROR_CODE,
-            INTERNAL_SERVER_ERROR_TITLE, exc.getMessage());
+                INTERNAL_SERVER_ERROR_TITLE, exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
-            request);
+                request);
     }
 
     private String buildModelFieldErrorMessage(FieldError error) {
         return String.format("Invalid '%s' field value: %s. Field '%s' %s.", error.getField(), error.getRejectedValue(),
-            error.getField(), error.getDefaultMessage());
+                error.getField(), error.getDefaultMessage());
     }
 }

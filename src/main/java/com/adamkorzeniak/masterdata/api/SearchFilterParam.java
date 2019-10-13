@@ -13,15 +13,13 @@ import java.io.Serializable;
 public class SearchFilterParam implements Serializable {
 
     private static final long serialVersionUID = -3844292648390012518L;
-
+    private final String key;
     @Getter
     private SearchFunctionType function;
     @Getter
     private String value;
     @Getter
     private String field;
-
-    private final String key;
 
     /**
      * Builds API Search Query Param representation object

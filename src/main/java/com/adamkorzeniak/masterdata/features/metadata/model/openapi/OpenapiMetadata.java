@@ -10,9 +10,14 @@ import java.util.Map;
 @Getter
 @Setter
 @JsonIgnoreProperties(value = {"info", "openapi", "security", "servers"})
-public class Metadata {
+public class OpenapiMetadata {
 
-    private List<Tag> tags;
-    private Map<String, Map<String, Path>> paths;
-    private Component components;
+    private List<OpenapiTag> tags;
+    private Map<String, Map<String, OpenapiPath>> paths;
+    private OpenapiComponent components;
+
+    @Override
+    public String toString() {
+        return String.format("Modules: %s", tags);
+    }
 }

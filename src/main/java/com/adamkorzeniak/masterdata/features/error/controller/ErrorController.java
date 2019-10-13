@@ -35,7 +35,7 @@ public class ErrorController {
     public ResponseEntity<List<ErrorDTO>> findErrors(@RequestParam Map<String, String> allRequestParams) {
 
         List<ErrorDTO> dtos = errorService.searchErrors(allRequestParams).stream().map(ErrorServiceHelper::convertToDTO)
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
 
         if (dtos.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -15,28 +15,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogicLoggingAspect {
 
-	private Logger logger = Logger.getLogger(LogicLoggingAspect.class.getName());
+    private Logger logger = Logger.getLogger(LogicLoggingAspect.class.getName());
 
-	/**
-	 * Logs message when entering every service, helper and repository method
-	 */
-	@Before("PointcutDefinitions.logic()")
-	public void enteringMethod(JoinPoint joinPoint) {
-		String methodName = joinPoint.getSignature().toShortString();
-		LogType logType = new MethodEnteredLog(methodName);
-		Log log = LoggingHelper.generateLog(logType);
-		logger.debug(log.toJsonMessage());
-	}
+    /**
+     * Logs message when entering every service, helper and repository method
+     */
+    @Before("PointcutDefinitions.logic()")
+    public void enteringMethod(JoinPoint joinPoint) {
+        String methodName = joinPoint.getSignature().toShortString();
+        LogType logType = new MethodEnteredLog(methodName);
+        Log log = LoggingHelper.generateLog(logType);
+        logger.debug(log.toJsonMessage());
+    }
 
-	/**
-	 * Logs message after exiting from every service, helper and repository method
-	 */
-	@After("PointcutDefinitions.logic()")
-	public void exitingMethod(JoinPoint joinPoint) {
-		String methodName = joinPoint.getSignature().toShortString();
-		LogType logType = new MethodExitedLog(methodName);
-		Log log = LoggingHelper.generateLog(logType);
-		logger.debug(log.toJsonMessage());
-	}
+    /**
+     * Logs message after exiting from every service, helper and repository method
+     */
+    @After("PointcutDefinitions.logic()")
+    public void exitingMethod(JoinPoint joinPoint) {
+        String methodName = joinPoint.getSignature().toShortString();
+        LogType logType = new MethodExitedLog(methodName);
+        Log log = LoggingHelper.generateLog(logType);
+        logger.debug(log.toJsonMessage());
+    }
 
 }

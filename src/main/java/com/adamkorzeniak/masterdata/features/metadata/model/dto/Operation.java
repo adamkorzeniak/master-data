@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class OperationResponse {
+public class Operation {
 
     private String url;
     private String method;
@@ -19,10 +20,17 @@ public class OperationResponse {
     private String description;
     @JsonIgnore
     private List<String> modules;
-    private List<ModelSchemaResponse> uriParams;
-    private List<ModelSchemaResponse> queryParams;
-    private ModelSchemaResponse requestBody;
-    private List<ModelSchemaResponse> responses;
+    private List<ModelSchema> uriParams;
+    private List<ModelSchema> queryParams;
+    private ModelSchema requestBody;
+    private List<ModelSchema> responses;
+
+    public Operation() {
+        this.modules = new ArrayList<>();
+        this.uriParams = new ArrayList<>();
+        this.queryParams = new ArrayList<>();
+        this.responses = new ArrayList<>();
+    }
 
     @Override
     public String toString() {

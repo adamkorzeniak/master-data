@@ -1,6 +1,6 @@
 package com.adamkorzeniak.masterdata.features.metadata.controller;
 
-import com.adamkorzeniak.masterdata.features.metadata.model.dto.MetadataResponse;
+import com.adamkorzeniak.masterdata.features.metadata.model.dto.Metadata;
 import com.adamkorzeniak.masterdata.features.metadata.service.MetadataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,8 @@ public class MetadataController {
     }
 
     @GetMapping("/Metadata")
-    public ResponseEntity<MetadataResponse> retrieveMetadataResponse() {
-        MetadataResponse response = metadataService.buildMetadataResponse();
+    public ResponseEntity<Metadata> retrieveMetadataResponse() {
+        Metadata response = metadataService.buildMetadataResponse();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

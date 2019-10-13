@@ -44,15 +44,15 @@ public class MovieServiceImpl implements MovieService {
         }
         String[] genreArray = genreString.split(",");
         return movies.stream()
-            .filter(movie -> containsSearchedGenres(movie, genreArray))
-            .collect(Collectors.toList());
+                .filter(movie -> containsSearchedGenres(movie, genreArray))
+                .collect(Collectors.toList());
     }
 
     private boolean containsSearchedGenres(Movie movie, String[] searchedGenres) {
         List<Genre> genres = movie.getGenres();
         for (String s : searchedGenres) {
             boolean found = genres.stream().anyMatch(
-                genre -> genre.getName().toLowerCase().contains(s.toLowerCase()));
+                    genre -> genre.getName().toLowerCase().contains(s.toLowerCase()));
             if (!found) {
                 return false;
             }

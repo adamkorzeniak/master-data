@@ -9,12 +9,12 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class ComponentSchema {
+public class OpenapiSchemaComponent {
 
     private String description;
     private String type;
     private String format;
-    private ComponentReference items;
+    private OpenapiComponentReference items;
     private List<String> required;
     private String example;
     private Integer minLength;
@@ -25,5 +25,10 @@ public class ComponentSchema {
     private List<String> enums;
     private Boolean readOnly;
     private Boolean writeOnly;
-    private Map<String, ComponentSchema> properties;
+    private Map<String, OpenapiSchemaComponent> properties;
+
+    @Override
+    public String toString() {
+        return String.format("Type %s: %s", type, description);
+    }
 }

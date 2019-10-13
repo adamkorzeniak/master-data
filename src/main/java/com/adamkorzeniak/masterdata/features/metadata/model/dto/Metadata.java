@@ -8,18 +8,19 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class MetadataResponse {
+public class Metadata {
 
-    private List<ModuleResponse> modules;
+    private List<Module> modules;
 
-    public MetadataResponse(List<ModuleResponse> modules) {
+    public Metadata(List<Module> modules) {
         this.modules = modules;
     }
 
     @Override
-    public String toString(){
-        return "Modules: "  + modules.stream()
-                .map(ModuleResponse::getName)
+    public String toString() {
+        String joinedModulesList = modules.stream()
+                .map(Module::getName)
                 .collect(Collectors.joining(", "));
+        return String.format("Modules: %s", joinedModulesList);
     }
 }

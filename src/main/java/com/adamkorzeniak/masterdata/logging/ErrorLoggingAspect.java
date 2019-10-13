@@ -21,40 +21,39 @@ import java.util.List;
 @Component
 public class ErrorLoggingAspect {
 
-	private final HttpServletResponse response;
+    private final HttpServletResponse response;
+    private Logger logger = Logger.getLogger(ErrorLoggingAspect.class.getName());
 
-	@Autowired
-	public ErrorLoggingAspect(HttpServletResponse response) {
-		this.response = response;
-	}
+    @Autowired
+    public ErrorLoggingAspect(HttpServletResponse response) {
+        this.response = response;
+    }
 
-	private Logger logger = Logger.getLogger(ErrorLoggingAspect.class.getName());
+    /**
+     * After exception is handled in logs message and clears uuid
+     */
+    @AfterReturning(pointcut = "PointcutDefinitions.exceptionHandlers()", returning = "errorResult")
+    public void successfullyExitingController(JoinPoint joinPoint, ResponseEntity<Object> errorResult) {
+        int httpStatus = response.getStatus();
+        LogType logType = new ErrorResponseLog(httpStatus);
+        Log log = LoggingHelper.generateLog(logType);
+        LoggingHelper.clearContext();
+        logger.debug(log.toJsonMessage());
+    }
 
-	/**
-	 * After exception is handled in logs message and clears uuid
-	 */
-	@AfterReturning(pointcut = "PointcutDefinitions.exceptionHandlers()", returning = "errorResult")
-	public void successfullyExitingController(JoinPoint joinPoint, ResponseEntity<Object> errorResult) {
-		int httpStatus = response.getStatus();
-		LogType logType = new ErrorResponseLog(httpStatus);
-		Log log = LoggingHelper.generateLog(logType);
-		LoggingHelper.clearContext();
-		logger.debug(log.toJsonMessage());
-	}
-
-	/**
-	 * After exception in exception handler it logs the message
-	 */
-	@AfterThrowing(pointcut = "PointcutDefinitions.custom()", throwing = "error")
-	public void exitingMethodWithError(JoinPoint joinPoint, Throwable error) {
-		String methodName = joinPoint.getSignature().toShortString();
-		List<Throwable> errors = new ArrayList<>();
-		while (error != null) {
-			errors.add(error);
-			error = error.getCause();
-		}
-		LogType logType = new ErrorOccurredLog(methodName, errors);
-		Log log = LoggingHelper.generateLog(logType);
-		logger.debug(log.toJsonMessage());
-	}
+    /**
+     * After exception in exception handler it logs the message
+     */
+    @AfterThrowing(pointcut = "PointcutDefinitions.custom()", throwing = "error")
+    public void exitingMethodWithError(JoinPoint joinPoint, Throwable error) {
+        String methodName = joinPoint.getSignature().toShortString();
+        List<Throwable> errors = new ArrayList<>();
+        while (error != null) {
+            errors.add(error);
+            error = error.getCause();
+        }
+        LogType logType = new ErrorOccurredLog(methodName, errors);
+        Log log = LoggingHelper.generateLog(logType);
+        logger.debug(log.toJsonMessage());
+    }
 }

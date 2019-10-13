@@ -21,7 +21,7 @@ import java.util.Arrays;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private static final String[] notSecuredResources = new String[] {
+    private static final String[] notSecuredResources = new String[]{
             "/v0/User/register",
             "/v0/Metadata",
             "/v0/Metadata2",
@@ -35,24 +35,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                  AuthenticationManagerBuilder auth) throws Exception {
 
         auth
-            .userDetailsService(userDetailsService)
-            .passwordEncoder(passwordEncoder);
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-            .httpBasic()
-            .and()
-            .authorizeRequests()
-            .antMatchers(notSecuredResources)
-            .permitAll()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .csrf()
-            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                .httpBasic()
+                .and()
+                .authorizeRequests()
+                .antMatchers(notSecuredResources)
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         http.cors().and().csrf().disable();
 

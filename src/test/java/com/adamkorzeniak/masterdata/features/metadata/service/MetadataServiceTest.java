@@ -1,6 +1,7 @@
 package com.adamkorzeniak.masterdata.features.metadata.service;
 
 import com.adamkorzeniak.masterdata.features.metadata.model.dto.*;
+import com.adamkorzeniak.masterdata.features.metadata.model.dto.Module;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,33 +26,33 @@ public class MetadataServiceTest {
 
     private static final int MODULES_SIZE = 3;
 
-    private MetadataResponse metadataResponse;
+    private Metadata metadata;
 
     @Autowired
     private MetadataService metadataService;
 
     @BeforeEach
     public void setupMetadataResponseForValidation() {
-        metadataResponse = metadataService.buildMetadataResponse();
+        metadata = metadataService.buildMetadataResponse();
     }
 
     @Test
     public void RealOpenApiDefinition_GetMetadataResponse_ContainsThreeModules() {
-        List<ModuleResponse> modules = metadataResponse.getModules();
+        List<Module> modules = metadata.getModules();
         assertThat(modules).isNotNull();
         assertThat(modules).hasSize(MODULES_SIZE);
 
-        for (ModuleResponse module : modules) {
+        for (Module module : modules) {
 
             assertStringIsUpperCase(module.getName());
             assertStringIsUpperCase(module.getDescription());
 
-            List<OperationResponse> operations = module.getOperations();
+            List<Operation> operations = module.getOperations();
 
             assertThat(operations).isNotNull();
             assertThat(operations).isNotEmpty();
 
-            for (OperationResponse operation : operations) {
+            for (Operation operation : operations) {
 
                 assertThat(operation.getUrl()).isNotNull();
                 assertThat(operation.getUrl()).startsWith("/");
@@ -64,29 +65,27 @@ public class MetadataServiceTest {
                 assertStringIsUpperCase(operation.getSummary());
                 assertStringIsUpperCase(operation.getDescription());
 
-                List<ModelSchemaResponse> queryParams = operation.getQueryParams();
+                List<ModelSchema> queryParams = operation.getQueryParams();
                 if (queryParams != null) {
                     assertNoDuplicates(queryParams, SchemaType.QUERY_PARAM);
                     queryParams.forEach(this::assertQueryParamIsValid);
                 }
 
-                List<ModelSchemaResponse> uriParams = operation.getUriParams();
+                List<ModelSchema> uriParams = operation.getUriParams();
                 assertUriParamsMatchUrl(operation.getUrl(), uriParams);
                 if (uriParams != null) {
                     assertNoDuplicates(uriParams, SchemaType.URI_PARAM);
                     uriParams.forEach(this::assertUriParamIsValid);
                 }
 
-                ModelSchemaResponse requestBody = operation.getRequestBody();
+                ModelSchema requestBody = operation.getRequestBody();
                 if (requestBody != null) {
                     assertRequestBodyIsValid(requestBody);
                 }
 
-                List<ModelSchemaResponse> responses = operation.getResponses();
+                List<ModelSchema> responses = operation.getResponses();
                 if (responses != null) {
-                    System.out.println("no dup " + operation.getUrl() + operation.getMethod());
                     assertNoDuplicates(responses, SchemaType.RESPONSE);
-                    System.out.println("for each response " + operation.getUrl() + operation.getMethod());
                     responses.forEach(this::assertResponseIsValid);
                 }
 
@@ -107,15 +106,16 @@ public class MetadataServiceTest {
 
     }
 
-    private void assertQueryParamIsValid(ModelSchemaResponse queryParam) {
+    private void assertQueryParamIsValid(ModelSchema queryParam) {
         assertThat(queryParam).isNotNull();
 
         assertStringIsLowerCase(queryParam.getName());
         assertThat(queryParam.getHttpStatus()).isNull();
 //        assertStringIsUpperCase(queryParam.getDescription());
-//        assertThat(queryParam.getRequired()).isNotNull();
+        assertThat(queryParam.getRequired()).isNotNull();
         String type = queryParam.getType();
-//        assertThat(type).isIn(List.of("string", "integer"));
+        System.out.println(queryParam.getName());
+        assertThat(type).isIn(List.of("string", "integer", "boolean"));
         assertThat(queryParam.getExample()).isNotEmpty();
         assertThat(queryParam.getWriteOnly()).isNull();
         assertThat(queryParam.getReadOnly()).isNull();
@@ -133,13 +133,13 @@ public class MetadataServiceTest {
 
     }
 
-    private void assertUriParamIsValid(ModelSchemaResponse uriParam) {
+    private void assertUriParamIsValid(ModelSchema uriParam) {
         assertThat(uriParam).isNotNull();
 
         assertStringIsLowerCase(uriParam.getName());
         assertThat(uriParam.getHttpStatus()).isNull();
 //        assertStringIsUpperCase(uriParam.getDescription());
-//        assertThat(uriParam.getRequired()).isNotNull();
+        assertThat(uriParam.getRequired()).isNotNull();
         assertThat(uriParam.getType()).isEqualTo("integer");
         assertThat(uriParam.getFormat()).isIn("int32", "int64");
         assertThat(uriParam.getMinLength()).isNull();
@@ -151,7 +151,7 @@ public class MetadataServiceTest {
         assertThat(uriParam.getParameters()).isNull();
     }
 
-    private void assertRequestBodyIsValid(ModelSchemaResponse requestBody) {
+    private void assertRequestBodyIsValid(ModelSchema requestBody) {
         assertThat(requestBody).isNotNull();
 
         assertThat(requestBody.getName()).isNull();
@@ -173,9 +173,8 @@ public class MetadataServiceTest {
         // TODO: Check parameters
     }
 
-    private void assertResponseIsValid(ModelSchemaResponse response) {
+    private void assertResponseIsValid(ModelSchema response) {
 
-        System.out.println("response check " + response.getHttpStatus());
         assertThat(response).isNotNull();
 
         assertThat(response.getName()).isNull();
@@ -205,20 +204,19 @@ public class MetadataServiceTest {
         assertThat(response.getEnums()).isNull();
 
         if (httpStatus != 204) {
-            System.out.printf("Response status %d", httpStatus);
             assertThat(response.getParameters()).isNotNull();
             // TODO: Check parameters
         }
 
     }
 
-    private void assertNoDuplicates(List<ModelSchemaResponse> elements, SchemaType type) {
+    private void assertNoDuplicates(List<ModelSchema> elements, SchemaType type) {
         if (elements.size() < 2) {
             return;
         }
-        Function<ModelSchemaResponse, String> getIdentifier =
+        Function<ModelSchema, String> getIdentifier =
                 (type == SchemaType.RESPONSE) ?
-                        ModelSchemaResponse::getHttpStatus : ModelSchemaResponse::getName;
+                        ModelSchema::getHttpStatus : ModelSchema::getName;
         List<String> sortedIdentifiers = elements.stream()
                 .map(getIdentifier)
                 .sorted()
@@ -229,7 +227,7 @@ public class MetadataServiceTest {
         }
     }
 
-    private void assertUriParamsMatchUrl(String url, List<ModelSchemaResponse> uriParams) {
+    private void assertUriParamsMatchUrl(String url, List<ModelSchema> uriParams) {
         List<String> urlElements = Arrays.asList(url.split("/"));
         List<String> uriPathElements = urlElements.stream()
                 .filter(this::isUriParamPathElement)
@@ -240,7 +238,7 @@ public class MetadataServiceTest {
         }
         assertThat(uriParams.size()).isEqualTo(uriPathElements.size());
         uriParams.stream()
-                .map(ModelSchemaResponse::getName)
+                .map(ModelSchema::getName)
                 .forEach(uriParam -> assertThat(uriPathElements).contains(uriParam));
     }
 

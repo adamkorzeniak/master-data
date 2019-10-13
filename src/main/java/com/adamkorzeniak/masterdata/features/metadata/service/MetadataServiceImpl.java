@@ -5,6 +5,7 @@ import com.adamkorzeniak.masterdata.exception.exceptions.MetadataResourceExcepti
 import com.adamkorzeniak.masterdata.exception.exceptions.ModuleNotFoundException;
 import com.adamkorzeniak.masterdata.exception.exceptions.OpenapiComponentNotSupportedException;
 import com.adamkorzeniak.masterdata.features.metadata.model.dto.*;
+import com.adamkorzeniak.masterdata.features.metadata.model.dto.Module;
 import com.adamkorzeniak.masterdata.features.metadata.model.openapi.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,8 +25,7 @@ import java.util.stream.Collectors;
 @Service
 public class MetadataServiceImpl implements MetadataService {
 
-    @Value("${api.yaml.file}")
-    private String FILE_PATH;
+    private final String FILE_PATH;
 
     private static final String METADATA_CONTENT_TYPE = "application/json";
 
@@ -37,41 +37,44 @@ public class MetadataServiceImpl implements MetadataService {
     private static final String QUERY_PARAM_TYPE_NAME = "query";
     private static final String HEADER_TYPE_NAME = "header";
 
-    private Metadata metadata;
+    private OpenapiMetadata openAPIMetatada;
 
-    @Override
-    public MetadataResponse buildMetadataResponse() {
-        metadata = readMetadataFromFile();
-        List<ModuleResponse> modules = buildModulesResponse();
-        List<OperationResponse> operations = buildOperationResponse();
-        assignOperationsToModules(modules, operations);
-        return new MetadataResponse(modules);
+    public MetadataServiceImpl(@Value("${api.yaml.file}") String openapiPath) {
+        this.FILE_PATH = openapiPath;
     }
 
-    private Metadata readMetadataFromFile() {
+    @Override
+    public Metadata buildMetadataResponse() {
+        openAPIMetatada = readMetadataFromFile();
+        List<Module> modules = buildModulesResponse();
+        List<Operation> operations = buildOperationResponse();
+        assignOperationsToModules(modules, operations);
+        return new Metadata(modules);
+    }
+
+    private OpenapiMetadata readMetadataFromFile() {
         ObjectMapper mapper = new ObjectMapper();
         InputStream is;
         try {
             File file = ResourceUtils.getFile(FILE_PATH);
             is = new FileInputStream(file);
-            return mapper.readValue(is, Metadata.class);
+            return mapper.readValue(is, OpenapiMetadata.class);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new MetadataResourceException();
         }
     }
 
-    private List<OperationResponse> buildOperationResponse() {
-        Map<String, Map<String, Path>> paths = metadata.getPaths();
-        List<OperationResponse> operationResponses = new ArrayList<>();
+    private List<Operation> buildOperationResponse() {
+        Map<String, Map<String, OpenapiPath>> paths = openAPIMetatada.getPaths();
+        List<Operation> operationRespons = new ArrayList<>();
 
-        for (Map.Entry<String, Map<String, Path>> pathEntry : paths.entrySet()) {
+        for (Map.Entry<String, Map<String, OpenapiPath>> pathEntry : paths.entrySet()) {
             String url = pathEntry.getKey();
 
-            for (Map.Entry<String, Path> operationEntry : pathEntry.getValue().entrySet()) {
-                Path operation = operationEntry.getValue();
+            for (Map.Entry<String, OpenapiPath> operationEntry : pathEntry.getValue().entrySet()) {
+                OpenapiPath operation = operationEntry.getValue();
 
-                OperationResponse operationResponse = buildOperationResponse(
+                Operation operationResponse = buildOperationResponse(
                         url,
                         operationEntry.getKey(),
                         operation);
@@ -80,40 +83,40 @@ public class MetadataServiceImpl implements MetadataService {
                 assignRequestBodyToOperationResponse(operation, operationResponse);
                 assignResponsesToOperationResponse(operation, operationResponse);
 
-                operationResponses.add(operationResponse);
+                operationRespons.add(operationResponse);
             }
         }
-        return operationResponses;
+        return operationRespons;
     }
 
-    private void assignResponsesToOperationResponse(Path operation, OperationResponse operationResponse) {
-        Map<String, ComponentReference> responses = operation.getResponses();
+    private void assignResponsesToOperationResponse(OpenapiPath operation, Operation operationResponse) {
+        Map<String, OpenapiComponentReference> responses = operation.getResponses();
         if (responses != null && !responses.isEmpty()) {
-            List<ModelSchemaResponse> responsesResult = responses.entrySet().stream()
+            List<ModelSchema> responsesResult = responses.entrySet().stream()
                     .map(this::buildResponseModel)
                     .collect(Collectors.toList());
             operationResponse.setResponses(responsesResult);
         }
     }
 
-    private void assignRequestBodyToOperationResponse(Path operation, OperationResponse operationResponse) {
-        ComponentReference requestBody = operation.getRequestBody();
+    private void assignRequestBodyToOperationResponse(OpenapiPath operation, Operation operationResponse) {
+        OpenapiComponentReference requestBody = operation.getRequestBody();
         if (requestBody != null) {
-            ModelSchemaResponse requestBodyResult = buildRequestBodyModel(requestBody);
+            ModelSchema requestBodyResult = buildRequestBodyModel(requestBody);
             operationResponse.setRequestBody(requestBodyResult);
         }
     }
 
-    private void assignParamsToOperationResponse(Path operation, OperationResponse operationResponse) {
-        List<Parameter> parameters = operation.getParameters();
-        if (parameters != null && !parameters.isEmpty()) {
-            List<ModelSchemaResponse> operationResponseParams = parameters.stream()
+    private void assignParamsToOperationResponse(OpenapiPath operation, Operation operationResponse) {
+        List<OpenapiParameter> openapiParameters = operation.getParameters();
+        if (openapiParameters != null && !openapiParameters.isEmpty()) {
+            List<ModelSchema> operationResponseParams = openapiParameters.stream()
                     .map(this::buildParamModel)
                     .collect(Collectors.toList());
-            List<ModelSchemaResponse> uriParams = operationResponseParams.stream()
+            List<ModelSchema> uriParams = operationResponseParams.stream()
                     .filter(operationParam -> operationParam.getSchemaType() == SchemaType.URI_PARAM)
                     .collect(Collectors.toList());
-            List<ModelSchemaResponse> queryParams = operationResponseParams.stream()
+            List<ModelSchema> queryParams = operationResponseParams.stream()
                     .filter(operationParam -> operationParam.getSchemaType() == SchemaType.QUERY_PARAM)
                     .collect(Collectors.toList());
             if (!uriParams.isEmpty()) {
@@ -125,8 +128,8 @@ public class MetadataServiceImpl implements MetadataService {
         }
     }
 
-    private OperationResponse buildOperationResponse(String url, String operationMethod, Path operation) {
-        OperationResponse operationResponse = new OperationResponse();
+    private Operation buildOperationResponse(String url, String operationMethod, OpenapiPath operation) {
+        Operation operationResponse = new Operation();
         operationResponse.setUrl(url);
         operationResponse.setMethod(operationMethod.toUpperCase());
         operationResponse.setOperationId(operation.getOperationId());
@@ -136,34 +139,34 @@ public class MetadataServiceImpl implements MetadataService {
         return operationResponse;
     }
 
-    private ModelSchemaResponse buildParamModel(Parameter parameter) {
+    private ModelSchema buildParamModel(OpenapiParameter openapiParameter) {
         return buildModelSchemaResponse(
-                parameter.getName(),
-                convertParamToSchemaType(parameter.getIn()),
-                parameter.getRequired(),
-                parameter.getSchema()
+                openapiParameter.getName(),
+                convertParamToSchemaType(openapiParameter.getIn()),
+                openapiParameter.getRequired(),
+                openapiParameter.getSchema()
         );
     }
 
-    private ModelSchemaResponse buildRequestBodyModel(
-            ComponentReference componentReference) {
-        ComponentSchema componentSchema = retrieveComponent(componentReference.getRef());
+    private ModelSchema buildRequestBodyModel(
+            OpenapiComponentReference openapiComponentReference) {
+        OpenapiSchemaComponent openapiSchemaComponent = retrieveComponent(openapiComponentReference.getRef());
         return buildModelSchemaResponse(
                 null,
                 SchemaType.REQUEST_BODY,
                 null,
-                componentSchema
+                openapiSchemaComponent
         );
     }
 
-    private ModelSchemaResponse buildResponseModel(
-            Map.Entry<String, ComponentReference> responseEntry) {
-        ComponentSchema componentSchema = retrieveComponent(responseEntry.getValue().getRef());
+    private ModelSchema buildResponseModel(
+            Map.Entry<String, OpenapiComponentReference> responseEntry) {
+        OpenapiSchemaComponent openapiSchemaComponent = retrieveComponent(responseEntry.getValue().getRef());
         return buildModelSchemaResponse(
                 responseEntry.getKey(),
                 SchemaType.RESPONSE,
                 null,
-                componentSchema
+                openapiSchemaComponent
         );
     }
 
@@ -180,14 +183,14 @@ public class MetadataServiceImpl implements MetadataService {
         }
     }
 
-    private void assignOperationsToModules(List<ModuleResponse> modules, List<OperationResponse> operations) {
-        for (OperationResponse operation : operations) {
+    private void assignOperationsToModules(List<Module> modules, List<Operation> operations) {
+        for (Operation operation : operations) {
             List<String> moduleNames = operation.getModules();
             moduleNames.forEach(moduleName -> findModule(modules, moduleName).addOperation(operation));
         }
     }
 
-    private ModuleResponse findModule(List<ModuleResponse> modules, String name) {
+    private Module findModule(List<Module> modules, String name) {
         if (name == null) {
             throw new ModuleNotFoundException("null");
         }
@@ -197,26 +200,26 @@ public class MetadataServiceImpl implements MetadataService {
                 .orElseThrow(() -> new ModuleNotFoundException(name));
     }
 
-    private ComponentSchema retrieveComponent(
+    private OpenapiSchemaComponent retrieveComponent(
             String componentReferenceString) {
         String[] componentReferenceElements = componentReferenceString.split("/");
         String componentReferenceType = componentReferenceElements[2];
         String componentReferenceIdentifier = componentReferenceElements[3];
 
-        Component components = metadata.getComponents();
+        OpenapiComponent components = openAPIMetatada.getComponents();
         if (SCHEMA_COMPONENT_REFERENCE_TYPE.equals(componentReferenceType)) {
             return components.getSchemas().get(componentReferenceIdentifier);
         }
 
-        Function<Component, Map<String, Body>> getComponentFunction;
+        Function<OpenapiComponent, Map<String, OpenapiContentComponent>> getComponentFunction;
         if (REQUEST_BODY_COMPONENT_REFERENCE_TYPE.equals(componentReferenceType)) {
-            getComponentFunction = Component::getRequestBodies;
+            getComponentFunction = OpenapiComponent::getRequestBodies;
         } else if (RESPONSE_COMPONENT_REFERENCE_TYPE.equals(componentReferenceType)) {
-            getComponentFunction = Component::getResponses;
+            getComponentFunction = OpenapiComponent::getResponses;
         } else {
             throw new OpenapiComponentNotSupportedException(componentReferenceType);
         }
-        Map<String, BodyContent> content = getComponentFunction.apply(components)
+        Map<String, OpenapiContentValue> content = getComponentFunction.apply(components)
                 .get(componentReferenceIdentifier)
                 .getContent();
         if (content == null) {
@@ -226,63 +229,67 @@ public class MetadataServiceImpl implements MetadataService {
                 content.get(METADATA_CONTENT_TYPE).getSchema().getRef());
     }
 
-    private ModelSchemaResponse buildModelSchemaResponse(
+    private ModelSchema buildModelSchemaResponse(
             String identifier,
             SchemaType schemaType,
             Boolean required,
-            ComponentSchema componentSchema) {
+            OpenapiSchemaComponent openapiSchemaComponent) {
 
-        if (componentSchema == null) {
-            componentSchema = new ComponentSchema();
-        }
-        ModelSchemaResponse modelSchemaResponse = new ModelSchemaResponse();
+        ModelSchema modelSchema = new ModelSchema();
 
-        if (componentSchema.getType() != null && componentSchema.getType().equals("array")) {
-            modelSchemaResponse.setIsArray(true);
-            componentSchema = retrieveComponent(componentSchema.getItems().getRef());
+        if (openapiSchemaComponent.getType() != null && openapiSchemaComponent.getType().equals("array")) {
+            modelSchema.setIsArray(true);
+            openapiSchemaComponent = retrieveComponent(openapiSchemaComponent.getItems().getRef());
         } else {
-            modelSchemaResponse.setIsArray(false);
+            modelSchema.setIsArray(false);
         }
 
         if (isHeaderOrParam(schemaType)) {
-            modelSchemaResponse.setName(identifier);
-            modelSchemaResponse.setRequired(required);
-            modelSchemaResponse.setExample(componentSchema.getExample());
-            modelSchemaResponse.setMinLength(componentSchema.getMinLength());
-            modelSchemaResponse.setMaxLength(componentSchema.getMaxLength());
-            modelSchemaResponse.setMinimum(componentSchema.getMinimum());
-            modelSchemaResponse.setMaximum(componentSchema.getMaximum());
-            modelSchemaResponse.setRequired(componentSchema.getReadOnly());
-            modelSchemaResponse.setWriteOnly(componentSchema.getWriteOnly());
-            modelSchemaResponse.setEnums(componentSchema.getEnums());
+            modelSchema.setName(identifier);
+            modelSchema.setRequired(required);
+            if (openapiSchemaComponent != null) {
+                modelSchema.setExample(openapiSchemaComponent.getExample());
+                modelSchema.setMinLength(openapiSchemaComponent.getMinLength());
+                modelSchema.setMaxLength(openapiSchemaComponent.getMaxLength());
+                modelSchema.setMinimum(openapiSchemaComponent.getMinimum());
+                modelSchema.setMaximum(openapiSchemaComponent.getMaximum());
+                modelSchema.setReadOnly(openapiSchemaComponent.getReadOnly());
+                modelSchema.setWriteOnly(openapiSchemaComponent.getWriteOnly());
+                modelSchema.setEnums(openapiSchemaComponent.getEnums());
+            }
         } else if (isResponse(schemaType)) {
-            modelSchemaResponse.setHttpStatus(identifier);
+            modelSchema.setHttpStatus(identifier);
         }
-        modelSchemaResponse.setDescription(componentSchema.getDescription());
-        modelSchemaResponse.setFormat(componentSchema.getFormat());
-        modelSchemaResponse.setType(componentSchema.getType());
-        modelSchemaResponse.setSchemaType(schemaType);
 
-        Map<String, ComponentSchema> properties = componentSchema.getProperties();
 
-        if (properties != null && !properties.isEmpty()) {
-            for (Map.Entry<String, ComponentSchema> propertyEntry : properties.entrySet()) {
+        if (openapiSchemaComponent != null) {
+            modelSchema.setDescription(openapiSchemaComponent.getDescription());
+            modelSchema.setFormat(openapiSchemaComponent.getFormat());
+            modelSchema.setType(openapiSchemaComponent.getType());
+        }
+        modelSchema.setSchemaType(schemaType);
+
+        if (openapiSchemaComponent != null
+                && openapiSchemaComponent.getProperties() != null
+                && !openapiSchemaComponent.getProperties().isEmpty()) {
+            Map<String, OpenapiSchemaComponent> properties = openapiSchemaComponent.getProperties();
+            for (Map.Entry<String, OpenapiSchemaComponent> propertyEntry : properties.entrySet()) {
                 String propertyEntryIdentifier = propertyEntry.getKey();
                 boolean propertyEntryRequired = false;
-                if (componentSchema.getRequired() != null) {
-                    propertyEntryRequired = componentSchema.getRequired().contains(propertyEntryIdentifier);
+                if (openapiSchemaComponent.getRequired() != null) {
+                    propertyEntryRequired = openapiSchemaComponent.getRequired().contains(propertyEntryIdentifier);
                 }
-                ModelSchemaResponse propertyEntryModelSchemaResponse =
+                ModelSchema propertyEntryModelSchema =
                         buildModelSchemaResponse(
                                 propertyEntryIdentifier,
                                 SchemaType.FIELD,
                                 propertyEntryRequired,
                                 propertyEntry.getValue()
                         );
-                modelSchemaResponse.addParameter(propertyEntryModelSchemaResponse);
+                modelSchema.addParameter(propertyEntryModelSchema);
             }
         }
-        return modelSchemaResponse;
+        return modelSchema;
     }
 
     private boolean isHeaderOrParam(SchemaType schemaType) {
@@ -296,9 +303,9 @@ public class MetadataServiceImpl implements MetadataService {
         return schemaType == SchemaType.RESPONSE;
     }
 
-    private List<ModuleResponse> buildModulesResponse() {
-        return metadata.getTags().stream()
-                .map(tag -> new ModuleResponse(tag.getName(), tag.getDescription()))
+    private List<Module> buildModulesResponse() {
+        return openAPIMetatada.getTags().stream()
+                .map(tag -> new Module(tag.getName(), tag.getDescription()))
                 .collect(Collectors.toList());
     }
 }

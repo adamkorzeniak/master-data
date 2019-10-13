@@ -30,9 +30,9 @@ public class MovieServiceHelper {
             dto.setGenres(new ArrayList<>());
         }
         entity.setGenres(
-            dto.getGenres().stream()
-                .map(GenreServiceHelper::convertToEntity)
-                .collect(Collectors.toList()));
+                dto.getGenres().stream()
+                        .map(GenreServiceHelper::convertToEntity)
+                        .collect(Collectors.toList()));
 
         return entity;
     }
@@ -56,9 +56,9 @@ public class MovieServiceHelper {
             entity.setGenres(new ArrayList<>());
         }
         dto.setGenres(
-            entity.getGenres().stream()
-                .map(GenreServiceHelper::convertToDTO)
-                .collect(Collectors.toList()));
+                entity.getGenres().stream()
+                        .map(GenreServiceHelper::convertToDTO)
+                        .collect(Collectors.toList()));
         return dto;
     }
 }

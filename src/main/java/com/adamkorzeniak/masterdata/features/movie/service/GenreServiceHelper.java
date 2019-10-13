@@ -5,7 +5,8 @@ import com.adamkorzeniak.masterdata.features.movie.model.dto.GenreDTO;
 
 public class GenreServiceHelper {
 
-    private GenreServiceHelper() {}
+    private GenreServiceHelper() {
+    }
 
     /**
      * Converts Genre DTO to Entity.

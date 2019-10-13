@@ -8,24 +8,24 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ModuleResponse {
+public class Module {
 
     private String name;
     private String description;
-    private List<OperationResponse> operations;
+    private List<Operation> operations;
 
-    public ModuleResponse(String name, String description) {
+    public Module(String name, String description) {
         this.name = name;
         this.description = description;
         this.operations = new ArrayList<>();
     }
 
-    public void addOperation(OperationResponse operation) {
+    public void addOperation(Operation operation) {
         operations.add(operation);
     }
 
     @Override
     public String toString() {
-        return name + " - " + description;
+        return String.format("%s: %s, Operations: %s", name, description, operations);
     }
 }

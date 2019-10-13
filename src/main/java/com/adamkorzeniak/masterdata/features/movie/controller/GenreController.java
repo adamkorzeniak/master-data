@@ -41,7 +41,7 @@ public class GenreController {
     public ResponseEntity<List<GenreDTO>> findGenres(@RequestParam Map<String, String> allRequestParams) {
 
         List<GenreDTO> dtos = genreService.searchGenres(allRequestParams).stream().map(GenreServiceHelper::convertToDTO)
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
 
         if (dtos.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

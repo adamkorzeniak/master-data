@@ -12,6 +12,6 @@ public class FunctionUnsupportedValueMessageNotDefinedException extends RuntimeE
 
     public FunctionUnsupportedValueMessageNotDefinedException(SearchFunctionType function) {
         super("INTERNAL SERVER ERROR: Invalid Query Param Value Handling Error. " + function
-            + " doesn't have supported value type message defined");
+                + " doesn't have supported value type message defined");
     }
 }

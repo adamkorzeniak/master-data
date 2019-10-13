@@ -19,38 +19,37 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class ControllerLoggingAspect {
 
-	private final HttpServletRequest request;
-	private final HttpServletResponse response;
+    private final HttpServletRequest request;
+    private final HttpServletResponse response;
+    private Logger logger = Logger.getLogger(ControllerLoggingAspect.class.getName());
 
-	@Autowired
-	public ControllerLoggingAspect(HttpServletRequest request, HttpServletResponse response) {
-		this.request = request;
-		this.response = response;
-	}
+    @Autowired
+    public ControllerLoggingAspect(HttpServletRequest request, HttpServletResponse response) {
+        this.request = request;
+        this.response = response;
+    }
 
-	private Logger logger = Logger.getLogger(ControllerLoggingAspect.class.getName());
+    /**
+     * After request is received in controller it creates request uuid and logs
+     * details
+     */
+    @Before("PointcutDefinitions.controllers()")
+    public void enteringController(JoinPoint joinPoint) {
+        LoggingHelper.initializeContext(request);
+        LogType logType = new RequestReceivedLog();
+        Log log = LoggingHelper.generateLog(logType);
+        logger.debug(log.toJsonMessage());
+    }
 
-	/**
-	 * After request is received in controller it creates request uuid and logs
-	 * details
-	 */
-	@Before("PointcutDefinitions.controllers()")
-	public void enteringController(JoinPoint joinPoint) {
-		LoggingHelper.initializeContext(request);
-		LogType logType = new RequestReceivedLog();
-		Log log = LoggingHelper.generateLog(logType);
-		logger.debug(log.toJsonMessage());
-	}
-
-	/**
-	 * Before sending response from controller it logs details and clears uuid
-	 */
-	@AfterReturning("PointcutDefinitions.controllers()")
-	public void successfullyExitingController(JoinPoint joinPoint) {
-		int httpStatus = response.getStatus();
-		LogType logType = new ResponseReturnedLog(httpStatus);
-		Log log = LoggingHelper.generateLog(logType);
-		LoggingHelper.clearContext();
-		logger.debug(log.toJsonMessage());
-	}
+    /**
+     * Before sending response from controller it logs details and clears uuid
+     */
+    @AfterReturning("PointcutDefinitions.controllers()")
+    public void successfullyExitingController(JoinPoint joinPoint) {
+        int httpStatus = response.getStatus();
+        LogType logType = new ResponseReturnedLog(httpStatus);
+        Log log = LoggingHelper.generateLog(logType);
+        LoggingHelper.clearContext();
+        logger.debug(log.toJsonMessage());
+    }
 }
