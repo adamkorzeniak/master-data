@@ -1,7 +1,6 @@
 package com.adamkorzeniak.masterdata.exception;
 
-import java.util.stream.Collectors;
-
+import com.adamkorzeniak.masterdata.exception.exceptions.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.adamkorzeniak.masterdata.exception.exceptions.DuplicateUserException;
-import com.adamkorzeniak.masterdata.exception.exceptions.FieldFilterNotSupportedException;
-import com.adamkorzeniak.masterdata.exception.exceptions.FunctionUnsupportedValueMessageNotDefinedException;
-import com.adamkorzeniak.masterdata.exception.exceptions.InvalidQueryParamException;
-import com.adamkorzeniak.masterdata.exception.exceptions.InvalidQueryParamValueException;
-import com.adamkorzeniak.masterdata.exception.exceptions.MetadataResourceException;
-import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
-import com.adamkorzeniak.masterdata.exception.exceptions.PatchOperationNotSupportedException;
-import com.adamkorzeniak.masterdata.exception.exceptions.SearchFilterParamNotSupportedException;
-import com.adamkorzeniak.masterdata.exception.exceptions.SearchFilterParamsNotInitializedException;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {

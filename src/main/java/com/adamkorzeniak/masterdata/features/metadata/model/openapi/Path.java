@@ -1,20 +1,20 @@
 package com.adamkorzeniak.masterdata.features.metadata.model.openapi;
 
-import java.util.List;
-import java.util.Map;
-
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.Map;
+
 @Getter
 @Setter
-public class Operation {
+public class Path {
 
-    private String summary;
     private String operationId;
+    private String summary;
     private String description;
     private List<String> tags;
+    private List<Parameter> parameters;
     private ComponentReference requestBody;
     private Map<String, ComponentReference> responses;
-    private List<Parameter> parameters;
 }

@@ -5,7 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Example {
+public class BodyContent {
 
-    private ExampleValue value;
+    private ComponentReference example;
+	private ComponentReference schema;
 }

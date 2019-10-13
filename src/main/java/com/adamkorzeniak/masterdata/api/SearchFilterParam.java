@@ -1,11 +1,10 @@
 package com.adamkorzeniak.masterdata.api;
 
-import java.io.Serializable;
-
 import com.adamkorzeniak.masterdata.exception.exceptions.InvalidQueryParamException;
 import com.adamkorzeniak.masterdata.exception.exceptions.InvalidQueryParamValueException;
-
 import lombok.Getter;
+
+import java.io.Serializable;
 
 /**
  * API Search Query Param object holding representation of search query

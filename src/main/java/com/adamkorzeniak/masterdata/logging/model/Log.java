@@ -1,12 +1,11 @@
 package com.adamkorzeniak.masterdata.logging.model;
 
-import java.util.StringJoiner;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.StringJoiner;
 
 @Getter
 @AllArgsConstructor
@@ -23,7 +22,7 @@ public class Log {
         try {
             return mapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            // TODO: Build some message
             return buildFailedConversionErrorLog();
         }
     }

@@ -11,5 +11,5 @@ public class Parameter {
     private String name;
     private String description;
     private Boolean required;
-    private ParameterSchema schema;
+    private ComponentSchema schema;
 }

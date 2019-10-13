@@ -1,10 +1,10 @@
 package com.adamkorzeniak.masterdata.features.movie.service;
 
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-
 import com.adamkorzeniak.masterdata.features.movie.model.Movie;
 import com.adamkorzeniak.masterdata.features.movie.model.dto.MovieDTO;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class MovieServiceHelper {
 

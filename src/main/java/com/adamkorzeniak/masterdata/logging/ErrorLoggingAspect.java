@@ -1,8 +1,5 @@
 package com.adamkorzeniak.masterdata.logging;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.adamkorzeniak.masterdata.logging.model.ErrorOccurredLog;
 import com.adamkorzeniak.masterdata.logging.model.ErrorResponseLog;
 import com.adamkorzeniak.masterdata.logging.model.Log;
@@ -16,19 +13,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 @Aspect
 @Component
 public class ErrorLoggingAspect {
 
-	private final HttpServletRequest request;
 	private final HttpServletResponse response;
 
 	@Autowired
-	public ErrorLoggingAspect(HttpServletRequest request, HttpServletResponse response) {
-		this.request = request;
+	public ErrorLoggingAspect(HttpServletResponse response) {
 		this.response = response;
 	}
 

@@ -1,8 +1,8 @@
 package com.adamkorzeniak.masterdata.features.user.service;
 
-import java.security.Principal;
-
 import com.adamkorzeniak.masterdata.features.user.model.User;
+
+import java.security.Principal;
 
 public interface UserService {
 

@@ -1,8 +1,5 @@
 package com.adamkorzeniak.masterdata.logging;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.adamkorzeniak.masterdata.logging.model.Log;
 import com.adamkorzeniak.masterdata.logging.model.LogType;
 import com.adamkorzeniak.masterdata.logging.model.RequestReceivedLog;
@@ -14,6 +11,9 @@ import org.aspectj.lang.annotation.Before;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Aspect
 @Component
@@ -52,13 +52,5 @@ public class ControllerLoggingAspect {
 		Log log = LoggingHelper.generateLog(logType);
 		LoggingHelper.clearContext();
 		logger.debug(log.toJsonMessage());
-	}
-
-	private String getRequestURL() {
-		String requestURL = request.getRequestURI();
-		if (request.getQueryString() != null) {
-			requestURL += "?" + request.getQueryString();
-		}
-		return requestURL;
 	}
 }

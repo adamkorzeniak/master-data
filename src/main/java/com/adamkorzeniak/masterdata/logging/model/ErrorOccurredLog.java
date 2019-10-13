@@ -1,8 +1,8 @@
 package com.adamkorzeniak.masterdata.logging.model;
 
-import java.util.List;
-
 import lombok.Getter;
+
+import java.util.List;
 
 @Getter
 public class ErrorOccurredLog implements LogType {

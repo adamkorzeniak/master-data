@@ -1,10 +1,10 @@
 package com.adamkorzeniak.masterdata.features.movie.service;
 
+import com.adamkorzeniak.masterdata.features.movie.model.Genre;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import com.adamkorzeniak.masterdata.features.movie.model.Genre;
 
 public interface GenreService {
 

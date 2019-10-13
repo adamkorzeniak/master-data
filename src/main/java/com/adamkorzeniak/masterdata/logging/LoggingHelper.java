@@ -1,18 +1,17 @@
 package com.adamkorzeniak.masterdata.logging;
 
-import java.util.UUID;
-
 import com.adamkorzeniak.masterdata.logging.model.Log;
 import com.adamkorzeniak.masterdata.logging.model.LogType;
 import org.jboss.logging.MDC;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 public class LoggingHelper {
 
-	private final static String CORRELATION_ID_KEY = "correlationId";
-	private final static String REQUEST_URI = "requestURI";
-	private final static String REQUEST_METHOD = "requestMethod";
+	private static final String CORRELATION_ID_KEY = "correlationId";
+	private static final String REQUEST_URI = "requestURI";
+	private static final String REQUEST_METHOD = "requestMethod";
 
 	private LoggingHelper() {
 	}
