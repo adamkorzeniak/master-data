@@ -23,7 +23,7 @@ public class MetadataController {
 
     @GetMapping("/Metadata")
     public ResponseEntity<Metadata> retrieveMetadataResponse() {
-        Metadata response = metadataService.buildMetadataResponse();
+        Metadata response = metadataService.buildMetadata();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

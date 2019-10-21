@@ -47,6 +47,6 @@ public class MetadataFunctionalTest {
         metadataMockMvcResponse.then()
                 .statusCode(200)
                 .body(MODULES_FIELD_NAME, notNullValue())
-                .body(MODULES_FIELD_NAME, hasSize(MODULES_SIZE + 1));
+                .body(MODULES_FIELD_NAME, hasSize(MODULES_SIZE));
     }
 }

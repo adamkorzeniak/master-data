@@ -1,7 +1,7 @@
 package com.adamkorzeniak.masterdata.features.metadata.service;
 
-import com.adamkorzeniak.masterdata.features.metadata.model.dto.*;
 import com.adamkorzeniak.masterdata.features.metadata.model.dto.Module;
+import com.adamkorzeniak.masterdata.features.metadata.model.dto.*;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ public class MetadataServiceTest {
 
     @BeforeEach
     public void setupMetadataResponseForValidation() {
-        metadata = metadataService.buildMetadataResponse();
+        metadata = metadataService.buildMetadata();
     }
 
     @Test
@@ -68,27 +68,26 @@ public class MetadataServiceTest {
                 List<ModelSchema> queryParams = operation.getQueryParams();
                 if (queryParams != null) {
                     assertNoDuplicates(queryParams, SchemaType.QUERY_PARAM);
-                    queryParams.forEach(this::assertQueryParamIsValid);
+                    queryParams.forEach(this::assertParamIsValid);
                 }
 
                 List<ModelSchema> uriParams = operation.getUriParams();
                 assertUriParamsMatchUrl(operation.getUrl(), uriParams);
                 if (uriParams != null) {
                     assertNoDuplicates(uriParams, SchemaType.URI_PARAM);
-                    uriParams.forEach(this::assertUriParamIsValid);
+                    uriParams.forEach(this::assertParamIsValid);
                 }
 
                 ModelSchema requestBody = operation.getRequestBody();
                 if (requestBody != null) {
-                    assertRequestBodyIsValid(requestBody);
+                    assertBodyIsValid(requestBody);
                 }
 
                 List<ModelSchema> responses = operation.getResponses();
                 if (responses != null) {
                     assertNoDuplicates(responses, SchemaType.RESPONSE);
-                    responses.forEach(this::assertResponseIsValid);
+                    responses.forEach(this::assertBodyIsValid);
                 }
-
             }
         }
     }
@@ -106,108 +105,76 @@ public class MetadataServiceTest {
 
     }
 
-    private void assertQueryParamIsValid(ModelSchema queryParam) {
-        assertThat(queryParam).isNotNull();
+    private void assertParamIsValid(ModelSchema param) {
+        assertThat(param).isNotNull();
 
-        assertStringIsLowerCase(queryParam.getName());
-        assertThat(queryParam.getHttpStatus()).isNull();
-//        assertStringIsUpperCase(queryParam.getDescription());
-        assertThat(queryParam.getRequired()).isNotNull();
-        String type = queryParam.getType();
-        System.out.println(queryParam.getName());
-        assertThat(type).isIn(List.of("string", "integer", "boolean"));
-        assertThat(queryParam.getExample()).isNotEmpty();
-        assertThat(queryParam.getWriteOnly()).isNull();
-        assertThat(queryParam.getReadOnly()).isNull();
-        assertThat(queryParam.getParameters()).isNull();
-
-        if (type.equals("string")) {
-            assertThat(queryParam.getFormat()).isNull();
-            assertThat(queryParam.getMinimum()).isNull();
-            assertThat(queryParam.getMaximum()).isNull();
-        } else if (type.equals("integer")) {
-            assertThat(queryParam.getFormat()).isIn("int32", "int64");
-            assertThat(queryParam.getMinLength()).isNull();
-            assertThat(queryParam.getMaxLength()).isNull();
+        assertStringIsLowerCase(param.getName());
+        assertThat(param.getHttpStatus()).isNull();
+//        assertStringIsUpperCase(param.getDescription());
+        assertThat(param.getRequired()).isNotNull();
+        String type = param.getType();
+        if (SchemaType.QUERY_PARAM == param.getSchemaType()) {
+            assertThat(type).isIn(List.of("string", "integer", "boolean"));
+        } else if (SchemaType.URI_PARAM == param.getSchemaType()) {
+            assertThat(type).isEqualTo("integer");
         }
 
+        if ("string".equals(type)) {
+            assertThat(param.getFormat()).isNull();
+            assertThat(param.getMinimum()).isNull();
+            assertThat(param.getMaximum()).isNull();
+        } else if ("integer".equals(type)) {
+            assertThat(param.getFormat()).isIn("int32", "int64");
+            assertThat(param.getMinLength()).isNull();
+            assertThat(param.getMaxLength()).isNull();
+        }
+
+        assertThat(param.getExample()).isNotEmpty();
+        assertThat(param.getWriteOnly()).isNull();
+        assertThat(param.getReadOnly()).isNull();
+        assertThat(param.getEnums()).isNotNull();
+        assertThat(param.getParameters()).isNotNull();
+        assertThat(param.getParameters()).isEmpty();
     }
 
-    private void assertUriParamIsValid(ModelSchema uriParam) {
-        assertThat(uriParam).isNotNull();
+    private void assertBodyIsValid(ModelSchema bodyModel) {
+        assertThat(bodyModel).isNotNull();
 
-        assertStringIsLowerCase(uriParam.getName());
-        assertThat(uriParam.getHttpStatus()).isNull();
-//        assertStringIsUpperCase(uriParam.getDescription());
-        assertThat(uriParam.getRequired()).isNotNull();
-        assertThat(uriParam.getType()).isEqualTo("integer");
-        assertThat(uriParam.getFormat()).isIn("int32", "int64");
-        assertThat(uriParam.getMinLength()).isNull();
-        assertThat(uriParam.getMaxLength()).isNull();
-        assertThat(uriParam.getExample()).isNotEmpty();
-        assertThat(uriParam.getWriteOnly()).isNull();
-        assertThat(uriParam.getReadOnly()).isNull();
-        assertThat(uriParam.getEnums()).isNull();
-        assertThat(uriParam.getParameters()).isNull();
-    }
+        assertThat(bodyModel.getName()).isNull();
+        if (SchemaType.RESPONSE == bodyModel.getSchemaType()) {
+            assertThat(bodyModel.getHttpStatus()).isNotNull();
+            assertThat(bodyModel.getHttpStatus()).isNotEmpty();
+            assertThat(StringUtils.isNumeric(bodyModel.getHttpStatus())).isTrue();
+            int httpStatus = Integer.parseInt(bodyModel.getHttpStatus());
+            assertThat(httpStatus).isLessThan(600);
+            assertThat(httpStatus).isGreaterThanOrEqualTo(200);
+            if (httpStatus != 204) {
+                assertThat(bodyModel.getType()).isIn(List.of("object", "array"));
+            } else {
+                assertThat(bodyModel.getType()).isNull();
+            }
 
-    private void assertRequestBodyIsValid(ModelSchema requestBody) {
-        assertThat(requestBody).isNotNull();
-
-        assertThat(requestBody.getName()).isNull();
-        assertThat(requestBody.getHttpStatus()).isNull();
-//        assertStringIsUpperCase(requestBody.getDescription());
-        assertThat(requestBody.getRequired()).isNull();
-        assertThat(requestBody.getType()).isIn(List.of("object", "array"));
-        assertThat(requestBody.getFormat()).isNull();
-        assertThat(requestBody.getExample()).isNull();
-        assertThat(requestBody.getMinLength()).isNull();
-        assertThat(requestBody.getMaxLength()).isNull();
-        assertThat(requestBody.getMinimum()).isNull();
-        assertThat(requestBody.getMaximum()).isNull();
-        assertThat(requestBody.getReadOnly()).isNull();
-        assertThat(requestBody.getWriteOnly()).isNull();
-        assertThat(requestBody.getEnums()).isNull();
-
-        assertThat(requestBody.getParameters()).isNotNull();
-        // TODO: Check parameters
-    }
-
-    private void assertResponseIsValid(ModelSchema response) {
-
-        assertThat(response).isNotNull();
-
-        assertThat(response.getName()).isNull();
-
-        assertThat(response.getHttpStatus()).isNotNull();
-        assertThat(response.getHttpStatus()).isNotEmpty();
-        assertThat(StringUtils.isNumeric(response.getHttpStatus())).isTrue();
-        int httpStatus = Integer.parseInt(response.getHttpStatus());
-        assertThat(httpStatus).isLessThan(600);
-        assertThat(httpStatus).isGreaterThanOrEqualTo(200);
-
-//        assertStringIsUpperCase(response.getDescription());
-        assertThat(response.getRequired()).isNull();
-        if (httpStatus != 204) {
-            assertThat(response.getType()).isIn(List.of("object", "array"));
         } else {
-            assertThat(response.getType()).isNull();
-        }
-        assertThat(response.getFormat()).isNull();
-        assertThat(response.getExample()).isNull();
-        assertThat(response.getMinLength()).isNull();
-        assertThat(response.getMaxLength()).isNull();
-        assertThat(response.getMinimum()).isNull();
-        assertThat(response.getMaximum()).isNull();
-        assertThat(response.getReadOnly()).isNull();
-        assertThat(response.getWriteOnly()).isNull();
-        assertThat(response.getEnums()).isNull();
+            assertThat(bodyModel.getHttpStatus()).isNull();
+            assertThat(bodyModel.getType()).isIn(List.of("object", "array"));
 
-        if (httpStatus != 204) {
-            assertThat(response.getParameters()).isNotNull();
-            // TODO: Check parameters
         }
+//        assertStringIsUpperCase(bodyModel.getDescription());
+        assertThat(bodyModel.getRequired()).isNull();
+        assertThat(bodyModel.getFormat()).isNull();
+        assertThat(bodyModel.getExample()).isNull();
+        assertThat(bodyModel.getMinLength()).isNull();
+        assertThat(bodyModel.getMaxLength()).isNull();
+        assertThat(bodyModel.getMinimum()).isNull();
+        assertThat(bodyModel.getMaximum()).isNull();
+        assertThat(bodyModel.getReadOnly()).isNull();
+        assertThat(bodyModel.getWriteOnly()).isNull();
+        assertThat(bodyModel.getEnums()).isNotNull();
+        assertThat(bodyModel.getEnums()).isEmpty();
 
+        if (SchemaType.RESPONSE == bodyModel.getSchemaType() && "204".equals(bodyModel.getHttpStatus())) {
+            assertThat(bodyModel.getParameters()).isNotNull();
+        }
     }
 
     private void assertNoDuplicates(List<ModelSchema> elements, SchemaType type) {
