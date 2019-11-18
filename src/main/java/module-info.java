@@ -8,6 +8,7 @@ module master.data {
     requires spring.boot.autoconfigure;
     requires spring.context;
     requires spring.core;
+
     requires spring.data.jpa;
     requires spring.security.config;
     requires spring.security.core;
@@ -21,6 +22,10 @@ module master.data {
     requires org.aspectj.weaver;
     requires org.jboss.logging;
 
-    requires static lombok;
+    requires lombok;
+
+    exports com.adamkorzeniak.masterdata to spring.boot.devtools;
+    opens com.adamkorzeniak.masterdata to spring.core;
+    opens com.adamkorzeniak.masterdata.configuration to spring.core;
 
 }

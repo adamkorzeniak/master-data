@@ -4,7 +4,6 @@ import com.adamkorzeniak.masterdata.logging.model.Log;
 import com.adamkorzeniak.masterdata.logging.model.LogType;
 import org.jboss.logging.MDC;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 public class LoggingHelper {
@@ -16,12 +15,8 @@ public class LoggingHelper {
     private LoggingHelper() {
     }
 
-    private static String getRequestURL(HttpServletRequest request) {
-        String requestURL = request.getRequestURI();
-        if (request.getQueryString() != null) {
-            requestURL += "?" + request.getQueryString();
-        }
-        return requestURL;
+    private static String getRequestURL() {
+        return REQUEST_URI;
     }
 
     /**
@@ -31,11 +26,11 @@ public class LoggingHelper {
         MDC.clear();
     }
 
-    public static void initializeContext(HttpServletRequest request) {
+    public static void initializeContext() {
         String uuid = UUID.randomUUID().toString();
         MDC.put(CORRELATION_ID_KEY, uuid);
-        MDC.put(REQUEST_URI, getRequestURL(request));
-        MDC.put(REQUEST_METHOD, request.getMethod());
+        MDC.put(REQUEST_URI, "XXX");
+        MDC.put(REQUEST_METHOD, "GET");
     }
 
     public static Log generateLog(LogType logType) {

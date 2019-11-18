@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,20 +20,14 @@ import java.util.List;
 @Component
 public class ErrorLoggingAspect {
 
-    private final HttpServletResponse response;
     private Logger logger = Logger.getLogger(ErrorLoggingAspect.class.getName());
-
-    @Autowired
-    public ErrorLoggingAspect(HttpServletResponse response) {
-        this.response = response;
-    }
 
     /**
      * After exception is handled in logs message and clears uuid
      */
     @AfterReturning(pointcut = "PointcutDefinitions.exceptionHandlers()", returning = "errorResult")
     public void successfullyExitingController(JoinPoint joinPoint, ResponseEntity<Object> errorResult) {
-        int httpStatus = response.getStatus();
+        int httpStatus = 200;
         LogType logType = new ErrorResponseLog(httpStatus);
         Log log = LoggingHelper.generateLog(logType);
         LoggingHelper.clearContext();

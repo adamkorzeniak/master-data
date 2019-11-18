@@ -10,7 +10,7 @@ spring:
 server:
   port: 8443
   ssl:
-    key-store: classpath:certs/local-keystore.p12
+    key-store: ../resources/certs/local-keystore.p12
     key-store-password: dummypassword
     keyStoreType: PKCS12
     key-alias: tomcat

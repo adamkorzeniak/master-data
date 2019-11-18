@@ -12,22 +12,12 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Aspect
 @Component
 public class ControllerLoggingAspect {
 
-    private final HttpServletRequest request;
-    private final HttpServletResponse response;
     private Logger logger = Logger.getLogger(ControllerLoggingAspect.class.getName());
-
-    @Autowired
-    public ControllerLoggingAspect(HttpServletRequest request, HttpServletResponse response) {
-        this.request = request;
-        this.response = response;
-    }
 
     /**
      * After request is received in controller it creates request uuid and logs
@@ -35,7 +25,6 @@ public class ControllerLoggingAspect {
      */
     @Before("PointcutDefinitions.controllers()")
     public void enteringController(JoinPoint joinPoint) {
-        LoggingHelper.initializeContext(request);
         LogType logType = new RequestReceivedLog();
         Log log = LoggingHelper.generateLog(logType);
         logger.debug(log.toJsonMessage());
@@ -46,7 +35,7 @@ public class ControllerLoggingAspect {
      */
     @AfterReturning("PointcutDefinitions.controllers()")
     public void successfullyExitingController(JoinPoint joinPoint) {
-        int httpStatus = response.getStatus();
+        int httpStatus = 200;
         LogType logType = new ResponseReturnedLog(httpStatus);
         Log log = LoggingHelper.generateLog(logType);
         LoggingHelper.clearContext();
