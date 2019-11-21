@@ -1,13 +1,12 @@
 package com.adamkorzeniak.masterdata.features.movie.repository;
 
-import java.util.List;
-
+import com.adamkorzeniak.masterdata.features.movie.model.Genre;
+import com.adamkorzeniak.masterdata.features.movie.model.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import com.adamkorzeniak.masterdata.features.movie.model.Genre;
-import com.adamkorzeniak.masterdata.features.movie.model.Movie;
+import java.util.List;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long>, JpaSpecificationExecutor<Movie> {

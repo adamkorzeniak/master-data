@@ -1,15 +1,14 @@
 package com.adamkorzeniak.masterdata.features.user.service;
 
-import java.security.Principal;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import com.adamkorzeniak.masterdata.exception.exceptions.DuplicateUserException;
 import com.adamkorzeniak.masterdata.features.user.model.Role;
 import com.adamkorzeniak.masterdata.features.user.model.User;
 import com.adamkorzeniak.masterdata.features.user.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 
 @Service
 public class UserServiceImpl implements UserService {

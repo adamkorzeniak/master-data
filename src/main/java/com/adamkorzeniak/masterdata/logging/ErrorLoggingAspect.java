@@ -1,8 +1,5 @@
 package com.adamkorzeniak.masterdata.logging;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.adamkorzeniak.masterdata.logging.model.ErrorOccurredLog;
 import com.adamkorzeniak.masterdata.logging.model.ErrorResponseLog;
 import com.adamkorzeniak.masterdata.logging.model.Log;
@@ -16,49 +13,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 @Aspect
 @Component
 public class ErrorLoggingAspect {
 
-	private final HttpServletRequest request;
-	private final HttpServletResponse response;
+    private final HttpServletResponse response;
+    private Logger logger = Logger.getLogger(ErrorLoggingAspect.class.getName());
 
-	@Autowired
-	public ErrorLoggingAspect(HttpServletRequest request, HttpServletResponse response) {
-		this.request = request;
-		this.response = response;
-	}
+    @Autowired
+    public ErrorLoggingAspect(HttpServletResponse response) {
+        this.response = response;
+    }
 
-	private Logger logger = Logger.getLogger(ErrorLoggingAspect.class.getName());
+    /**
+     * After exception is handled in logs message and clears uuid
+     */
+    @AfterReturning(pointcut = "PointcutDefinitions.exceptionHandlers()", returning = "errorResult")
+    public void successfullyExitingController(JoinPoint joinPoint, ResponseEntity<Object> errorResult) {
+        int httpStatus = response.getStatus();
+        LogType logType = new ErrorResponseLog(httpStatus);
+        Log log = LoggingHelper.generateLog(logType);
+        LoggingHelper.clearContext();
+        logger.debug(log.toJsonMessage());
+    }
 
-	/**
-	 * After exception is handled in logs message and clears uuid
-	 */
-	@AfterReturning(pointcut = "PointcutDefinitions.exceptionHandlers()", returning = "errorResult")
-	public void successfullyExitingController(JoinPoint joinPoint, ResponseEntity<Object> errorResult) {
-		int httpStatus = response.getStatus();
-		LogType logType = new ErrorResponseLog(httpStatus);
-		Log log = LoggingHelper.generateLog(logType);
-		LoggingHelper.clearContext();
-		logger.debug(log.toJsonMessage());
-	}
-
-	/**
-	 * After exception in exception handler it logs the message
-	 */
-	@AfterThrowing(pointcut = "PointcutDefinitions.custom()", throwing = "error")
-	public void exitingMethodWithError(JoinPoint joinPoint, Throwable error) {
-		String methodName = joinPoint.getSignature().toShortString();
-		List<Throwable> errors = new ArrayList<>();
-		while (error != null) {
-			errors.add(error);
-			error = error.getCause();
-		}
-		LogType logType = new ErrorOccurredLog(methodName, errors);
-		Log log = LoggingHelper.generateLog(logType);
-		logger.debug(log.toJsonMessage());
-	}
+    /**
+     * After exception in exception handler it logs the message
+     */
+    @AfterThrowing(pointcut = "PointcutDefinitions.custom()", throwing = "error")
+    public void exitingMethodWithError(JoinPoint joinPoint, Throwable error) {
+        String methodName = joinPoint.getSignature().toShortString();
+        List<Throwable> errors = new ArrayList<>();
+        while (error != null) {
+            errors.add(error);
+            error = error.getCause();
+        }
+        LogType logType = new ErrorOccurredLog(methodName, errors);
+        Log log = LoggingHelper.generateLog(logType);
+        logger.debug(log.toJsonMessage());
+    }
 }

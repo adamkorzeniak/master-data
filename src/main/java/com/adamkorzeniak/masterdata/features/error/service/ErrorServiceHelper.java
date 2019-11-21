@@ -5,7 +5,8 @@ import com.adamkorzeniak.masterdata.features.error.model.ErrorDTO;
 
 public class ErrorServiceHelper {
 
-    private ErrorServiceHelper() {}
+    private ErrorServiceHelper() {
+    }
 
     /**
      * Converts Error DTO to Entity.

@@ -1,8 +1,6 @@
 package com.adamkorzeniak.masterdata.features.user.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.adamkorzeniak.masterdata.features.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,7 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.adamkorzeniak.masterdata.features.user.model.User;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
@@ -33,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(USERNAME_NOT_FOUND_MESSAGE);
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true,
-            true, true, true, getGrantedAuthorities(user));
+                true, true, true, getGrantedAuthorities(user));
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(User user) {

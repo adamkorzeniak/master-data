@@ -1,7 +1,5 @@
 package com.adamkorzeniak.masterdata.configuration;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -17,13 +15,18 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private static final String[] notSecuredResources = new String[] {
+    private static final String[] notSecuredResources = new String[]{
             "/v0/User/register",
-            "/v0/Metadata"
+            "/v0/Metadata",
+            "/v0/Metadata2",
+            "/v0/Metadata/**",
+            "/v0/Metadata2/**"
     };
 
     @Autowired
@@ -32,24 +35,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                  AuthenticationManagerBuilder auth) throws Exception {
 
         auth
-            .userDetailsService(userDetailsService)
-            .passwordEncoder(passwordEncoder);
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-            .httpBasic()
-            .and()
-            .authorizeRequests()
-            .antMatchers(notSecuredResources)
-            .permitAll()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .csrf()
-            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                .httpBasic()
+                .and()
+                .authorizeRequests()
+                .antMatchers(notSecuredResources)
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         http.cors().and().csrf().disable();
 

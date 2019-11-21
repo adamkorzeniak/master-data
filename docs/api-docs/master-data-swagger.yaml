@@ -15,19 +15,19 @@ servers:
 
 tags:
   - name: User
-    description: User details management - register and get details about user
+    description: User details management
   - name: Movie
-    description: Movie details management
+    description: Movie and genre details management
   - name: Error
-    description: Error details management - filter, create, delete
+    description: Server and client error details management
 paths:
 
   /User/me:
     get:
       tags:
         - User
-      summary: Retrieves details of authenticated user
       operationId: getMe
+      summary: Retrieves details of authenticated user
       description: Retrieves details of user whose credentials were passed in request
       responses:
         '200':
@@ -47,8 +47,8 @@ paths:
     post:
       tags:
         - User
-      summary: Registers an user
       operationId: registerUser
+      summary: Registers an user
       description: Registers an user with provided details
       requestBody:
         $ref: '#/components/requestBodies/userRegistrationDetails'
@@ -73,8 +73,8 @@ paths:
     get:
       tags:
         - Movie
-      summary: Searches movies
       operationId: searchMovies
+      summary: Searches movies
       description: Searches for movies using search parameters
       parameters:
         - in: query
@@ -86,42 +86,42 @@ paths:
             example: omedy,dram
         - in: query
           name: match-title
-          description: title of the movie
+          description: Title of the movie
           required: false
           schema:
             type: string
             example: Pulp Fiction
         - in: query
           name: search-title
-          description: movie title has to contain that value
+          description: Movie title has to contain that value
           required: false
           schema:
             type: string
             example: back to the
         - in: query
           name: search-description
-          description: movie description has to contain that value
+          description: Movie description has to contain that value
           required: false
           schema:
             type: string
             example: love story
         - in: query
           name: search-review
-          description: movie review has to contain that value
+          description: Movie review has to contain that value
           required: false
           schema:
             type: string
             example: good
         - in: query
           name: search-plotSummary
-          description: movie plot summary has to contain that value
+          description: Movie plot summary has to contain that value
           required: false
           schema:
             type: string
             example: kiss
         - in: query
           name: min-year
-          description: movie year minimum value
+          description: Movie year minimum value
           required: false
           schema:
             type: integer
@@ -129,7 +129,7 @@ paths:
             example: 2000
         - in: query
           name: max-year
-          description: movie year maximum value
+          description: Movie year maximum value
           required: false
           schema:
             type: integer
@@ -137,7 +137,7 @@ paths:
             example: 2000
         - in: query
           name: min-duration
-          description: movie duration (in minutes) minimum value
+          description: Movie duration (in minutes) minimum value
           required: false
           schema:
             type: integer
@@ -145,7 +145,7 @@ paths:
             example: 100
         - in: query
           name: max-duration
-          description: movie duration (in minutes) maximum value
+          description: Movie duration (in minutes) maximum value
           required: false
           schema:
             type: integer
@@ -153,7 +153,7 @@ paths:
             example: 100
         - in: query
           name: min-rating
-          description: movie rating minimum value
+          description: Movie rating minimum value
           required: false
           schema:
             type: integer
@@ -161,7 +161,7 @@ paths:
             example: 6
         - in: query
           name: max-rating
-          description: movie rating maximum value
+          description: Movie rating maximum value
           required: false
           schema:
             type: integer
@@ -169,7 +169,7 @@ paths:
             example: 6
         - in: query
           name: min-watchPriority
-          description: movie watch priority minimum value
+          description: Movie watch priority minimum value
           required: false
           schema:
             type: integer
@@ -177,7 +177,7 @@ paths:
             example: 4
         - in: query
           name: max-watchPriority
-          description: movie watch priority maximum value
+          description: Movie watch priority maximum value
           required: false
           schema:
             type: integer
@@ -185,35 +185,35 @@ paths:
             example: 4
         - in: query
           name: exist-rating
-          description: is movie rated
+          description: Is movie rated?
           required: false
           schema:
             type: boolean
             example: true
         - in: query
           name: exist-watchPriority
-          description: does movie have watch priority set
+          description: Does movie have watch priority set?
           required: false
           schema:
             type: boolean
             example: true
         - in: query
           name: exist-review
-          description: does movie have review
+          description: Does movie have review?
           required: false
           schema:
             type: boolean
             example: true
         - in: query
           name: exist-plotSummary
-          description: does movie have plot summary
+          description: Does movie have plot summary?
           required: false
           schema:
             type: boolean
             example: true
         - in: query
           name: order
-          description: order movies in default order using provided field
+          description: Order movies in default order using provided field
           required: false
           schema:
             type: string
@@ -227,7 +227,7 @@ paths:
             ]
         - in: query
           name: order-asc
-          description: order movies in ascending order using provided field
+          description: Order movies in ascending order using provided field
           required: false
           schema:
             type: string
@@ -241,7 +241,7 @@ paths:
             ]
         - in: query
           name: order-desc
-          description: order movies in descending order using provided field
+          description: Order movies in descending order using provided field
           required: false
           schema:
             type: string
@@ -269,9 +269,9 @@ paths:
     post:
       tags:
         - Movie
+      operationId: addMovie
       summary: Adds a movie
       description: Creates a movie with provided details
-      operationId: addMovie
       requestBody:
         $ref: '#/components/requestBodies/movieRequestDetails'
       responses:
@@ -292,8 +292,8 @@ paths:
     get:
       tags:
         - Movie
-      summary: Retrieves a movie for given id
       operationId: getMovie
+      summary: Retrieves a movie
       description: Retrieves a movie for given id
       parameters:
         - name: movieId
@@ -302,6 +302,7 @@ paths:
           description: Return movie with specific id
           schema:
             type: integer
+            format: int64
             example: 42
       responses:
         '200':
@@ -320,8 +321,8 @@ paths:
     put:
       tags:
         - Movie
-      summary: Updates a movie
       operationId: updateMovie
+      summary: Updates a movie
       description: Updates a movie with provided details
       parameters:
         - name: movieId
@@ -330,6 +331,7 @@ paths:
           description: Return movie with specific id
           schema:
             type: integer
+            format: int64
             example: 42
       requestBody:
         $ref: '#/components/requestBodies/movieRequestDetails'
@@ -349,16 +351,17 @@ paths:
     delete:
       tags:
         - Movie
-      summary: Deletes a movie
       operationId: deleteMovie
+      summary: Deletes a movie
       description: Deletes a movie with given id
       parameters:
         - name: movieId
           in: path
           required: true
-          description: movie id
+          description: Movie id
           schema:
             type: integer
+            format: int64
             example: 42
       responses:
         '204':
@@ -378,34 +381,34 @@ paths:
     get:
       tags:
         - Movie
-      summary: Searches genres
       operationId: searchGenres
+      summary: Searches genres
       description: Searches for genres using search parameters
       parameters:
         - in: query
           name: match-name
-          description: name of the genre
+          description: Name of the genre
           required: false
           schema:
             type: string
             example: Comedy
         - in: query
           name: search-name
-          description: genre name has to contain that value
+          description: Genre name has to contain that value
           required: false
           schema:
             type: string
             example: drama
         - in: query
           name: exist-name
-          description: genre name exists
+          description: Genre name exists
           required: false
           schema:
             type: boolean
             example: true
         - in: query
           name: order
-          description: order genres in default order using provided field
+          description: Order genres in default order using provided field
           required: false
           schema:
             type: string
@@ -415,7 +418,7 @@ paths:
             ]
         - in: query
           name: order-asc
-          description: order genres in ascending order using provided field
+          description: Order genres in ascending order using provided field
           required: false
           schema:
             type: string
@@ -425,7 +428,7 @@ paths:
             ]
         - in: query
           name: order-desc
-          description: order genres in descending order using provided field
+          description: Order genres in descending order using provided field
           required: false
           schema:
             type: string
@@ -449,8 +452,8 @@ paths:
     post:
       tags:
         - Movie
-      summary: Adds a genre
       operationId: addGenre
+      summary: Adds a genre
       description: Creates a genre with provided details
       requestBody:
         $ref: '#/components/requestBodies/genreRequestDetails'
@@ -472,8 +475,8 @@ paths:
     get:
       tags:
         - Movie
-      summary: Retrieves a genre for given id
       operationId: getGenre
+      summary: Retrieves a genre
       description: Retrieves a genre for given id
       parameters:
         - name: genreId
@@ -482,6 +485,7 @@ paths:
           description: Return a genre with specific id
           schema:
             type: integer
+            format: int64
             example: 42
       responses:
         '200':
@@ -500,8 +504,8 @@ paths:
     put:
       tags:
         - Movie
-      summary: Updates a genre
       operationId: updateGenre
+      summary: Updates a genre
       description: Updates a genre with provided details
       parameters:
         - name: genreId
@@ -510,6 +514,7 @@ paths:
           description: Return genre with specific id
           schema:
             type: integer
+            format: int64
             example: 42
       requestBody:
         $ref: '#/components/requestBodies/genreRequestDetails'
@@ -529,8 +534,8 @@ paths:
     delete:
       tags:
         - Movie
-      summary: Deletes a genre
       operationId: deleteGenre
+      summary: Deletes a genre
       description: Deletes a genre with given id
       parameters:
         - name: genreId
@@ -539,6 +544,7 @@ paths:
           description: genre id
           schema:
             type: integer
+            format: int64
             example: 42
       responses:
         '204':
@@ -557,8 +563,8 @@ paths:
     # patch:
     #   tags:
     #     - Movie
-    #   description: Merge genres
     #   operationId: mergeGenres
+    #   description: Merge genres
     #   parameters:
     #     - name: genreId
     #       in: path
@@ -566,6 +572,7 @@ paths:
     #       description: genre id to be merged to other genre
     #       schema:
     #         type: integer
+    #         format: int64
     #         example: 42
     #   requestBody:
     #     required: true
@@ -595,8 +602,8 @@ paths:
     get:
       tags:
         - Error
-      summary: Searches errors
       operationId: searchErrors
+      summary: Searches errors
       description: Search for errors using search parameters
       parameters:
         - in: query
@@ -740,8 +747,8 @@ paths:
     post:
       tags:
         - Error
-      summary: Adds an error
       operationId: addError
+      summary: Adds an error
       description: Creates an error with provided details
       requestBody:
         $ref: '#/components/requestBodies/errorDetails'
@@ -763,8 +770,8 @@ paths:
     delete:
       tags:
         - Error
-      summary: Deletes an error
       operationId: deleteError
+      summary: Deletes an error
       description: Deletes an error with given id
       parameters:
         - name: errorId
@@ -773,6 +780,7 @@ paths:
           description: error id
           schema:
             type: integer
+            format: int64
             example: 42
       responses:
         '204':
@@ -811,23 +819,26 @@ components:
           type: integer
           format: int64
           example: 11
+          minimum: 1
           readOnly: true
         username:
           description: User username
           type: string
           example: adam
+          minLength: 1
         password:
           description: User password
           type: string
           example: Pa5$w0rd
+          minLength: 1
           writeOnly: true
         role:
           description: User role
           type: string
+          example: USER
           enum:
             - USER
             - ADMIN
-          example: USER
     Movie:
       type: object
       required:
@@ -836,67 +847,105 @@ components:
         - duration
       properties:
         id:
-          description: Movie Id
+          description: Movie id
           type: integer
           format: int64
           example: 987
+          minimum: 1
           readOnly: true
         title:
+          description: Movie title
           type: string
           example: Titanic
         year:
+          description: Movie year
           type: integer
           format: int32
           example: 1997
+          minimum: 1800
+          maximum: 2999
         duration:
+          description: Movie duration
           type: integer
           format: int32
           example: 194
+          minimum: 0
+          maximum: 1000
         description:
+          description: Movie description
           type: string
           example: Great movie
         genres:
+          description: Movie genres
           type: array
           items:
             $ref: '#/components/schemas/Genre'
         rating:
+          description: Movie rating
           type: integer
           format: int32
           example: 8
+          minimum: 0
+          maximum: 10
         watchPriority:
+          description: Movie watch priority
           type: integer
           format: int32
           example: 0
+          minimum: 0
+          maximum: 5
         review:
+          description: Movie review
           type: string
           example: Titanic
         plotSummary:
+          description: Movie plot summary
           type: string
           example: Women lives 100 years, man dies before his 18 ;)
         reviewDate:
+          description: Movie review date
           type: string
-          format: yyyy-mm-dd
-          example: '2019-02-03'
+          format: date
+          example: '2019-02-27'
+    MovieList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Movie'
     Genre:
       type: object
       required:
         - name
       properties:
         id:
+          description: Genre id
           type: integer
           format: int64
+          minimum: 1
           example: 789
+          readOnly: true
         name:
+          description: Genre name
           type: string
+          minLength: 1
           example: Drama
+    GenreList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Genre'
     Error:
       type: object
+      required:
+        - id
+        - errorCode
+        - appId
       properties:
         id:
+          description: Error id in database
           type: integer
           format: int64
           example: 987
-        errorId:
+        errorCode:
+          description: Error code
           type: string
           example: error-1234
         appId:
@@ -921,6 +970,10 @@ components:
           type: integer
           format: int64
           example: 1541111111
+    ErrorList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Error'
     ErrorResponse:
       type: object
       properties:
@@ -1017,9 +1070,7 @@ components:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Movie'
+            $ref: '#/components/schemas/MovieList'
     movieRemoved:
       description: Movie removed
     genreDetails:
@@ -1027,17 +1078,13 @@ components:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Genre'
+            $ref: '#/components/schemas/Genre'
     genresDetails:
       description: List of genres returned
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Genre'
+            $ref: '#/components/schemas/GenreList'
     genreRemoved:
       description: Genre removed
     errorsDetails:
@@ -1045,9 +1092,7 @@ components:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/ErrorList'
     errorDetails:
       description: Created error details returned
       content:
@@ -1066,53 +1111,47 @@ components:
       description: The request could not be understood by the server due to malformed syntax
       content:
         application/json:
-          examples:
-            BadRequestErrorResponse:
-              $ref: '#/components/examples/BadRequestErrorResponse'
+          example:
+            $ref: '#/components/examples/BadRequestErrorResponse'
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     unauthorized:
       description: User is not authorised
       content:
         application/json:
-          examples:
-            BadRequestErrorResponse:
-              $ref: '#/components/examples/NotAuthorizedErrorResponse'
+          example:
+            $ref: '#/components/examples/NotAuthorizedErrorResponse'
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     notFound:
       description: Server could not found requested resource
       content:
         application/json:
-          examples:
-            BadRequestErrorResponse:
-              $ref: '#/components/examples/NotFoundErrorResponse'
+          example:
+            $ref: '#/components/examples/NotFoundErrorResponse'
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     methodNotAllowed:
       description: Method is not supported for given resource
       content:
         application/json:
-          examples:
-            BadRequestErrorResponse:
-              $ref: '#/components/examples/MethodNotAllowedErrorResponse'
+          example:
+            $ref: '#/components/examples/MethodNotAllowedErrorResponse'
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     conflict:
       description: Data to be created already exists.
       content:
         application/json:
-          examples:
-            BadRequestErrorResponse:
-              $ref: '#/components/examples/ConflictErrorResponse'
+          example:
+            $ref: '#/components/examples/ConflictErrorResponse'
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     internalError:
       description: The server encountered an unexpected condition which prevented it from fulfilling the request.
       content:
         application/json:
-          examples:
-            BadRequestErrorResponse:
-              $ref: '#/components/examples/InternalErrorResponse'
+          example:
+            $ref: '#/components/examples/InternalErrorResponse'
           schema:
             $ref: '#/components/schemas/ErrorResponse'

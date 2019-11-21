@@ -1,20 +1,15 @@
 package com.adamkorzeniak.masterdata.features.error.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "error__errors")
+@Table(name = "errors", catalog = "error")
 public class Error {
 
     @Id
@@ -22,11 +17,11 @@ public class Error {
     @Column(name = "id")
     private Long id;
 
-    @NotBlank
+    @NotEmpty
     @Column(name = "error_id")
     private String errorId;
 
-    @NotBlank
+    @NotEmpty
     @Column(name = "app_id")
     private String appId;
 

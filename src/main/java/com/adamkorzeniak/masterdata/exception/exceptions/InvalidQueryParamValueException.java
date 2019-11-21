@@ -28,7 +28,7 @@ public class InvalidQueryParamValueException extends RuntimeException {
                 throw new FunctionUnsupportedValueMessageNotDefinedException(function);
         }
         return String.format("Invalid query param value for '%s'. %s supports only %s values.", queryParam,
-            function.toString(), supportedType);
+                function.toString(), supportedType);
     }
 
 }

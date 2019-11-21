@@ -1,20 +1,19 @@
 package com.adamkorzeniak.masterdata.features.movie.service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-
 import com.adamkorzeniak.masterdata.api.GenericSpecification;
 import com.adamkorzeniak.masterdata.api.SearchFilterParam;
 import com.adamkorzeniak.masterdata.api.SearchFilterService;
 import com.adamkorzeniak.masterdata.features.movie.model.Genre;
 import com.adamkorzeniak.masterdata.features.movie.model.Movie;
 import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -45,15 +44,15 @@ public class MovieServiceImpl implements MovieService {
         }
         String[] genreArray = genreString.split(",");
         return movies.stream()
-            .filter(movie -> containsSearchedGenres(movie, genreArray))
-            .collect(Collectors.toList());
+                .filter(movie -> containsSearchedGenres(movie, genreArray))
+                .collect(Collectors.toList());
     }
 
     private boolean containsSearchedGenres(Movie movie, String[] searchedGenres) {
         List<Genre> genres = movie.getGenres();
         for (String s : searchedGenres) {
             boolean found = genres.stream().anyMatch(
-                genre -> genre.getName().toLowerCase().contains(s.toLowerCase()));
+                    genre -> genre.getName().toLowerCase().contains(s.toLowerCase()));
             if (!found) {
                 return false;
             }

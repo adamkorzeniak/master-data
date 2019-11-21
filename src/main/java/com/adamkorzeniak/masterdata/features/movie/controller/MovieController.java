@@ -40,7 +40,7 @@ public class MovieController {
     public ResponseEntity<List<MovieDTO>> findMovies(@RequestParam Map<String, String> allRequestParams) {
 
         List<MovieDTO> dtos = movieService.searchMovies(allRequestParams).stream().map(MovieServiceHelper::convertToDTO)
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
         if (dtos.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

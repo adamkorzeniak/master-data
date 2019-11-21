@@ -1,11 +1,10 @@
 package com.adamkorzeniak.masterdata.api;
 
-import java.io.Serializable;
-
 import com.adamkorzeniak.masterdata.exception.exceptions.InvalidQueryParamException;
 import com.adamkorzeniak.masterdata.exception.exceptions.InvalidQueryParamValueException;
-
 import lombok.Getter;
+
+import java.io.Serializable;
 
 /**
  * API Search Query Param object holding representation of search query
@@ -14,15 +13,13 @@ import lombok.Getter;
 public class SearchFilterParam implements Serializable {
 
     private static final long serialVersionUID = -3844292648390012518L;
-
+    private final String key;
     @Getter
     private SearchFunctionType function;
     @Getter
     private String value;
     @Getter
     private String field;
-
-    private final String key;
 
     /**
      * Builds API Search Query Param representation object

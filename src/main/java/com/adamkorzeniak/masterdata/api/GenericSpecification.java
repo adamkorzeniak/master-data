@@ -1,16 +1,14 @@
 package com.adamkorzeniak.masterdata.api;
 
-import java.util.List;
+import com.adamkorzeniak.masterdata.exception.exceptions.SearchFilterParamNotSupportedException;
+import com.adamkorzeniak.masterdata.exception.exceptions.SearchFilterParamsNotInitializedException;
+import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import org.springframework.data.jpa.domain.Specification;
-
-import com.adamkorzeniak.masterdata.exception.exceptions.SearchFilterParamNotSupportedException;
-import com.adamkorzeniak.masterdata.exception.exceptions.SearchFilterParamsNotInitializedException;
+import java.util.List;
 
 /**
  * Specification implementation supporting following filters

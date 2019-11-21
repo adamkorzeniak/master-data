@@ -1,16 +1,18 @@
 package com.adamkorzeniak.masterdata.logging.model;
 
-import java.util.StringJoiner;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.jboss.logging.Logger;
+
+import java.util.StringJoiner;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Log {
+
+    private final Logger logger = Logger.getLogger(Log.class.getName());
 
     private final String correlationId;
     private final String requestURI;
@@ -23,8 +25,9 @@ public class Log {
         try {
             return mapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return buildFailedConversionErrorLog();
+            String failedConversionErrorLog = buildFailedConversionErrorLog();
+            logger.debug(failedConversionErrorLog);
+            return failedConversionErrorLog;
         }
     }
 

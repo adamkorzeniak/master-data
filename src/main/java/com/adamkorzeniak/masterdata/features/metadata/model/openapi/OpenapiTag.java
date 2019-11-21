@@ -5,7 +5,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Tag {
+public class OpenapiTag {
     private String name;
     private String description;
+
+    @Override
+    public String toString() {
+        return String.format("%s: %s", name, description);
+    }
 }

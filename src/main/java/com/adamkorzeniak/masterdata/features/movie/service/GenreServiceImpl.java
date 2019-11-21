@@ -1,13 +1,5 @@
 package com.adamkorzeniak.masterdata.features.movie.service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-
 import com.adamkorzeniak.masterdata.api.GenericSpecification;
 import com.adamkorzeniak.masterdata.api.SearchFilterParam;
 import com.adamkorzeniak.masterdata.api.SearchFilterService;
@@ -16,6 +8,13 @@ import com.adamkorzeniak.masterdata.features.movie.model.Genre;
 import com.adamkorzeniak.masterdata.features.movie.model.Movie;
 import com.adamkorzeniak.masterdata.features.movie.repository.GenreRepository;
 import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class GenreServiceImpl implements GenreService {

@@ -1,28 +1,19 @@
 package com.adamkorzeniak.masterdata.features.error.controller;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
 import com.adamkorzeniak.masterdata.features.error.model.Error;
 import com.adamkorzeniak.masterdata.features.error.model.ErrorDTO;
 import com.adamkorzeniak.masterdata.features.error.service.ErrorService;
 import com.adamkorzeniak.masterdata.features.error.service.ErrorServiceHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v0/Error")
@@ -44,7 +35,7 @@ public class ErrorController {
     public ResponseEntity<List<ErrorDTO>> findErrors(@RequestParam Map<String, String> allRequestParams) {
 
         List<ErrorDTO> dtos = errorService.searchErrors(allRequestParams).stream().map(ErrorServiceHelper::convertToDTO)
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
 
         if (dtos.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
