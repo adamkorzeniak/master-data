@@ -16,7 +16,7 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode(exclude = "genres")
 @Entity
-@Table(name = "movie__movies")
+@Table(name = "movies", catalog = "movie")
 public class Movie {
 
     @Id
@@ -63,6 +63,6 @@ public class Movie {
     private LocalDate reviewDate;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "movie__movie_genres", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    @JoinTable(name = "movie_genres", catalog = "movie", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres;
 }

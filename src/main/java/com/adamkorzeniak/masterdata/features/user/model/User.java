@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "users", catalog = "authentication")
 public class User {
 
     @Id

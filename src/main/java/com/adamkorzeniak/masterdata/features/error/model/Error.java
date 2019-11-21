@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 @Getter
 @Setter
-@Table(name = "error__errors")
+@Table(name = "errors", catalog = "error")
 public class Error {
 
     @Id

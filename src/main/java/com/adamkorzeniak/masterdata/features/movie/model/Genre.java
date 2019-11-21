@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(of = "name")
-@Table(name = "movie__genres")
+@Table(name = "genres", catalog = "movie")
 public class Genre {
 
     @Id
