@@ -137,6 +137,11 @@
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
+                        <configuration>
+                            <append>true</append>
+                            <destFile>${sonar.coverage.jacoco.xmlReportPaths}</destFile>
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
 					</execution>
 					<execution>
 						<id>default-report</id>
