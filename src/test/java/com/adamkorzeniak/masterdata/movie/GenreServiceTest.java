@@ -96,7 +96,7 @@ public class GenreServiceTest {
         genre.setId(id);
 
         when(genreRepository.save(ArgumentMatchers.any())).thenAnswer(
-            mockRepositorySaveInvocation(genre)
+                mockRepositorySaveInvocation(genre)
         );
 
         Genre result = genreService.addGenre(genre);
@@ -114,7 +114,7 @@ public class GenreServiceTest {
         genre.setId(id);
 
         when(genreRepository.save(ArgumentMatchers.any())).thenAnswer(
-            mockRepositorySaveInvocation(genre)
+                mockRepositorySaveInvocation(genre)
         );
 
         Genre result = genreService.updateGenre(id, genre);
@@ -173,7 +173,7 @@ public class GenreServiceTest {
     }
 
     @Test
-    public void MergeGenres_MovieContainsSourceGenre_GenresReplacedAndReturnsTargerGenre() {
+    public void MergeGenres_MovieContainsSourceGenre_GenresReplacedAndReturnsTargetGenre() {
         Long sourceId = 11L;
         Long targetId = 22L;
 
@@ -189,7 +189,7 @@ public class GenreServiceTest {
         movie.setTitle("Titanic");
         movie.setDuration(100);
         movie.setYear(2000);
-        movie.setGenres(Collections.singletonList(sourceGenre));
+        movie.setGenres(new ArrayList<>(Arrays.asList(sourceGenre)));
 
         when(genreRepository.findById(sourceId)).thenReturn(Optional.of(sourceGenre));
         when(genreRepository.findById(targetId)).thenReturn(Optional.of(targetGenre));
@@ -224,7 +224,7 @@ public class GenreServiceTest {
         movie.setTitle("Titanic");
         movie.setDuration(100);
         movie.setYear(2000);
-        movie.setGenres(Collections.singletonList(sourceGenre));
+        movie.setGenres(new ArrayList<>(Arrays.asList(sourceGenre)));
 
         when(genreRepository.findById(sourceId)).thenReturn(Optional.of(sourceGenre));
         when(genreRepository.findById(targetId)).thenReturn(Optional.of(targetGenre));
@@ -257,7 +257,7 @@ public class GenreServiceTest {
 
 
         assertThatExceptionOfType(NotFoundException.class).isThrownBy(() -> genreService.mergeGenres(sourceId, targetId))
-            .withMessage("Genre not found: id=11");
+                .withMessage("Genre not found: id=11");
     }
 
     @Test
@@ -273,7 +273,7 @@ public class GenreServiceTest {
         when(genreRepository.findById(targetId)).thenReturn(Optional.empty());
 
         assertThatExceptionOfType(NotFoundException.class).isThrownBy(() -> genreService.mergeGenres(sourceId, targetId))
-            .withMessage("Genre not found: id=22");
+                .withMessage("Genre not found: id=22");
     }
 
     private Answer<?> mockRepositorySaveInvocation(Genre genre) {

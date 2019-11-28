@@ -22,7 +22,7 @@ import java.util.List;
 public class ErrorLoggingAspect {
 
     private final HttpServletResponse response;
-    private Logger logger = Logger.getLogger(ErrorLoggingAspect.class.getName());
+    private final Logger logger = Logger.getLogger(ErrorLoggingAspect.class.getName());
 
     @Autowired
     public ErrorLoggingAspect(HttpServletResponse response) {

@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(username = "admin", password = "admin")
 public class MovieControllerTest {
 
-    private String baseMoviesPath = "/v0/Movie/movies";
+    private static final String BASE_MOVIES_PATH = "/v0/Movie/movies";
 
     @MockBean
     private MovieService movieService;
@@ -58,7 +58,7 @@ public class MovieControllerTest {
 
         when(movieService.searchMovies(params)).thenReturn(movies);
 
-        mockMvc.perform(get(baseMoviesPath).param("min-year", "2000"))
+        mockMvc.perform(get(BASE_MOVIES_PATH).param("min-year", "2000"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$", hasSize(2)))
@@ -76,7 +76,7 @@ public class MovieControllerTest {
 
         when(movieService.searchMovies(params)).thenReturn(movies);
 
-        mockMvc.perform(get(baseMoviesPath).param("min-year", "2000"))
+        mockMvc.perform(get(BASE_MOVIES_PATH).param("min-year", "2000"))
             .andExpect(status().isNoContent());
     }
 
@@ -90,7 +90,7 @@ public class MovieControllerTest {
 
         when(movieService.findMovieById(id)).thenReturn(optional);
 
-        mockMvc.perform(get(baseMoviesPath + '/' + id)).andExpect(status().isOk())
+        mockMvc.perform(get(BASE_MOVIES_PATH + '/' + id)).andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.title", is("Movie")))
             .andExpect(jsonPath("$.id", is(15)));
@@ -102,7 +102,7 @@ public class MovieControllerTest {
 
         when(movieService.findMovieById(id)).thenReturn(Optional.empty());
 
-        mockMvc.perform(get(baseMoviesPath + '/' + id)).andExpect(status().isNotFound())
+        mockMvc.perform(get(BASE_MOVIES_PATH + '/' + id)).andExpect(status().isNotFound())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.code", is("REQ001")))
             .andExpect(jsonPath("$.title", is("Not Found")))
@@ -124,7 +124,7 @@ public class MovieControllerTest {
 
         when(movieService.addMovie(ArgumentMatchers.any())).thenReturn(mockMovie);
 
-        mockMvc.perform(post(baseMoviesPath).contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(BASE_MOVIES_PATH).contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
             .andExpect(status().isCreated())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -142,7 +142,7 @@ public class MovieControllerTest {
         String requestJson = convertToJson(postMovie);
         String errorMessage = "Invalid 'year' field value: null. Field 'year' must not be null.";
 
-        mockMvc.perform(post(baseMoviesPath)
+        mockMvc.perform(post(BASE_MOVIES_PATH)
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
             .andExpect(status().isBadRequest())
@@ -171,7 +171,7 @@ public class MovieControllerTest {
         when(movieService.isMovieExist(id)).thenReturn(true);
         when(movieService.updateMovie(ArgumentMatchers.anyLong(), ArgumentMatchers.any())).thenReturn(mockMovie);
 
-        mockMvc.perform(put(baseMoviesPath + "/" + id)
+        mockMvc.perform(put(BASE_MOVIES_PATH + "/" + id)
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
             .andExpect(status().isOk())
@@ -194,7 +194,7 @@ public class MovieControllerTest {
 
         when(movieService.isMovieExist(id)).thenReturn(false);
 
-        mockMvc.perform(put(baseMoviesPath + "/" + id)
+        mockMvc.perform(put(BASE_MOVIES_PATH + "/" + id)
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
             .andDo(print())
@@ -211,7 +211,7 @@ public class MovieControllerTest {
 
         when(movieService.isMovieExist(id)).thenReturn(true);
 
-        mockMvc.perform(delete(baseMoviesPath + "/" + id)).andExpect(status().isNoContent());
+        mockMvc.perform(delete(BASE_MOVIES_PATH + "/" + id)).andExpect(status().isNoContent());
     }
 
     @Test
@@ -220,7 +220,7 @@ public class MovieControllerTest {
 
         when(movieService.isMovieExist(id)).thenReturn(false);
 
-        mockMvc.perform(delete(baseMoviesPath + "/" + id)).andExpect(status().isNotFound())
+        mockMvc.perform(delete(BASE_MOVIES_PATH + "/" + id)).andExpect(status().isNotFound())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.code", is("REQ001")))
             .andExpect(jsonPath("$.title", is("Not Found")))

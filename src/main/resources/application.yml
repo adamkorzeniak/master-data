@@ -11,7 +11,7 @@ logging:
 
 api:
   yaml:
-    file: file:docs/api-docs/master-data-swagger.json
+    file: file:docs/api/master-data-swagger.json
 
 params:
   movie:

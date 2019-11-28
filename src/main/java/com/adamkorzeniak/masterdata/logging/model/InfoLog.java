@@ -2,8 +2,6 @@ package com.adamkorzeniak.masterdata.logging.model;
 
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 public class InfoLog implements LogType {
 

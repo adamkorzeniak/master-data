@@ -24,9 +24,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String[] notSecuredResources = new String[]{
             "/v0/User/register",
             "/v0/Metadata",
-            "/v0/Metadata2",
-            "/v0/Metadata/**",
-            "/v0/Metadata2/**"
+            "/v0/Metadata/**"
     };
 
     @Autowired

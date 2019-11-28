@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogicLoggingAspect {
 
-    private Logger logger = Logger.getLogger(LogicLoggingAspect.class.getName());
+    private final Logger logger = Logger.getLogger(LogicLoggingAspect.class.getName());
 
     /**
      * Logs message when entering every service, helper and repository method

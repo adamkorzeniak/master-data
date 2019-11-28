@@ -1,27 +1,30 @@
 package com.adamkorzeniak.masterdata.movie;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.adamkorzeniak.masterdata.features.movie.model.Genre;
+import com.adamkorzeniak.masterdata.features.movie.model.Movie;
+import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.adamkorzeniak.masterdata.features.movie.model.Genre;
-import com.adamkorzeniak.masterdata.features.movie.model.Movie;
-import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
+import javax.transaction.Transactional;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
-@DataJpaTest
+@AutoConfigureTestEntityManager
+@Transactional
+@SpringBootTest
 public class MovieRepositoryTest {
 
     private Movie titanic;
@@ -67,9 +70,9 @@ public class MovieRepositoryTest {
         Movie movie1 = movies.get(0);
         Movie movie2 = movies.get(1);
         assertThat(movie1.getTitle())
-            .isIn(Arrays.asList(inception.getTitle(), seven.getTitle()));
+                .isIn(Arrays.asList(inception.getTitle(), seven.getTitle()));
         assertThat(movie2.getTitle())
-            .isIn(Arrays.asList(inception.getTitle(), seven.getTitle()));
+                .isIn(Arrays.asList(inception.getTitle(), seven.getTitle()));
         assertThat(movie1.getTitle()).isNotEqualTo(movie2.getTitle());
 
     }
@@ -86,8 +89,8 @@ public class MovieRepositoryTest {
     private void persistAndFlushGenres() {
         List<String> genreList = Arrays.asList("Drama", "Romance", "Thriller", "Sci-fi", "Crime", "Horror");
         List<Genre> genres = genreList.stream()
-            .map(this::createGenre)
-            .collect(Collectors.toList());
+                .map(this::createGenre)
+                .collect(Collectors.toList());
         genres.forEach(entityManager::persist);
         this.entityManager.flush();
         persistedGenres = genres;
@@ -99,25 +102,25 @@ public class MovieRepositoryTest {
         movie.setYear(2000);
         movie.setDuration(120);
         List<Genre> genres = Arrays.stream(genreNames)
-            .map(this::findGenreByName)
-            .collect(Collectors.toList());
+                .map(this::findGenreByName)
+                .collect(Collectors.toList());
         movie.setGenres(genres);
         this.entityManager.persist(movie);
     }
 
     private Genre findGenreByName(String name) {
         return persistedGenres.stream()
-            .filter(genre -> genre.getName().equals(name))
-            .findFirst()
-            .orElse(null);
+                .filter(genre -> genre.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 
     private Movie createMovie(String title, String... genreNames) {
         Movie movie = new Movie();
         movie.setTitle(title);
         List<Genre> genres = Arrays.stream(genreNames)
-            .map(this::createGenre)
-            .collect(Collectors.toList());
+                .map(this::createGenre)
+                .collect(Collectors.toList());
         movie.setGenres(genres);
         return movie;
     }

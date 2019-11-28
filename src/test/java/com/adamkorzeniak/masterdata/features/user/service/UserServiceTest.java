@@ -20,7 +20,7 @@ import com.adamkorzeniak.masterdata.features.user.model.User;
 import com.adamkorzeniak.masterdata.features.user.repository.UserRepository;
 
 @ExtendWith(SpringExtension.class)
-@ActiveProfiles(profiles = "integration")
+@ActiveProfiles(profiles = "test")
 @SpringBootTest
 public class UserServiceTest {
 

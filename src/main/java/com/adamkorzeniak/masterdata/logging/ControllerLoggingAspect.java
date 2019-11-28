@@ -21,7 +21,7 @@ public class ControllerLoggingAspect {
 
     private final HttpServletRequest request;
     private final HttpServletResponse response;
-    private Logger logger = Logger.getLogger(ControllerLoggingAspect.class.getName());
+    private final Logger logger = Logger.getLogger(ControllerLoggingAspect.class.getName());
 
     @Autowired
     public ControllerLoggingAspect(HttpServletRequest request, HttpServletResponse response) {

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:13457/master_data?useLegacyDatetimeCode=false&serverTimezone=Europe/Warsaw&autoReconnect=true&useSSL=false
+    url: jdbc:mysql://localhost:13457?useLegacyDatetimeCode=false&serverTimezone=Europe/Warsaw&autoReconnect=true&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ENC(PzqdJrsbvXzfvQ1f54zqxKwvB50lGNKi)
     password: ENC(2kL6hc5UhDpF9DdV+0Q9i1RBFVntbtVL6wPb403x2oE=)

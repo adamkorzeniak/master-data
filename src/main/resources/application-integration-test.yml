@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/integration_test_master_data?useLegacyDatetimeCode=false&serverTimezone=Europe/Warsaw&autoReconnect=true&useSSL=false
+    url: jdbc:mysql://localhost:3306?useLegacyDatetimeCode=false&serverTimezone=Europe/Warsaw&autoReconnect=true&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: admin
+    password: ENC(C/0YpHjRtw3zrtDzrF162PgvqHfYyjQ9yBlSbUcWZWI=)
 
   jpa:
     hibernate.ddl-auto: create

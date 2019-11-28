@@ -49,7 +49,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @WithMockUser(username = "admin", password = "admin")
 public class GenreControllerTest {
 
-    private String baseGenresPath = "/v0/Movie/genres";
+    private static final String BASE_GENRES_PATH = "/v0/Movie/genres";
 
     @MockBean
     private GenreService genreService;
@@ -70,7 +70,7 @@ public class GenreControllerTest {
 
         doReturn(genres).when(genreService).searchGenres(params);
 
-        mockMvc.perform(get(baseGenresPath))
+        mockMvc.perform(get(BASE_GENRES_PATH))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$", hasSize(2)))
@@ -88,7 +88,7 @@ public class GenreControllerTest {
 
         doReturn(genres).when(genreService).searchGenres(params);
 
-        mockMvc.perform(get(baseGenresPath).param("min-year", "2000"))
+        mockMvc.perform(get(BASE_GENRES_PATH).param("min-year", "2000"))
             .andExpect(status().isNoContent());
     }
 
@@ -102,7 +102,7 @@ public class GenreControllerTest {
 
         doReturn(optional).when(genreService).findGenreById(id);
 
-        mockMvc.perform(get(baseGenresPath + '/' + id)).andExpect(status().isOk())
+        mockMvc.perform(get(BASE_GENRES_PATH + '/' + id)).andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.name", is("Genre")))
             .andExpect(jsonPath("$.id", is(15)));
@@ -113,7 +113,7 @@ public class GenreControllerTest {
         Long id = 15L;
         doReturn(Optional.empty()).when(genreService).findGenreById(id);
 
-        mockMvc.perform(get(baseGenresPath + '/' + id)).andExpect(status().isNotFound())
+        mockMvc.perform(get(BASE_GENRES_PATH + '/' + id)).andExpect(status().isNotFound())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.code", is("REQ001")))
             .andExpect(jsonPath("$.title", is("Not Found")))
@@ -131,7 +131,7 @@ public class GenreControllerTest {
 
         doReturn(mockGenre).when(genreService).addGenre(ArgumentMatchers.any());
 
-        mockMvc.perform(post(baseGenresPath).contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(BASE_GENRES_PATH).contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
             .andExpect(status().isCreated())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -146,7 +146,7 @@ public class GenreControllerTest {
         String requestJson = convertToJson(postGenre);
         String errorMessage = "Invalid 'name' field value: null. Field 'name' must not be blank.";
 
-        mockMvc.perform(post(baseGenresPath)
+        mockMvc.perform(post(BASE_GENRES_PATH)
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
             .andExpect(status().isBadRequest())
@@ -171,7 +171,7 @@ public class GenreControllerTest {
         doReturn(true).when(genreService).isGenreExist(id);
         doReturn(mockGenre).when(genreService).updateGenre(ArgumentMatchers.anyLong(), ArgumentMatchers.any());
 
-        mockMvc.perform(put(baseGenresPath + "/" + id)
+        mockMvc.perform(put(BASE_GENRES_PATH + "/" + id)
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
             .andExpect(status().isOk())
@@ -190,7 +190,7 @@ public class GenreControllerTest {
 
         doReturn(false).when(genreService).isGenreExist(id);
 
-        mockMvc.perform(put(baseGenresPath + "/" + id)
+        mockMvc.perform(put(BASE_GENRES_PATH + "/" + id)
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
             .andDo(print())
@@ -207,7 +207,7 @@ public class GenreControllerTest {
 
         doReturn(true).when(genreService).isGenreExist(id);
 
-        mockMvc.perform(delete(baseGenresPath + "/" + id)).andExpect(status().isNoContent());
+        mockMvc.perform(delete(BASE_GENRES_PATH + "/" + id)).andExpect(status().isNoContent());
     }
 
     @Test
@@ -216,7 +216,7 @@ public class GenreControllerTest {
 
         doReturn(false).when(genreService).isGenreExist(id);
 
-        mockMvc.perform(delete(baseGenresPath + "/" + id)).andExpect(status().isNotFound())
+        mockMvc.perform(delete(BASE_GENRES_PATH + "/" + id)).andExpect(status().isNotFound())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.code", is("REQ001")))
             .andExpect(jsonPath("$.title", is("Not Found")))
@@ -242,7 +242,7 @@ public class GenreControllerTest {
         doReturn(true).when(genreService).isGenreExist(newId);
         doReturn(targetGenre).when(genreService).mergeGenres(ArgumentMatchers.anyLong(), ArgumentMatchers.any());
 
-        mockMvc.perform(patch(baseGenresPath + "/" + oldId)
+        mockMvc.perform(patch(BASE_GENRES_PATH + "/" + oldId)
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
             .andExpect(status().isOk())
@@ -265,7 +265,7 @@ public class GenreControllerTest {
         doReturn(false).when(genreService).isGenreExist(oldId);
         doReturn(true).when(genreService).isGenreExist(newId);
 
-        mockMvc.perform(patch(baseGenresPath + "/" + oldId)
+        mockMvc.perform(patch(BASE_GENRES_PATH + "/" + oldId)
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
             .andExpect(status().isNotFound())
@@ -289,7 +289,7 @@ public class GenreControllerTest {
         doReturn(true).when(genreService).isGenreExist(oldId);
         doReturn(false).when(genreService).isGenreExist(newId);
 
-        mockMvc.perform(patch(baseGenresPath + "/" + oldId)
+        mockMvc.perform(patch(BASE_GENRES_PATH + "/" + oldId)
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
             .andExpect(status().isNotFound())
@@ -309,7 +309,7 @@ public class GenreControllerTest {
 
         String requestJson = convertToJson(patchDTO);
 
-        mockMvc.perform(patch(baseGenresPath + "/" + 11)
+        mockMvc.perform(patch(BASE_GENRES_PATH + "/" + 11)
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestJson))
             .andExpect(status().isBadRequest())

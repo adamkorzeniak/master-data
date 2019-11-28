@@ -24,7 +24,7 @@ public class MovieDTO {
     @NotNull
     private String title;
 
-    @NotBlank
+    //    @NotBlank
     private String originalTitle;
 
     @Min(1800)
@@ -37,10 +37,10 @@ public class MovieDTO {
     @NotNull
     private Integer duration;
 
-    @NotBlank
+    //    @NotBlank
     private String directors;
 
-    @NotBlank
+    //    @NotBlank
     private String productionCountries;
 
     @Min(0)

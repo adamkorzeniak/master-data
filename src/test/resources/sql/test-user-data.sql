@@ -1,8 +1,10 @@
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: dev_master_data_dev
+-- Host: 127.0.0.1    Database: authentication
 -- ------------------------------------------------------
 -- Server version	5.7.16-log
+
+USE authentication;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;

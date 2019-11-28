@@ -72,7 +72,7 @@ public class MovieController {
      * <p>
      * If provided movie data is invalid it returns 400 Bad Request.
      *
-     * @param movie - Movie to be created
+     * @param dto - Movie to be created
      * @return Created movie
      */
     @PostMapping("/movies")
@@ -91,7 +91,7 @@ public class MovieController {
      * If provided movie data is invalid it returns 400 Bad Request.
      *
      * @param movieId - Id of movie
-     * @param movie   - Movie to be updated
+     * @param dto   - Movie to be updated
      * @return Updated movie
      */
     @PutMapping("/movies/{movieId}")
