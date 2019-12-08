@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.error;
+package com.adamkorzeniak.masterdata.features.error;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;

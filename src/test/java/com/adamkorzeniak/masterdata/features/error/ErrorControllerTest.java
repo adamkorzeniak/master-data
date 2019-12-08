@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.error;
+package com.adamkorzeniak.masterdata.features.error;
 
 import com.adamkorzeniak.masterdata.features.error.model.Error;
 import com.adamkorzeniak.masterdata.features.error.model.ErrorDTO;
