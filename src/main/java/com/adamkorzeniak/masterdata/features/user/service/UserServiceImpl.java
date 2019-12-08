@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new IllegalArgumentException();
         }
-        ifUserNotExistsAlready(user.getUsername());
+        validateUserNotAlreadyExists(user.getUsername());
 
         User newUser = new User();
         newUser.setUsername(user.getUsername());
@@ -36,7 +36,6 @@ public class UserServiceImpl implements UserService {
         if (newUser.getRole() == null) {
             newUser.setRole(Role.USER);
         }
-
         return userRepository.save(newUser);
     }
 
@@ -48,7 +47,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username);
     }
 
-    private void ifUserNotExistsAlready(String username) {
+    private void validateUserNotAlreadyExists(String username) {
         User user = userRepository.findByUsername(username);
         if (user != null) {
             throw new DuplicateUserException(username);

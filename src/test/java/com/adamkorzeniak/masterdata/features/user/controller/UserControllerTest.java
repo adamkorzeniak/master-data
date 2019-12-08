@@ -1,6 +1,8 @@
 package com.adamkorzeniak.masterdata.features.user.controller;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -10,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.security.Principal;
 
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -56,6 +59,37 @@ public class UserControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    public void GetUserDetails_NoIssues_ReturnUserDetails() throws Exception {
+        Principal principal = Mockito.mock(Principal.class);
+
+        User mockUser = new User();
+        mockUser.setId(ID);
+        mockUser.setUsername(USERNAME);
+        mockUser.setPassword(PASSWORD);
+        mockUser.setRole(ROLE);
+
+        when(principal.getName()).thenReturn(USERNAME);
+        when(userService.getUser(ArgumentMatchers.any(Principal.class))).thenReturn(mockUser);
+
+        mockMvc.perform(get(BASE_PATH + GET_ME_PATH))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.id", is(ID.intValue())))
+                .andExpect(jsonPath("$.username", is(USERNAME)))
+                .andExpect(jsonPath("$.password").doesNotExist())
+                .andExpect(jsonPath("$.role", is(ROLE.toString())));
+    }
+
+    @Test
+    public void GetUserDetails_UserNotFound_ReturnErrorMessage() throws Exception {
+        when(userService.getUser(ArgumentMatchers.any(Principal.class))).thenReturn(null);
+
+        mockMvc.perform(get(BASE_PATH + GET_ME_PATH))
+                .andExpect(status().isNoContent())
+                .andExpect(jsonPath("$").doesNotExist());
+    }
+
+    @Test
     public void AddUser_NoIssues_ReturnsAddedUser() throws Exception {
         UserRequest postUser = new UserRequest();
         postUser.setUsername(USERNAME);
@@ -81,32 +115,10 @@ public class UserControllerTest {
             .andExpect(jsonPath("$.role", is(ROLE.toString())));
     }
 
-    @Test
-    public void GetUserDetails_NoIssues_ReturnUserDetails() throws Exception {
-        Principal principal = Mockito.mock(Principal.class);
-
-        User mockUser = new User();
-        mockUser.setId(ID);
-        mockUser.setUsername(USERNAME);
-        mockUser.setPassword(PASSWORD);
-        mockUser.setRole(ROLE);
-
-        when(principal.getName()).thenReturn(USERNAME);
-        when(userService.getUser(ArgumentMatchers.any(Principal.class))).thenReturn(mockUser);
-
-        mockMvc.perform(get(BASE_PATH + GET_ME_PATH))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.id", is(ID.intValue())))
-            .andExpect(jsonPath("$.username", is(USERNAME)))
-            .andExpect(jsonPath("$.password").doesNotExist())
-            .andExpect(jsonPath("$.role", is(ROLE.toString())));
-    }
-
-    private String convertToJson(UserRequest postUser) throws JsonProcessingException {
+    private String convertToJson(Object jsonEntity) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        return ow.writeValueAsString(postUser);
+        return ow.writeValueAsString(jsonEntity);
     }
 }

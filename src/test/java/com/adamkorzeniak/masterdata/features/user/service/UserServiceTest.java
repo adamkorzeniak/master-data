@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,6 +19,8 @@ import com.adamkorzeniak.masterdata.exception.exceptions.DuplicateUserException;
 import com.adamkorzeniak.masterdata.features.user.model.Role;
 import com.adamkorzeniak.masterdata.features.user.model.User;
 import com.adamkorzeniak.masterdata.features.user.repository.UserRepository;
+
+import java.security.Principal;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles(profiles = "test")
@@ -31,7 +34,7 @@ public class UserServiceTest {
     private static final Role ROLE = Role.USER;
 
     private static final String DUPLICATED_USER_MESSAGE =
-        String.format("User with username '%s' already exists", USERNAME);
+            String.format("User with username '%s' already exists", USERNAME);
 
     @MockBean
     private PasswordEncoder encoder;
@@ -44,6 +47,7 @@ public class UserServiceTest {
 
     @Test
     public void RegisterUser_NoIssues_ReturnsUser() {
+
         User adam = new User();
         adam.setUsername(USERNAME);
         adam.setPassword(PASSWORD);
@@ -87,15 +91,17 @@ public class UserServiceTest {
 
     @Test
     public void RetrieveUser_UserExists_ReturnsUser() {
+        Principal principal = Mockito.mock(Principal.class);
         User adam = new User();
         adam.setId(ID);
         adam.setUsername(USERNAME);
         adam.setPassword(PASSWORD);
         adam.setRole(ROLE);
 
+        when(principal.getName()).thenReturn(USERNAME);
         when(userRepository.findByUsername(USERNAME)).thenReturn(adam);
 
-        User result = userService.getUser(USERNAME);
+        User result = userService.getUser(principal);
 
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(ID);

@@ -53,7 +53,7 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/userRegistrationDetails'
       responses:
-        '200':
+        '201':
           $ref: '#/components/responses/userRegisteredDetails'
         '400':
           $ref: '#/components/responses/badRequest'
