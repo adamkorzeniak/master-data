@@ -1,12 +1,8 @@
 package com.adamkorzeniak.masterdata.features.movie.controller;
 
 import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
-import com.adamkorzeniak.masterdata.exception.exceptions.PatchOperationNotSupportedException;
 import com.adamkorzeniak.masterdata.features.movie.model.Genre;
-import com.adamkorzeniak.masterdata.features.movie.model.dto.GenreDTO;
-import com.adamkorzeniak.masterdata.features.movie.model.dto.GenrePatchDTO;
 import com.adamkorzeniak.masterdata.features.movie.service.GenreService;
-import com.adamkorzeniak.masterdata.features.movie.service.GenreServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +12,12 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v0/Movie")
 public class GenreController {
 
     private static final String GENRE_RESOURCE_NAME = "Genre";
-    private static final String MERGE_OPERATION = "merge";
 
     private final GenreService genreService;
 
@@ -38,56 +32,62 @@ public class GenreController {
      * If there are no genres it returns empty list with 204 No Content
      */
     @GetMapping("/genres")
-    public ResponseEntity<List<GenreDTO>> findGenres(@RequestParam Map<String, String> allRequestParams) {
-
-        List<GenreDTO> dtos = genreService.searchGenres(allRequestParams).stream().map(GenreServiceHelper::convertToDTO)
-                .collect(Collectors.toList());
-
-        if (dtos.isEmpty()) {
+    public ResponseEntity<List<Genre>> findGenres(@RequestParam Map<String, String> allRequestParams) {
+        List<Genre> genres = genreService.searchGenres(allRequestParams);
+        if (genres.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(dtos, HttpStatus.OK);
+        return new ResponseEntity<>(genres, HttpStatus.OK);
     }
 
     /**
      * Returns genre with given id with 200 OK.
+     * <p>
+     * If genre with given id does not exist it returns error response with 404 Not Found
      */
     @GetMapping("/genres/{genreId}")
-    public ResponseEntity<GenreDTO> findGenreById(@PathVariable("genreId") Long genreId) {
-        Optional<Genre> result = genreService.findGenreById(genreId);
-        if (result.isEmpty()) {
+    public ResponseEntity<Genre> findGenreById(@PathVariable("genreId") Long genreId) {
+        Optional<Genre> genre = genreService.findGenreById(genreId);
+        if (genre.isEmpty()) {
             throw new NotFoundException(GENRE_RESOURCE_NAME, genreId);
         }
-        GenreDTO dto = GenreServiceHelper.convertToDTO(result.get());
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return new ResponseEntity<>(genre.get(), HttpStatus.OK);
     }
 
     /**
-     * Creates a genre in database. Returns created genre with 201 Created.
+     * Creates a genre in database.
+     * Returns created genre with 201 Created.
+     * <p>
+     * If provided genre data is invalid it returns 400 Bad Request.
      */
     @PostMapping("/genres")
-    public ResponseEntity<GenreDTO> addGenre(@RequestBody @Valid GenreDTO dto) {
-        Genre genre = GenreServiceHelper.convertToEntity(dto);
+    public ResponseEntity<Genre> addGenre(@RequestBody @Valid Genre genre) {
         Genre newGenre = genreService.addGenre(genre);
-        return new ResponseEntity<>(GenreServiceHelper.convertToDTO(newGenre), HttpStatus.CREATED);
+        return new ResponseEntity<>(newGenre, HttpStatus.CREATED);
     }
 
     /**
      * Updates a genre with given id in database. Returns updated genre with 200 OK.
+     * <p>
+     * If genre with given id does not exist it returns error response with 404 Not Found
+     * <p>
+     * If provided genre data is invalid it returns 400 Bad Request.
      */
     @PutMapping("/genres/{genreId}")
-    public ResponseEntity<GenreDTO> updateGenre(@RequestBody @Valid GenreDTO dto, @PathVariable Long genreId) {
+    public ResponseEntity<Genre> updateGenre(@RequestBody @Valid Genre genre, @PathVariable Long genreId) {
         boolean exists = genreService.isGenreExist(genreId);
         if (!exists) {
             throw new NotFoundException(GENRE_RESOURCE_NAME, genreId);
         }
-        Genre genre = GenreServiceHelper.convertToEntity(dto);
         Genre newGenre = genreService.updateGenre(genreId, genre);
-        return new ResponseEntity<>(GenreServiceHelper.convertToDTO(newGenre), HttpStatus.OK);
+        return new ResponseEntity<>(newGenre, HttpStatus.OK);
     }
 
     /**
-     * Deletes a genre with given id. Returns empty response with 204 No Content.
+     * Deletes a genre with given id.
+     * Returns empty response with 204 No Content.
+     * <p>
+     * If genre with given id does not exist it returns error response with 404 Not Found
      */
     @DeleteMapping("/genres/{genreId}")
     public ResponseEntity<Void> deleteGenre(@PathVariable Long genreId) {
@@ -97,23 +97,5 @@ public class GenreController {
         }
         genreService.deleteGenre(genreId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @PatchMapping("/genres/{genreId}")
-    public ResponseEntity<GenreDTO> mergeGenres(@RequestBody GenrePatchDTO mergedto, @PathVariable Long genreId) {
-        if (!MERGE_OPERATION.equals(mergedto.getOp())) {
-            throw new PatchOperationNotSupportedException(mergedto.getOp(), GENRE_RESOURCE_NAME);
-        }
-        boolean oldExists = genreService.isGenreExist(genreId);
-        boolean targetExists = genreService.isGenreExist(mergedto.getTargetGenreId());
-        if (!oldExists) {
-            throw new NotFoundException(GENRE_RESOURCE_NAME, genreId);
-        }
-        if (!targetExists) {
-            throw new NotFoundException(GENRE_RESOURCE_NAME, mergedto.getTargetGenreId());
-        }
-        Genre result = genreService.mergeGenres(genreId, mergedto.getTargetGenreId());
-        genreService.deleteGenre(genreId);
-        return new ResponseEntity<>(GenreServiceHelper.convertToDTO(result), HttpStatus.OK);
     }
 }

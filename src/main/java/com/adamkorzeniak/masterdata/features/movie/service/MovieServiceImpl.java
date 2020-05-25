@@ -1,11 +1,11 @@
 package com.adamkorzeniak.masterdata.features.movie.service;
 
-import com.adamkorzeniak.masterdata.api.GenericSpecification;
-import com.adamkorzeniak.masterdata.api.SearchFilterParam;
-import com.adamkorzeniak.masterdata.api.SearchFilterService;
-import com.adamkorzeniak.masterdata.features.movie.model.Genre;
+import com.adamkorzeniak.masterdata.api.filter.FilterExpression;
+import com.adamkorzeniak.masterdata.api.ApiQueryService;
+import com.adamkorzeniak.masterdata.api.order.OrderExpression;
 import com.adamkorzeniak.masterdata.features.movie.model.Movie;
 import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
+import com.adamkorzeniak.masterdata.persistence.GenericSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -13,52 +13,26 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class MovieServiceImpl implements MovieService {
 
-    private static final String GENRE_MATCH_KEY = "genres";
-
     private final MovieRepository movieRepository;
-    private final SearchFilterService searchFilterService;
+    private final ApiQueryService apiQueryService;
 
     @Autowired
-    public MovieServiceImpl(MovieRepository movieRepository, SearchFilterService searchFilterService) {
+    public MovieServiceImpl(MovieRepository movieRepository,
+                            ApiQueryService apiQueryService) {
         this.movieRepository = movieRepository;
-        this.searchFilterService = searchFilterService;
+        this.apiQueryService = apiQueryService;
     }
 
     @Override
-    public List<Movie> searchMovies(Map<String, String> map) {
-        String genreString = null;
-        if (map.containsKey(GENRE_MATCH_KEY)) {
-            genreString = map.get(GENRE_MATCH_KEY);
-            map.remove(GENRE_MATCH_KEY);
-        }
-        List<SearchFilterParam> filters = searchFilterService.buildFilters(map, "movie.movies");
-        Specification<Movie> spec = new GenericSpecification<>(filters);
-        List<Movie> movies = movieRepository.findAll(spec);
-        if (genreString == null) {
-            return movies;
-        }
-        String[] genreArray = genreString.split(",");
-        return movies.stream()
-                .filter(movie -> containsSearchedGenres(movie, genreArray))
-                .collect(Collectors.toList());
-    }
-
-    private boolean containsSearchedGenres(Movie movie, String[] searchedGenres) {
-        List<Genre> genres = movie.getGenres();
-        for (String s : searchedGenres) {
-            boolean found = genres.stream().anyMatch(
-                    genre -> genre.getName().toLowerCase().contains(s.toLowerCase()));
-            if (!found) {
-                return false;
-            }
-        }
-        return true;
-
+    public List<Movie> searchMovies(Map<String, String> queryParams) {
+        FilterExpression filterExpression = apiQueryService.buildFilterExpression(queryParams);
+        OrderExpression orderExpression = apiQueryService.buildOrderExpression(queryParams);
+        Specification<Movie> spec = new GenericSpecification<>(filterExpression, orderExpression);
+        return movieRepository.findAll(spec);
     }
 
     @Override
