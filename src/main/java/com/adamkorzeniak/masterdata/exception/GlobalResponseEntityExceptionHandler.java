@@ -46,8 +46,6 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
     private static final String INVALID_FILTER_EXPRESSION_TYPE_TITLE = "Invalid Filter Expression";
     private static final String INVALID_ORDER_EXPRESSION_TYPE_CODE = "REQ101";
     private static final String INVALID_ORDER_EXPRESSION_TYPE_TITLE = "Invalid Order Expression";
-    private static final String PATCH_OPERATION_NOT_SUPPORTED_CODE = "REQ104";
-    private static final String PATCH_OPERATION_NOT_SUPPORTED_TITLE = "Patch Operation Not Supported";
 
     private static final String DUPLICATE_ENTRY_CODE = "REQ200";
     private static final String DUPLICATE_ENTRY_TITLE = "Duplicate Entry";
@@ -103,13 +101,6 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
     protected ResponseEntity<Object> notFound(Exception exc, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(NOT_FOUND_CODE, NOT_FOUND_TITLE, exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-    }
-
-    @ExceptionHandler(value = {PatchOperationNotSupportedException.class})
-    protected ResponseEntity<Object> patchOperationNotSupportedException(Exception exc, WebRequest request) {
-        ExceptionResponse bodyOfResponse = new ExceptionResponse(PATCH_OPERATION_NOT_SUPPORTED_CODE,
-                PATCH_OPERATION_NOT_SUPPORTED_TITLE, exc.getMessage());
-        return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(value = {MetadataResourceException.class})

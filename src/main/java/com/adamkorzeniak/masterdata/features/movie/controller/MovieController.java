@@ -1,5 +1,8 @@
 package com.adamkorzeniak.masterdata.features.movie.controller;
 
+import com.adamkorzeniak.masterdata.api.ApiQueryService;
+import com.adamkorzeniak.masterdata.api.ApiResponseService;
+import com.adamkorzeniak.masterdata.api.select.SelectExpression;
 import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
 import com.adamkorzeniak.masterdata.features.movie.model.Movie;
 import com.adamkorzeniak.masterdata.features.movie.service.MovieService;
@@ -9,9 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/v0/Movie")
@@ -20,10 +21,14 @@ public class MovieController {
     private static final String MOVIE_RESOURCE_NAME = "Movie";
 
     private final MovieService movieService;
+    private final ApiResponseService apiResponseService;
+    private final ApiQueryService apiQueryService;
 
     @Autowired
-    public MovieController(MovieService movieService) {
+    public MovieController(MovieService movieService, ApiResponseService apiResponseService, ApiQueryService apiQueryService) {
         this.movieService = movieService;
+        this.apiResponseService = apiResponseService;
+        this.apiQueryService = apiQueryService;
     }
 
     /**
@@ -32,12 +37,13 @@ public class MovieController {
      * If there are no movies it returns empty list with 204 No Content
      */
     @GetMapping("/movies")
-    public ResponseEntity<List<Movie>> findMovies(@RequestParam Map<String, String> allRequestParams) {
+    public ResponseEntity<List<Map<String, Object>>> findMovies(@RequestParam Map<String, String> allRequestParams) {
         List<Movie> movies = movieService.searchMovies(allRequestParams);
         if (movies.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(movies, HttpStatus.OK);
+        SelectExpression selectExpression = apiQueryService.buildSelectExpression(allRequestParams);
+        return new ResponseEntity<>(apiResponseService.buildListResponse(movies, selectExpression), HttpStatus.OK);
     }
 
     /**

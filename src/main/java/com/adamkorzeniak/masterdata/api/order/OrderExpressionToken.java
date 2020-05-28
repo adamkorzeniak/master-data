@@ -12,8 +12,8 @@ public class OrderExpressionToken {
 
     public OrderExpressionToken(String expression) {
         String[] expressionTokens = expression.split(" ");
-        this.field = expressionTokens[0];
-        String typeToken = expressionTokens.length > 1 ? expressionTokens[1] : "asc";
+        this.field = expressionTokens[0].trim();
+        String typeToken = expressionTokens.length > 1 ? expressionTokens[1].trim() : "asc";
         this.type = convertType(typeToken);
     }
 

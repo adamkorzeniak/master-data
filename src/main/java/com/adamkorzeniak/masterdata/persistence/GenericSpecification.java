@@ -57,16 +57,16 @@ public class GenericSpecification<T> implements Specification<T> {
                     p.getExpressions().add(cb.notEqual(table.get(column), value));
                     break;
                 case LESS:
-                    p.getExpressions().add(cb.lt(table.get(column), Double.parseDouble(value)));
+                    p.getExpressions().add(cb.lessThan(table.get(column), value));
                     break;
                 case LESS_OR_EQUAL:
-                    p.getExpressions().add(cb.le(table.get(column), Double.parseDouble(value)));
+                    p.getExpressions().add(cb.lessThanOrEqualTo(table.get(column), value));
                     break;
                 case GREATER:
-                    p.getExpressions().add(cb.gt(table.get(column), Double.parseDouble(value)));
+                    p.getExpressions().add(cb.greaterThan(table.get(column), value));
                     break;
                 case GREATER_OR_EQUAL:
-                    p.getExpressions().add(cb.ge(table.get(column), Double.parseDouble(value)));
+                    p.getExpressions().add(cb.greaterThanOrEqualTo(table.get(column), value));
                     break;
                 case LIKE:
                     p.getExpressions().add(cb.like(table.get(column), "%" + value + "%"));

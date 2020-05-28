@@ -14,9 +14,9 @@ public class FilterExpressionToken {
 
     public FilterExpressionToken(String expression) {
         String[] expressionTokens = expression.split(" ");
-        this.field = expressionTokens[0];
-        this.type = convertType(expressionTokens[1]);
-        this.value = expressionTokens[2];
+        this.field = expressionTokens[0].trim();
+        this.type = convertType(expressionTokens[1].trim());
+        this.value = expressionTokens[2].trim();
     }
 
     private FilterExpressionTokenType convertType(String type) {

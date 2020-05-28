@@ -4,6 +4,7 @@ import com.adamkorzeniak.masterdata.api.filter.FilterExpression;
 import com.adamkorzeniak.masterdata.api.filter.FilterExpressionToken;
 import com.adamkorzeniak.masterdata.api.order.OrderExpression;
 import com.adamkorzeniak.masterdata.api.order.OrderExpressionToken;
+import com.adamkorzeniak.masterdata.api.select.SelectExpression;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -15,32 +16,46 @@ import java.util.stream.Collectors;
 public class ApiQueryServiceImpl implements ApiQueryService {
 
     private static final String FILTER_QUERY_PARAM = "filter";
-    private static final String PREDICATE_JOINER = " and ";
     private static final String ORDER_QUERY_PARAM = "order";
-    private static final String SORT_JOINER = ", ";
+    private static final String SELECT_QUERY_PARAM = "select";
+    private static final String PREDICATE_JOINER = " and ";
+    private static final String SORT_JOINER = ",";
+    private static final String SELECT_JOINER = ",";
 
     @Override
     public FilterExpression buildFilterExpression(Map<String, String> map) {
         String expression = map.get(FILTER_QUERY_PARAM);
-        if (expression == null) {
+        if (expression == null || expression.isBlank()) {
             return new FilterExpression();
         }
-        List<FilterExpressionToken> predicates = Arrays.stream(expression.split(PREDICATE_JOINER))
+        List<FilterExpressionToken> expressionTokens = Arrays.stream(expression.split(PREDICATE_JOINER))
                 .map(this::buildFilterExpressionToken)
                 .collect(Collectors.toList());
-        return new FilterExpression(predicates);
+        return new FilterExpression(expressionTokens);
     }
 
     @Override
     public OrderExpression buildOrderExpression(Map<String, String> map) {
         String expression = map.get(ORDER_QUERY_PARAM);
-        if (expression == null) {
+        if (expression == null || expression.isBlank()) {
             return new OrderExpression();
         }
-        List<OrderExpressionToken> predicates = Arrays.stream(expression.split(SORT_JOINER))
+        List<OrderExpressionToken> expressionTokens = Arrays.stream(expression.split(SORT_JOINER))
                 .map(this::buildOrderExpressionToken)
                 .collect(Collectors.toList());
-        return new OrderExpression(predicates);
+        return new OrderExpression(expressionTokens);
+    }
+
+    @Override
+    public SelectExpression buildSelectExpression(Map<String, String> map) {
+        String expression = map.get(SELECT_QUERY_PARAM);
+        if (expression == null || expression.isBlank()) {
+            return new SelectExpression();
+        }
+        List<String> expressionTokens = Arrays.stream(expression.split(SELECT_JOINER))
+                .map(String::trim)
+                .collect(Collectors.toList());
+        return new SelectExpression(expressionTokens);
     }
 
     private FilterExpressionToken buildFilterExpressionToken(String s) {
