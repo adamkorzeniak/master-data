@@ -16,7 +16,7 @@ public class FilterExpressionToken {
         String[] expressionTokens = expression.split(" ");
         this.field = expressionTokens[0].trim();
         this.type = convertType(expressionTokens[1].trim());
-        this.value = expressionTokens[2].trim();
+        this.value = expressionTokens.length > 2 ? expressionTokens[2].trim(): null;
     }
 
     private FilterExpressionTokenType convertType(String type) {
@@ -35,6 +35,8 @@ public class FilterExpressionToken {
                 return FilterExpressionTokenType.GREATER_OR_EQUAL;
             case "like":
                 return FilterExpressionTokenType.LIKE;
+            case "nlike":
+                return FilterExpressionTokenType.NOT_LIKE;
             case "null":
                 return FilterExpressionTokenType.IS_NULL;
             case "exist":

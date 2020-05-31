@@ -1,14 +1,16 @@
 package com.adamkorzeniak.masterdata.features.error.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
-@Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Entity
 @Table(name = "errors", catalog = "error")
 public class Error {
 

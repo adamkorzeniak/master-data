@@ -71,6 +71,9 @@ public class GenericSpecification<T> implements Specification<T> {
                 case LIKE:
                     p.getExpressions().add(cb.like(table.get(column), "%" + value + "%"));
                     break;
+                case NOT_LIKE:
+                    p.getExpressions().add(cb.notLike(table.get(column), "%" + value + "%"));
+                    break;
                 case IS_NULL:
                     p.getExpressions().add(cb.isNull(table.get(column)));
                     break;

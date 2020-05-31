@@ -9,14 +9,15 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode(exclude = "genres")
+@EqualsAndHashCode(exclude = {"genres", "reviews", "plans"})
 @Entity
-@Table(name = "movies", catalog = "movie")
+@Table(name = "movie", catalog = "movie")
 public class Movie {
 
     @Id
@@ -40,29 +41,21 @@ public class Movie {
     @Column(name = "duration")
     private Integer duration;
 
-    @Min(0)
-    @Max(10)
-    @Column(name = "rating")
-    private Integer rating;
-
-    @Min(0)
-    @Max(5)
-    @Column(name = "watch_priority")
-    private Integer watchPriority;
-
     @Column(name = "description")
     private String description;
-
-    @Column(name = "review")
-    private String review;
 
     @Column(name = "plot_summary")
     private String plotSummary;
 
-    @Column(name = "review_date")
-    private LocalDate reviewDate;
-
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "movie_genres", catalog = "movie", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    private List<Genre> genres;
+    @JoinTable(name = "movie_genre", catalog = "movie", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private Set<Genre> genres;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "movie_id")
+    private Set<MovieReview> reviews;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "movie_id")
+    private Set<MovieWatchPlan> plans;
 }

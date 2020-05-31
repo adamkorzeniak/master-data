@@ -1,7 +1,7 @@
 package com.adamkorzeniak.masterdata.features.movie.service;
 
-import com.adamkorzeniak.masterdata.api.filter.FilterExpression;
 import com.adamkorzeniak.masterdata.api.ApiQueryService;
+import com.adamkorzeniak.masterdata.api.filter.FilterExpression;
 import com.adamkorzeniak.masterdata.api.order.OrderExpression;
 import com.adamkorzeniak.masterdata.features.movie.model.Movie;
 import com.adamkorzeniak.masterdata.features.movie.repository.MovieRepository;
@@ -22,7 +22,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     public MovieServiceImpl(MovieRepository movieRepository,
-                            ApiQueryService apiQueryService) {
+                             ApiQueryService apiQueryService) {
         this.movieRepository = movieRepository;
         this.apiQueryService = apiQueryService;
     }

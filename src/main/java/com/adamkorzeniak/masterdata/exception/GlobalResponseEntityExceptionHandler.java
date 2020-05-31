@@ -54,6 +54,8 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
     private static final String INTERNAL_SERVER_ERROR_TITLE = "Unexpected Internal Server Error";
     private static final String METADATA_RESOURCE_ERROR_CODE = "ERR001";
     private static final String METADATA_RESOURCE_ERROR_TITLE = "Metadata Resource Failure";
+    private static final String NOT_SUPPORTED_SEARCH_CLASS_CODE = "ERR003";
+    private static final String NOT_SUPPORTED_SEARCH_CLASS_TITLE = "Internal Server Error";
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exc,
@@ -123,6 +125,14 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
         ExceptionResponse bodyOfResponse = new ExceptionResponse(INVALID_ORDER_EXPRESSION_TYPE_CODE,
                 INVALID_ORDER_EXPRESSION_TYPE_TITLE, exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST,
+                request);
+    }
+
+    @ExceptionHandler(value = {NotSupportedSearchFieldClass.class})
+    protected ResponseEntity<Object> notSupportedSearchFieldClass(Exception exc, WebRequest request) {
+        ExceptionResponse bodyOfResponse = new ExceptionResponse(NOT_SUPPORTED_SEARCH_CLASS_CODE,
+                NOT_SUPPORTED_SEARCH_CLASS_TITLE, exc.getMessage());
+        return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
                 request);
     }
 

@@ -1,5 +1,8 @@
 package com.adamkorzeniak.masterdata.features.movie.controller;
 
+import com.adamkorzeniak.masterdata.api.ApiQueryService;
+import com.adamkorzeniak.masterdata.api.ApiResponseService;
+import com.adamkorzeniak.masterdata.api.select.SelectExpression;
 import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
 import com.adamkorzeniak.masterdata.features.movie.model.Genre;
 import com.adamkorzeniak.masterdata.features.movie.service.GenreService;
@@ -20,10 +23,14 @@ public class GenreController {
     private static final String GENRE_RESOURCE_NAME = "Genre";
 
     private final GenreService genreService;
+    private final ApiResponseService apiResponseService;
+    private final ApiQueryService apiQueryService;
 
     @Autowired
-    public GenreController(GenreService genreService) {
+    public GenreController(GenreService genreService, ApiResponseService apiResponseService, ApiQueryService apiQueryService) {
         this.genreService = genreService;
+        this.apiResponseService = apiResponseService;
+        this.apiQueryService = apiQueryService;
     }
 
     /**
@@ -32,12 +39,13 @@ public class GenreController {
      * If there are no genres it returns empty list with 204 No Content
      */
     @GetMapping("/genres")
-    public ResponseEntity<List<Genre>> findGenres(@RequestParam Map<String, String> allRequestParams) {
+    public ResponseEntity<List<Map<String, Object>>> findGenres(@RequestParam Map<String, String> allRequestParams) {
         List<Genre> genres = genreService.searchGenres(allRequestParams);
         if (genres.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(genres, HttpStatus.OK);
+        SelectExpression selectExpression = apiQueryService.buildSelectExpression(allRequestParams);
+        return new ResponseEntity<>(apiResponseService.buildListResponse(genres, selectExpression), HttpStatus.OK);
     }
 
     /**

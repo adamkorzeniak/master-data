@@ -8,6 +8,7 @@ public enum FilterExpressionTokenType {
     LESS_OR_EQUAL,
     GREATER_OR_EQUAL,
     LIKE,
+    NOT_LIKE,
     IS_NULL,
     IS_NOT_NULL;
 

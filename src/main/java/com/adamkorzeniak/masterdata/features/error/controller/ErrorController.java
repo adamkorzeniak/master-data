@@ -1,8 +1,13 @@
 package com.adamkorzeniak.masterdata.features.error.controller;
 
+import com.adamkorzeniak.masterdata.api.ApiQueryService;
+import com.adamkorzeniak.masterdata.api.ApiResponseService;
+import com.adamkorzeniak.masterdata.api.select.SelectExpression;
 import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
 import com.adamkorzeniak.masterdata.features.error.model.Error;
 import com.adamkorzeniak.masterdata.features.error.service.ErrorService;
+import com.adamkorzeniak.masterdata.features.movie.model.Movie;
+import com.adamkorzeniak.masterdata.features.movie.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +25,14 @@ public class ErrorController {
     private static final String ERROR_RESOURCE_NAME = "Error";
 
     private final ErrorService errorService;
+    private final ApiResponseService apiResponseService;
+    private final ApiQueryService apiQueryService;
 
     @Autowired
-    public ErrorController(ErrorService errorService) {
+    public ErrorController(ErrorService errorService, ApiResponseService apiResponseService, ApiQueryService apiQueryService) {
         this.errorService = errorService;
+        this.apiResponseService = apiResponseService;
+        this.apiQueryService = apiQueryService;
     }
 
     /**
@@ -32,12 +41,13 @@ public class ErrorController {
      * If there are no errors it returns empty list with 204 No Content
      */
     @GetMapping("/errors")
-    public ResponseEntity<List<Error>> findErrors(@RequestParam Map<String, String> allRequestParams) {
+    public ResponseEntity<List<Map<String, Object>>> findErrors(@RequestParam Map<String, String> allRequestParams) {
         List<Error> errors = errorService.searchErrors(allRequestParams);
         if (errors.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(errors, HttpStatus.OK);
+        SelectExpression selectExpression = apiQueryService.buildSelectExpression(allRequestParams);
+        return new ResponseEntity<>(apiResponseService.buildListResponse(errors, selectExpression), HttpStatus.OK);
     }
 
     /**

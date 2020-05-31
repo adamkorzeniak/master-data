@@ -1,7 +1,7 @@
 package com.adamkorzeniak.masterdata.features.movie.service;
 
-import com.adamkorzeniak.masterdata.api.filter.FilterExpression;
 import com.adamkorzeniak.masterdata.api.ApiQueryService;
+import com.adamkorzeniak.masterdata.api.filter.FilterExpression;
 import com.adamkorzeniak.masterdata.api.order.OrderExpression;
 import com.adamkorzeniak.masterdata.features.movie.model.Genre;
 import com.adamkorzeniak.masterdata.features.movie.repository.GenreRepository;
@@ -22,7 +22,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Autowired
     public GenreServiceImpl(GenreRepository genreRepository,
-                            ApiQueryService apiQueryService) {
+                             ApiQueryService apiQueryService) {
         this.genreRepository = genreRepository;
         this.apiQueryService = apiQueryService;
     }
