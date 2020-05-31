@@ -35,9 +35,6 @@ public class ProductReview {
     @Column(name = "review_date")
     private LocalDateTime reviewDate;
 
-    @Column(name = "reading_start")
-    private LocalDateTime readingStart;
-
-    @Column(name = "reading_end")
-    private LocalDateTime readingEnd;
+    @Column(name = "product_tested_date")
+    private LocalDateTime productTestedDate;
 }

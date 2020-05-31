@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @ToString(exclude = {"id"})
 @EqualsAndHashCode
 @Entity
-@Table(name = "place", catalog = "movie")
+@Table(name = "place", catalog = "location")
 public class Place {
 
     @Id
@@ -46,5 +47,13 @@ public class Place {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "country_id")
     private Country country;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "place_id")
+    private Set<PlaceReview> reviews;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "place_id")
+    private Set<PlaceVisitPlan> plans;
 
 }

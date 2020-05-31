@@ -34,18 +34,18 @@ public class PersonController {
     }
 
     /**
-     * Returns list of persons with 200 OK.
+     * Returns list of people with 200 OK.
      * <p>
-     * If there are no persons it returns empty list with 204 No Content
+     * If there are no people it returns empty list with 204 No Content
      */
-    @GetMapping("/persons")
+    @GetMapping("/people")
     public ResponseEntity<List<Map<String, Object>>> findPersons(@RequestParam Map<String, String> allRequestParams) {
-        List<Person> persons = personService.searchPersons(allRequestParams);
-        if (persons.isEmpty()) {
+        List<Person> people = personService.searchPersons(allRequestParams);
+        if (people.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         SelectExpression selectExpression = apiQueryService.buildSelectExpression(allRequestParams);
-        return new ResponseEntity<>(apiResponseService.buildListResponse(persons, selectExpression), HttpStatus.OK);
+        return new ResponseEntity<>(apiResponseService.buildListResponse(people, selectExpression), HttpStatus.OK);
     }
 
     /**
@@ -53,7 +53,7 @@ public class PersonController {
      * <p>
      * If person with given id does not exist it returns error response with 404 Not Found
      */
-    @GetMapping("/persons/{personId}")
+    @GetMapping("/people/{personId}")
     public ResponseEntity<Person> findPersonById(@PathVariable("personId") Long personId) {
         Optional<Person> person = personService.findPersonById(personId);
         if (person.isEmpty()) {
@@ -68,7 +68,7 @@ public class PersonController {
      * <p>
      * If provided person data is invalid it returns 400 Bad Request.
      */
-    @PostMapping("/persons")
+    @PostMapping("/people")
     public ResponseEntity<Person> addPerson(@RequestBody @Valid Person person) {
         Person newPerson = personService.addPerson(person);
         return new ResponseEntity<>(newPerson, HttpStatus.CREATED);
@@ -81,7 +81,7 @@ public class PersonController {
      * <p>
      * If provided person data is invalid it returns 400 Bad Request.
      */
-    @PutMapping("/persons/{personId}")
+    @PutMapping("/people/{personId}")
     public ResponseEntity<Person> updatePerson(@RequestBody @Valid Person person, @PathVariable Long personId) {
         boolean exists = personService.isPersonExist(personId);
         if (!exists) {
@@ -97,7 +97,7 @@ public class PersonController {
      * <p>
      * If person with given id does not exist it returns error response with 404 Not Found
      */
-    @DeleteMapping("/persons/{personId}")
+    @DeleteMapping("/people/{personId}")
     public ResponseEntity<Void> deletePerson(@PathVariable Long personId) {
         boolean exists = personService.isPersonExist(personId);
         if (!exists) {

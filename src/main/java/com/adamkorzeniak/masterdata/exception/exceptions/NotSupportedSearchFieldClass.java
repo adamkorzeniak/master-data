@@ -1,8 +1,8 @@
 package com.adamkorzeniak.masterdata.exception.exceptions;
 
-public class InvalidFilterExpressionTypeException extends RuntimeException {
+public class NotSupportedSearchFieldClass extends RuntimeException {
 
-    public InvalidFilterExpressionTypeException(String filterType) {
-        super("Invalid filter expression element with type: " + filterType);
+    public NotSupportedSearchFieldClass(Class<?> fieldClass) {
+        super("Not supported Search Field Class: " + fieldClass.getName());
     }
 }

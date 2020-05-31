@@ -20,7 +20,7 @@ import java.util.Optional;
 @RequestMapping("/v0/Travel")
 public class LuggageController {
 
-    private static final String PERSON_RESOURCE_NAME = "Luggage";
+    private static final String LUGGAGE_RESOURCE_NAME = "Luggage";
 
     private final LuggageService luggageService;
     private final ApiResponseService apiResponseService;
@@ -57,7 +57,7 @@ public class LuggageController {
     public ResponseEntity<Luggage> findLuggageById(@PathVariable("luggageId") Long luggageId) {
         Optional<Luggage> luggage = luggageService.findLuggageById(luggageId);
         if (luggage.isEmpty()) {
-            throw new NotFoundException(PERSON_RESOURCE_NAME, luggageId);
+            throw new NotFoundException(LUGGAGE_RESOURCE_NAME, luggageId);
         }
         return new ResponseEntity<>(luggage.get(), HttpStatus.OK);
     }
@@ -85,7 +85,7 @@ public class LuggageController {
     public ResponseEntity<Luggage> updateLuggage(@RequestBody @Valid Luggage luggage, @PathVariable Long luggageId) {
         boolean exists = luggageService.isLuggageExist(luggageId);
         if (!exists) {
-            throw new NotFoundException(PERSON_RESOURCE_NAME, luggageId);
+            throw new NotFoundException(LUGGAGE_RESOURCE_NAME, luggageId);
         }
         Luggage newLuggage = luggageService.updateLuggage(luggageId, luggage);
         return new ResponseEntity<>(newLuggage, HttpStatus.OK);
@@ -101,7 +101,7 @@ public class LuggageController {
     public ResponseEntity<Void> deleteLuggage(@PathVariable Long luggageId) {
         boolean exists = luggageService.isLuggageExist(luggageId);
         if (!exists) {
-            throw new NotFoundException(PERSON_RESOURCE_NAME, luggageId);
+            throw new NotFoundException(LUGGAGE_RESOURCE_NAME, luggageId);
         }
         luggageService.deleteLuggage(luggageId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

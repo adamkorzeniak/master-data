@@ -4,8 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -13,7 +11,7 @@ import java.time.LocalDate;
 @ToString
 @EqualsAndHashCode
 @Entity
-@Table(name = "luggages", catalog = "travel")
+@Table(name = "luggage", catalog = "travel")
 public class Luggage {
 
     @Id
@@ -26,24 +24,6 @@ public class Luggage {
     private String name;
 
     @NotEmpty
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Size(min = 11, max = 12)
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @NotEmpty
-    @Column(name = "email")
-    private String email;
-
-    @NotEmpty
-    @Column(name = "work_email")
-    private String workEmail;
-
-    @Column(name = "birthday")
-    private LocalDate birthday;
-
-    @Column(name = "nameday")
-    private LocalDate nameday;
+    @Column(name = "description")
+    private String description;
 }

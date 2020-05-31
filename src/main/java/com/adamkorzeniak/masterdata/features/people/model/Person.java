@@ -4,8 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -41,6 +40,9 @@ public class Person {
     @Column(name = "work_email")
     private String workEmail;
 
-    @Column(name = "watched_date")
-    private LocalDateTime watchedDate;
+    @Column(name = "birthday")
+    private LocalDate birthday;
+
+    @Column(name = "nameday")
+    private LocalDate nameday;
 }

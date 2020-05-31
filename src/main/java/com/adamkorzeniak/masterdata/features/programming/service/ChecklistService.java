@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public interface ChecklistGroupService {
+public interface ChecklistService {
 
     List<ChecklistGroup> searchChecklistGroups(Map<String, String> allRequestParams);
 

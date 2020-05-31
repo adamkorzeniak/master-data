@@ -5,7 +5,7 @@ import com.adamkorzeniak.masterdata.api.ApiResponseService;
 import com.adamkorzeniak.masterdata.api.select.SelectExpression;
 import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
 import com.adamkorzeniak.masterdata.features.programming.model.ChecklistGroup;
-import com.adamkorzeniak.masterdata.features.programming.service.ChecklistGroupService;
+import com.adamkorzeniak.masterdata.features.programming.service.ChecklistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +18,17 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/v0/Programming")
-public class ChecklistGroupController {
+public class ChecklistController {
 
     private static final String CHECKLIST_RESOURCE_NAME = "Checklists";
 
-    private final ChecklistGroupService checklistGroupService;
+    private final ChecklistService checklistService;
     private final ApiResponseService apiResponseService;
     private final ApiQueryService apiQueryService;
 
     @Autowired
-    public ChecklistGroupController(ChecklistGroupService checklistGroupService, ApiResponseService apiResponseService, ApiQueryService apiQueryService) {
-        this.checklistGroupService = checklistGroupService;
+    public ChecklistController(ChecklistService checklistService, ApiResponseService apiResponseService, ApiQueryService apiQueryService) {
+        this.checklistService = checklistService;
         this.apiResponseService = apiResponseService;
         this.apiQueryService = apiQueryService;
     }
@@ -40,7 +40,7 @@ public class ChecklistGroupController {
      */
     @GetMapping("/checklist")
     public ResponseEntity<List<Map<String, Object>>> findChecklistGroups(@RequestParam Map<String, String> allRequestParams) {
-        List<ChecklistGroup> checklistGroups = checklistGroupService.searchChecklistGroups(allRequestParams);
+        List<ChecklistGroup> checklistGroups = checklistService.searchChecklistGroups(allRequestParams);
         if (checklistGroups.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -55,7 +55,7 @@ public class ChecklistGroupController {
      */
     @GetMapping("/checklist/{checklistGroupId}")
     public ResponseEntity<ChecklistGroup> findChecklistGroupById(@PathVariable("checklistGroupId") Long checklistGroupId) {
-        Optional<ChecklistGroup> checklistGroup = checklistGroupService.findChecklistGroupById(checklistGroupId);
+        Optional<ChecklistGroup> checklistGroup = checklistService.findChecklistGroupById(checklistGroupId);
         if (checklistGroup.isEmpty()) {
             throw new NotFoundException(CHECKLIST_RESOURCE_NAME, checklistGroupId);
         }
@@ -70,7 +70,7 @@ public class ChecklistGroupController {
      */
     @PostMapping("/checklist")
     public ResponseEntity<ChecklistGroup> addChecklistGroup(@RequestBody @Valid ChecklistGroup checklistGroup) {
-        ChecklistGroup newChecklistGroup = checklistGroupService.addChecklistGroup(checklistGroup);
+        ChecklistGroup newChecklistGroup = checklistService.addChecklistGroup(checklistGroup);
         return new ResponseEntity<>(newChecklistGroup, HttpStatus.CREATED);
     }
 
@@ -83,11 +83,11 @@ public class ChecklistGroupController {
      */
     @PutMapping("/checklist/{checklistGroupId}")
     public ResponseEntity<ChecklistGroup> updateChecklistGroup(@RequestBody @Valid ChecklistGroup checklistGroup, @PathVariable Long checklistGroupId) {
-        boolean exists = checklistGroupService.isChecklistGroupExist(checklistGroupId);
+        boolean exists = checklistService.isChecklistGroupExist(checklistGroupId);
         if (!exists) {
             throw new NotFoundException(CHECKLIST_RESOURCE_NAME, checklistGroupId);
         }
-        ChecklistGroup newChecklistGroup = checklistGroupService.updateChecklistGroup(checklistGroupId, checklistGroup);
+        ChecklistGroup newChecklistGroup = checklistService.updateChecklistGroup(checklistGroupId, checklistGroup);
         return new ResponseEntity<>(newChecklistGroup, HttpStatus.OK);
     }
 
@@ -99,11 +99,11 @@ public class ChecklistGroupController {
      */
     @DeleteMapping("/checklist/{checklistGroupId}")
     public ResponseEntity<Void> deleteChecklistGroup(@PathVariable Long checklistGroupId) {
-        boolean exists = checklistGroupService.isChecklistGroupExist(checklistGroupId);
+        boolean exists = checklistService.isChecklistGroupExist(checklistGroupId);
         if (!exists) {
             throw new NotFoundException(CHECKLIST_RESOURCE_NAME, checklistGroupId);
         }
-        checklistGroupService.deleteChecklistGroup(checklistGroupId);
+        checklistService.deleteChecklistGroup(checklistGroupId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -9,9 +9,9 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 @NoArgsConstructor
 @ToString(exclude = {"id"})
-@EqualsAndHashCode(of = "name")
+@EqualsAndHashCode
 @Entity
-@Table(name = "checklistItem", catalog = "movie")
+@Table(name = "checklist_item", catalog = "programming")
 public class ChecklistItem {
 
     @Id
@@ -20,7 +20,15 @@ public class ChecklistItem {
     private Long id;
 
     @NotEmpty
-    @Column(name = "name")
-    private String name;
+    @Column(name = "order")
+    private Integer order;
+
+    @NotEmpty
+    @Column(name = "title")
+    private String title;
+
+    @NotEmpty
+    @Column(name = "description")
+    private String description;
 
 }
