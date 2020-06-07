@@ -28,7 +28,7 @@ public class Place {
 
     @NotEmpty
     @Column(name = "name_en")
-    private String name_en;
+    private String nameEn;
 
     @NotEmpty
     @Column(name = "city")

@@ -17,9 +17,6 @@ import java.security.Principal;
 @RequestMapping(value = "/v0/User")
 public class UserController {
 
-    private static final String GET_ME_PATH = "/me";
-    private static final String REGISTER_PATH = "/register";
-
     private final UserService userService;
 
     @Autowired
@@ -27,7 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = GET_ME_PATH)
+    @GetMapping("/me")
     public ResponseEntity<UserResponse> user(Principal principal) {
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -40,7 +37,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping(value = REGISTER_PATH)
+    @PostMapping("/register")
     public ResponseEntity<UserResponse> registerUser(@RequestBody @Valid UserRequest request) {
         User user = userService.register(UserServiceHelper.convertFromUserRequest(request));
         return new ResponseEntity<>(UserServiceHelper.convertToUserResponse(user), HttpStatus.CREATED);

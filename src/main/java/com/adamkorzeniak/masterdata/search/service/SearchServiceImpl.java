@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.features.search.service;
+package com.adamkorzeniak.masterdata.search.service;
 
 import com.adamkorzeniak.masterdata.features.book.model.Book;
 import com.adamkorzeniak.masterdata.features.book.model.BookTag;
@@ -20,9 +20,9 @@ import com.adamkorzeniak.masterdata.features.product.model.ProductTag;
 import com.adamkorzeniak.masterdata.features.product.repository.ProductRepository;
 import com.adamkorzeniak.masterdata.features.product.repository.ProductTagRepository;
 import com.adamkorzeniak.masterdata.features.programming.model.ChecklistGroup;
-import com.adamkorzeniak.masterdata.features.programming.repository.ChecklistRepository;
+import com.adamkorzeniak.masterdata.features.programming.repository.ChecklistGroupRepository;
 import com.adamkorzeniak.masterdata.persistence.SearchSpecification;
-import com.adamkorzeniak.masterdata.features.search.model.SearchResult;
+import com.adamkorzeniak.masterdata.search.model.SearchResult;
 import com.adamkorzeniak.masterdata.features.travel.model.Luggage;
 import com.adamkorzeniak.masterdata.features.travel.repository.LuggageRepository;
 import com.adamkorzeniak.masterdata.features.error.model.Error;
@@ -51,7 +51,7 @@ public class SearchServiceImpl implements SearchService {
                              PersonRepository personRepository,
                              ProductRepository productRepository,
                              ProductTagRepository productTagRepository,
-                             ChecklistRepository checklistRepository,
+                             ChecklistGroupRepository checklistGroupRepository,
                              LuggageRepository luggageRepository) {
         this.repositories = new HashMap<>();
         this.repositories.put(Book.class, bookRepository);
@@ -64,7 +64,7 @@ public class SearchServiceImpl implements SearchService {
         this.repositories.put(Person.class, personRepository);
         this.repositories.put(Product.class, productRepository);
         this.repositories.put(ProductTag.class, productTagRepository);
-        this.repositories.put(ChecklistGroup.class, checklistRepository);
+        this.repositories.put(ChecklistGroup.class, checklistGroupRepository);
         this.repositories.put(Luggage.class, luggageRepository);
     }
 

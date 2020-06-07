@@ -3,9 +3,6 @@ package com.adamkorzeniak.masterdata.features.book.model;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

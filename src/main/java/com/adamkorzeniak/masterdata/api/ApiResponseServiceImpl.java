@@ -30,7 +30,7 @@ public class ApiResponseServiceImpl implements ApiResponseService {
     public Map<String, Object> buildObjectResponse(Object response, SelectExpression selectExpression) {
         Map<String, Object> map = mapper.convertValue(response, new TypeReference<Map<String, Object>>() {});
         List<String> selectTokens = selectExpression.getSelectExpressionTokens();
-        if (selectTokens.size() == 0) {
+        if (selectTokens.isEmpty()) {
             return map;
         }
         Map<String, Object> resultMap = new LinkedHashMap<>();

@@ -5,7 +5,7 @@ import com.adamkorzeniak.masterdata.api.ApiResponseService;
 import com.adamkorzeniak.masterdata.api.select.SelectExpression;
 import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
 import com.adamkorzeniak.masterdata.features.programming.model.ChecklistGroup;
-import com.adamkorzeniak.masterdata.features.programming.service.ChecklistService;
+import com.adamkorzeniak.masterdata.features.programming.service.ChecklistGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +18,16 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/v0/Programming")
-public class ChecklistController {
+public class ChecklistGroupController {
 
     private static final String CHECKLIST_RESOURCE_NAME = "Checklists";
 
-    private final ChecklistService checklistService;
+    private final ChecklistGroupService checklistService;
     private final ApiResponseService apiResponseService;
     private final ApiQueryService apiQueryService;
 
     @Autowired
-    public ChecklistController(ChecklistService checklistService, ApiResponseService apiResponseService, ApiQueryService apiQueryService) {
+    public ChecklistGroupController(ChecklistGroupService checklistService, ApiResponseService apiResponseService, ApiQueryService apiQueryService) {
         this.checklistService = checklistService;
         this.apiResponseService = apiResponseService;
         this.apiQueryService = apiQueryService;
@@ -38,7 +38,7 @@ public class ChecklistController {
      * <p>
      * If there are no checklistGroups it returns empty list with 204 No Content
      */
-    @GetMapping("/checklist")
+    @GetMapping("/checklistGroups")
     public ResponseEntity<List<Map<String, Object>>> findChecklistGroups(@RequestParam Map<String, String> allRequestParams) {
         List<ChecklistGroup> checklistGroups = checklistService.searchChecklistGroups(allRequestParams);
         if (checklistGroups.isEmpty()) {
@@ -53,7 +53,7 @@ public class ChecklistController {
      * <p>
      * If checklistGroup with given id does not exist it returns error response with 404 Not Found
      */
-    @GetMapping("/checklist/{checklistGroupId}")
+    @GetMapping("/checklistGroups/{checklistGroupId}")
     public ResponseEntity<ChecklistGroup> findChecklistGroupById(@PathVariable("checklistGroupId") Long checklistGroupId) {
         Optional<ChecklistGroup> checklistGroup = checklistService.findChecklistGroupById(checklistGroupId);
         if (checklistGroup.isEmpty()) {
@@ -68,7 +68,7 @@ public class ChecklistController {
      * <p>
      * If provided checklistGroup data is invalid it returns 400 Bad Request.
      */
-    @PostMapping("/checklist")
+    @PostMapping("/checklistGroups")
     public ResponseEntity<ChecklistGroup> addChecklistGroup(@RequestBody @Valid ChecklistGroup checklistGroup) {
         ChecklistGroup newChecklistGroup = checklistService.addChecklistGroup(checklistGroup);
         return new ResponseEntity<>(newChecklistGroup, HttpStatus.CREATED);
@@ -81,7 +81,7 @@ public class ChecklistController {
      * <p>
      * If provided checklistGroup data is invalid it returns 400 Bad Request.
      */
-    @PutMapping("/checklist/{checklistGroupId}")
+    @PutMapping("/checklistGroups/{checklistGroupId}")
     public ResponseEntity<ChecklistGroup> updateChecklistGroup(@RequestBody @Valid ChecklistGroup checklistGroup, @PathVariable Long checklistGroupId) {
         boolean exists = checklistService.isChecklistGroupExist(checklistGroupId);
         if (!exists) {
@@ -97,7 +97,7 @@ public class ChecklistController {
      * <p>
      * If checklistGroup with given id does not exist it returns error response with 404 Not Found
      */
-    @DeleteMapping("/checklist/{checklistGroupId}")
+    @DeleteMapping("/checklistGroups/{checklistGroupId}")
     public ResponseEntity<Void> deleteChecklistGroup(@PathVariable Long checklistGroupId) {
         boolean exists = checklistService.isChecklistGroupExist(checklistGroupId);
         if (!exists) {

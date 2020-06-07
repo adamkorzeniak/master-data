@@ -25,7 +25,7 @@ public class Country {
 
     @NotEmpty
     @Column(name = "name_en")
-    private String name_em;
+    private String nameEn;
 
     @NotEmpty
     @Size(min = 2, max = 3)

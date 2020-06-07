@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.features.search.model;
+package com.adamkorzeniak.masterdata.search.model;
 
 import lombok.*;
 

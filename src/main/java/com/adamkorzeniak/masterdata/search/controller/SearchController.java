@@ -1,10 +1,10 @@
-package com.adamkorzeniak.masterdata.features.search.controller;
+package com.adamkorzeniak.masterdata.search.controller;
 
 import com.adamkorzeniak.masterdata.api.ApiQueryService;
 import com.adamkorzeniak.masterdata.api.ApiResponseService;
 import com.adamkorzeniak.masterdata.api.select.SelectExpression;
-import com.adamkorzeniak.masterdata.features.search.model.SearchResult;
-import com.adamkorzeniak.masterdata.features.search.service.SearchService;
+import com.adamkorzeniak.masterdata.search.model.SearchResult;
+import com.adamkorzeniak.masterdata.search.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

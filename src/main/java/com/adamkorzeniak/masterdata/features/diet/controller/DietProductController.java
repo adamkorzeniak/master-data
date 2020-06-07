@@ -1,11 +1,11 @@
-package com.adamkorzeniak.masterdata.features.product.controller;
+package com.adamkorzeniak.masterdata.features.diet.controller;
 
 import com.adamkorzeniak.masterdata.api.ApiQueryService;
 import com.adamkorzeniak.masterdata.api.ApiResponseService;
 import com.adamkorzeniak.masterdata.api.select.SelectExpression;
 import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
-import com.adamkorzeniak.masterdata.features.product.model.Product;
-import com.adamkorzeniak.masterdata.features.product.service.ProductService;
+import com.adamkorzeniak.masterdata.features.diet.model.DietProduct;
+import com.adamkorzeniak.masterdata.features.diet.service.DietProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +17,18 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v0/Product")
-public class ProductController {
+@RequestMapping("/v0/Diet")
+public class DietProductController {
 
     private static final String PRODUCT_RESOURCE_NAME = "Product";
 
-    private final ProductService productService;
+    private final DietProductService dietProductService;
     private final ApiResponseService apiResponseService;
     private final ApiQueryService apiQueryService;
 
     @Autowired
-    public ProductController(ProductService productService, ApiResponseService apiResponseService, ApiQueryService apiQueryService) {
-        this.productService = productService;
+    public DietProductController(DietProductService dietProductService, ApiResponseService apiResponseService, ApiQueryService apiQueryService) {
+        this.dietProductService = dietProductService;
         this.apiResponseService = apiResponseService;
         this.apiQueryService = apiQueryService;
     }
@@ -40,12 +40,12 @@ public class ProductController {
      */
     @GetMapping("/products")
     public ResponseEntity<List<Map<String, Object>>> findProducts(@RequestParam Map<String, String> allRequestParams) {
-        List<Product> products = productService.searchProducts(allRequestParams);
-        if (products.isEmpty()) {
+        List<DietProduct> dietProducts = dietProductService.searchProducts(allRequestParams);
+        if (dietProducts.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         SelectExpression selectExpression = apiQueryService.buildSelectExpression(allRequestParams);
-        return new ResponseEntity<>(apiResponseService.buildListResponse(products, selectExpression), HttpStatus.OK);
+        return new ResponseEntity<>(apiResponseService.buildListResponse(dietProducts, selectExpression), HttpStatus.OK);
     }
 
     /**
@@ -54,8 +54,8 @@ public class ProductController {
      * If product with given id does not exist it returns error response with 404 Not Found
      */
     @GetMapping("/products/{productId}")
-    public ResponseEntity<Product> findProductById(@PathVariable("productId") Long productId) {
-        Optional<Product> product = productService.findProductById(productId);
+    public ResponseEntity<DietProduct> findProductById(@PathVariable("productId") Long productId) {
+        Optional<DietProduct> product = dietProductService.findProductById(productId);
         if (product.isEmpty()) {
             throw new NotFoundException(PRODUCT_RESOURCE_NAME, productId);
         }
@@ -69,9 +69,9 @@ public class ProductController {
      * If provided product data is invalid it returns 400 Bad Request.
      */
     @PostMapping("/products")
-    public ResponseEntity<Product> addProduct(@RequestBody @Valid Product product) {
-        Product newProduct = productService.addProduct(product);
-        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+    public ResponseEntity<DietProduct> addProduct(@RequestBody @Valid DietProduct dietProduct) {
+        DietProduct newDietProduct = dietProductService.addProduct(dietProduct);
+        return new ResponseEntity<>(newDietProduct, HttpStatus.CREATED);
     }
 
     /**
@@ -82,13 +82,13 @@ public class ProductController {
      * If provided product data is invalid it returns 400 Bad Request.
      */
     @PutMapping("/products/{productId}")
-    public ResponseEntity<Product> updateProduct(@RequestBody @Valid Product product, @PathVariable Long productId) {
-        boolean exists = productService.isProductExist(productId);
+    public ResponseEntity<DietProduct> updateProduct(@RequestBody @Valid DietProduct dietProduct, @PathVariable Long productId) {
+        boolean exists = dietProductService.isProductExist(productId);
         if (!exists) {
             throw new NotFoundException(PRODUCT_RESOURCE_NAME, productId);
         }
-        Product newProduct = productService.updateProduct(productId, product);
-        return new ResponseEntity<>(newProduct, HttpStatus.OK);
+        DietProduct newDietProduct = dietProductService.updateProduct(productId, dietProduct);
+        return new ResponseEntity<>(newDietProduct, HttpStatus.OK);
     }
 
     /**
@@ -99,11 +99,11 @@ public class ProductController {
      */
     @DeleteMapping("/products/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
-        boolean exists = productService.isProductExist(productId);
+        boolean exists = dietProductService.isProductExist(productId);
         if (!exists) {
             throw new NotFoundException(PRODUCT_RESOURCE_NAME, productId);
         }
-        productService.deleteProduct(productId);
+        dietProductService.deleteProduct(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

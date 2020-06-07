@@ -29,7 +29,7 @@ public class Book {
 
     @NotEmpty
     @Column(name = "title_en")
-    private String title_en;
+    private String titleEn;
 
     @NotEmpty
     @Column(name = "author")

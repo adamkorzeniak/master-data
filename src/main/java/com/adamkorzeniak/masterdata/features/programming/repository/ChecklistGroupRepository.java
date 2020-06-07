@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ChecklistRepository extends JpaRepository<ChecklistGroup, Long>, JpaSpecificationExecutor<ChecklistGroup> {
+public interface ChecklistGroupRepository extends JpaRepository<ChecklistGroup, Long>, JpaSpecificationExecutor<ChecklistGroup> {
 }

@@ -15,10 +15,8 @@ import java.util.Map;
 
 public class GenericSpecification<T> implements Specification<T> {
 
-    private static final long serialVersionUID = 2286342570890056988L;
-
-    private final FilterExpression filtersExpression;
-    private final OrderExpression orderExpression;
+    private final transient FilterExpression filtersExpression;
+    private final transient OrderExpression orderExpression;
 
     public GenericSpecification(FilterExpression filtersExpression, OrderExpression orderExpression) {
         if (filtersExpression == null) {

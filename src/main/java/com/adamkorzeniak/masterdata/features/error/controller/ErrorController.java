@@ -6,8 +6,6 @@ import com.adamkorzeniak.masterdata.api.select.SelectExpression;
 import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
 import com.adamkorzeniak.masterdata.features.error.model.Error;
 import com.adamkorzeniak.masterdata.features.error.service.ErrorService;
-import com.adamkorzeniak.masterdata.features.movie.model.Movie;
-import com.adamkorzeniak.masterdata.features.movie.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
