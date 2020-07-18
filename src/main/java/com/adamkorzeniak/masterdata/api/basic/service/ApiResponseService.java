@@ -1,6 +1,6 @@
 package com.adamkorzeniak.masterdata.api.basic.service;
 
-import com.adamkorzeniak.masterdata.api.basic.select.SelectExpression;
+import com.adamkorzeniak.masterdata.api.basic.query.select.SelectExpression;
 
 import java.util.List;
 import java.util.Map;

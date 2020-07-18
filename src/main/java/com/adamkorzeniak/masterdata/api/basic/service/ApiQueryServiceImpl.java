@@ -1,10 +1,10 @@
 package com.adamkorzeniak.masterdata.api.basic.service;
 
-import com.adamkorzeniak.masterdata.api.basic.filter.FilterExpression;
-import com.adamkorzeniak.masterdata.api.basic.filter.FilterExpressionToken;
-import com.adamkorzeniak.masterdata.api.basic.order.OrderExpression;
-import com.adamkorzeniak.masterdata.api.basic.order.OrderExpressionToken;
-import com.adamkorzeniak.masterdata.api.basic.select.SelectExpression;
+import com.adamkorzeniak.masterdata.api.basic.query.filter.FilterExpression;
+import com.adamkorzeniak.masterdata.api.basic.query.filter.FilterExpressionToken;
+import com.adamkorzeniak.masterdata.api.basic.query.order.OrderExpression;
+import com.adamkorzeniak.masterdata.api.basic.query.order.OrderExpressionToken;
+import com.adamkorzeniak.masterdata.api.basic.query.select.SelectExpression;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;

@@ -1,11 +1,11 @@
 package com.adamkorzeniak.masterdata.persistence;
 
-import com.adamkorzeniak.masterdata.api.basic.filter.FilterExpression;
-import com.adamkorzeniak.masterdata.api.basic.filter.FilterExpressionToken;
-import com.adamkorzeniak.masterdata.api.basic.filter.FilterExpressionTokenType;
-import com.adamkorzeniak.masterdata.api.basic.order.OrderExpression;
-import com.adamkorzeniak.masterdata.api.basic.order.OrderExpressionToken;
-import com.adamkorzeniak.masterdata.api.basic.order.OrderExpressionTokenType;
+import com.adamkorzeniak.masterdata.api.basic.query.filter.FilterExpression;
+import com.adamkorzeniak.masterdata.api.basic.query.filter.FilterExpressionToken;
+import com.adamkorzeniak.masterdata.api.basic.query.filter.FilterExpressionTokenType;
+import com.adamkorzeniak.masterdata.api.basic.query.order.OrderExpression;
+import com.adamkorzeniak.masterdata.api.basic.query.order.OrderExpressionToken;
+import com.adamkorzeniak.masterdata.api.basic.query.order.OrderExpressionTokenType;
 import com.adamkorzeniak.masterdata.exception.exceptions.SQLExpressionUnexpectedTypeException;
 import org.springframework.data.jpa.domain.Specification;
 

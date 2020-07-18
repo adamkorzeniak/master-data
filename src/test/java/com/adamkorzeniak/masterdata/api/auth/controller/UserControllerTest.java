@@ -1,8 +1,6 @@
-package com.adamkorzeniak.masterdata.features.user.controller;
+package com.adamkorzeniak.masterdata.entity.user.controller;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -12,7 +10,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.security.Principal;
 
-import org.hamcrest.Matcher;
+import com.adamkorzeniak.masterdata.api.auth.model.Role;
+import com.adamkorzeniak.masterdata.api.auth.model.User;
+import com.adamkorzeniak.masterdata.api.auth.model.dto.UserRequest;
+import com.adamkorzeniak.masterdata.api.auth.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -27,10 +28,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.adamkorzeniak.masterdata.features.user.model.Role;
-import com.adamkorzeniak.masterdata.features.user.model.User;
-import com.adamkorzeniak.masterdata.features.user.model.dto.UserRequest;
-import com.adamkorzeniak.masterdata.features.user.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;

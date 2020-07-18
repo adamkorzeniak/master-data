@@ -1,8 +1,8 @@
 package com.adamkorzeniak.masterdata.api.basic.service;
 
-import com.adamkorzeniak.masterdata.api.basic.order.OrderExpression;
-import com.adamkorzeniak.masterdata.api.basic.filter.FilterExpression;
-import com.adamkorzeniak.masterdata.api.basic.select.SelectExpression;
+import com.adamkorzeniak.masterdata.api.basic.query.order.OrderExpression;
+import com.adamkorzeniak.masterdata.api.basic.query.filter.FilterExpression;
+import com.adamkorzeniak.masterdata.api.basic.query.select.SelectExpression;
 
 import java.util.Map;
 

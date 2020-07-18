@@ -1,6 +1,6 @@
 package com.adamkorzeniak.masterdata.api.common.providers;
 
-import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
+import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

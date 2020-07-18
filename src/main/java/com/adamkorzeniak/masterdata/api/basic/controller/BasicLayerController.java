@@ -1,5 +1,7 @@
 package com.adamkorzeniak.masterdata.api.basic.controller;
 
+import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
+import com.adamkorzeniak.masterdata.api.common.providers.ResourceClassProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +39,7 @@ public class BasicLayerController {
             @PathVariable("resource") String resource,
             @RequestParam Map<String, String> allRequestParams
     ) {
-        Class<? extends EntityWithId> resourceClass = resourceClassProvider.getClass(feature, resource);
+        Class<? extends DatabaseEntity> resourceClass = resourceClassProvider.getClass(feature, resource);
         return genericController.searchAll(allRequestParams, resourceClass);
     }
 
@@ -49,11 +51,11 @@ public class BasicLayerController {
      * If there is no combination for given feature and resource found it returns 404 not Found
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findBookById(
+    public ResponseEntity<Object> findById(
             @PathVariable("feature") String feature,
             @PathVariable("resource") String resource,
             @PathVariable("id") Long id) {
-        Class<? extends EntityWithId> resourceClass = resourceClassProvider.getClass(feature, resource);
+        Class<? extends DatabaseEntity> resourceClass = resourceClassProvider.getClass(feature, resource);
         return genericController.findById(id, resourceClass);
     }
 
@@ -70,8 +72,8 @@ public class BasicLayerController {
             @PathVariable("feature") String feature,
             @PathVariable("resource") String resource,
             @RequestBody @Valid Object object) {
-        Class<? extends EntityWithId> resourceClass = resourceClassProvider.getClass(feature, resource);
-        EntityWithId entity = objectMapper.convertValue(object, resourceClass);
+        Class<? extends DatabaseEntity> resourceClass = resourceClassProvider.getClass(feature, resource);
+        DatabaseEntity entity = objectMapper.convertValue(object, resourceClass);
         return genericController.add(entity, resourceClass);
     }
 
@@ -89,8 +91,8 @@ public class BasicLayerController {
             @PathVariable("resource") String resource,
             @PathVariable Long id,
             @RequestBody @Valid Object object) {
-        Class<? extends EntityWithId> resourceClass = resourceClassProvider.getClass(feature, resource);
-        EntityWithId entity = objectMapper.convertValue(object, resourceClass);
+        Class<? extends DatabaseEntity> resourceClass = resourceClassProvider.getClass(feature, resource);
+        DatabaseEntity entity = objectMapper.convertValue(object, resourceClass);
         return genericController.update(id, entity, resourceClass);
     }
 
@@ -107,7 +109,7 @@ public class BasicLayerController {
             @PathVariable("feature") String feature,
             @PathVariable("resource") String resource,
             @PathVariable Long id) {
-        Class<? extends EntityWithId> resourceClass = resourceClassProvider.getClass(feature, resource);
+        Class<? extends DatabaseEntity> resourceClass = resourceClassProvider.getClass(feature, resource);
         return genericController.delete(id, resourceClass);
     }
 }

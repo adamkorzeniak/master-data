@@ -1,9 +1,9 @@
 package com.adamkorzeniak.masterdata.api.basic.service;
 
-import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
+import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
 import com.adamkorzeniak.masterdata.api.common.providers.RepositoryProviderService;
-import com.adamkorzeniak.masterdata.api.basic.filter.FilterExpression;
-import com.adamkorzeniak.masterdata.api.basic.order.OrderExpression;
+import com.adamkorzeniak.masterdata.api.basic.query.filter.FilterExpression;
+import com.adamkorzeniak.masterdata.api.basic.query.order.OrderExpression;
 import com.adamkorzeniak.masterdata.persistence.GenericSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,30 +28,30 @@ public class GenericServiceImpl implements GenericService {
     }
 
     @Override
-    public List<Object> searchAll(Map<String, String> queryParams, Class<? extends DatabaseEntity> responseClass) {
+    public List<Object> searchAll(Map<String, String> queryParams, Class<? extends DatabaseEntity> resourceClass) {
         FilterExpression filterExpression = apiQueryService.buildFilterExpression(queryParams);
         OrderExpression orderExpression = apiQueryService.buildOrderExpression(queryParams);
         GenericSpecification<Object> spec = new GenericSpecification<>(filterExpression, orderExpression);
-        JpaSpecificationExecutor specificationExecutor = repositoryProviderService.getExecutor(responseClass);
+        JpaSpecificationExecutor specificationExecutor = repositoryProviderService.getExecutor(resourceClass);
         return specificationExecutor.findAll(spec);
     }
 
     @Override
-    public Optional<Object> findById(Long id, Class<? extends DatabaseEntity> responseClass) {
-        JpaRepository jpaRepository = repositoryProviderService.getRepository(responseClass);
+    public Optional<Object> findById(Long id, Class<? extends DatabaseEntity> resourceClass) {
+        JpaRepository jpaRepository = repositoryProviderService.getRepository(resourceClass);
         return jpaRepository.findById(id);
     }
 
     @Override
-    public Object add(DatabaseEntity entity, Class<? extends DatabaseEntity> responseClass) {
-        JpaRepository jpaRepository = repositoryProviderService.getRepository(responseClass);
+    public Object add(DatabaseEntity entity, Class<? extends DatabaseEntity> resourceClass) {
+        JpaRepository jpaRepository = repositoryProviderService.getRepository(resourceClass);
         entity.setId(-1L);
         return jpaRepository.save(entity);
     }
 
     @Override
-    public boolean exists(Long id, Class<? extends DatabaseEntity> responseClass) {
-        JpaRepository jpaRepository = repositoryProviderService.getRepository(responseClass);
+    public boolean exists(Long id, Class<? extends DatabaseEntity> resourceClass) {
+        JpaRepository jpaRepository = repositoryProviderService.getRepository(resourceClass);
         return jpaRepository.existsById(id);
     }
 

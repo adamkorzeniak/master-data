@@ -1,9 +1,12 @@
-package com.adamkorzeniak.masterdata.features.user.service;
+package com.adamkorzeniak.masterdata.api.auth.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
+import com.adamkorzeniak.masterdata.api.auth.model.Role;
+import com.adamkorzeniak.masterdata.api.auth.model.User;
+import com.adamkorzeniak.masterdata.api.auth.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -16,9 +19,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.adamkorzeniak.masterdata.exception.exceptions.DuplicateUserException;
-import com.adamkorzeniak.masterdata.features.user.model.Role;
-import com.adamkorzeniak.masterdata.features.user.model.User;
-import com.adamkorzeniak.masterdata.features.user.repository.UserRepository;
 
 import java.security.Principal;
 

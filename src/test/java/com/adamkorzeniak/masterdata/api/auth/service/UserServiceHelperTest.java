@@ -1,9 +1,9 @@
-package com.adamkorzeniak.masterdata.features.user.service;
+package com.adamkorzeniak.masterdata.api.auth.service;
 
-import com.adamkorzeniak.masterdata.features.user.model.Role;
-import com.adamkorzeniak.masterdata.features.user.model.User;
-import com.adamkorzeniak.masterdata.features.user.model.dto.UserRequest;
-import com.adamkorzeniak.masterdata.features.user.model.dto.UserResponse;
+import com.adamkorzeniak.masterdata.api.auth.model.Role;
+import com.adamkorzeniak.masterdata.api.auth.model.User;
+import com.adamkorzeniak.masterdata.api.auth.model.dto.UserRequest;
+import com.adamkorzeniak.masterdata.api.auth.model.dto.UserResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;

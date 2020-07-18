@@ -1,6 +1,6 @@
 package com.adamkorzeniak.masterdata.api.search.service;
 
-import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
+import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
 import com.adamkorzeniak.masterdata.api.common.providers.RepositoryProviderService;
 import com.adamkorzeniak.masterdata.persistence.SearchSpecification;
 import com.adamkorzeniak.masterdata.api.search.model.SearchResult;

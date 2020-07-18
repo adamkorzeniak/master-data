@@ -1,6 +1,6 @@
 package com.adamkorzeniak.masterdata.exception.exceptions;
 
-import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
+import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
 
 public class NotFoundException extends RuntimeException {
 

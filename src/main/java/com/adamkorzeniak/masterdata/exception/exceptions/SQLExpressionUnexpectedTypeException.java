@@ -1,6 +1,6 @@
 package com.adamkorzeniak.masterdata.exception.exceptions;
 
-import com.adamkorzeniak.masterdata.api.basic.filter.FilterExpressionTokenType;
+import com.adamkorzeniak.masterdata.api.basic.query.filter.FilterExpressionTokenType;
 
 public class SQLExpressionUnexpectedTypeException extends RuntimeException {
 

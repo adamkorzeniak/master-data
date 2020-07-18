@@ -1,7 +1,7 @@
-package com.adamkorzeniak.masterdata.features.user.model.dto;
+package com.adamkorzeniak.masterdata.api.auth.model.dto;
 
 import com.adamkorzeniak.masterdata.annotation.EnumValidator;
-import com.adamkorzeniak.masterdata.features.user.model.Role;
+import com.adamkorzeniak.masterdata.api.auth.model.Role;
 import lombok.Getter;
 import lombok.Setter;
 

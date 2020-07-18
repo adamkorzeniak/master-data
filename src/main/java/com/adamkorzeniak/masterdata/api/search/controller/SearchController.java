@@ -2,7 +2,7 @@ package com.adamkorzeniak.masterdata.api.search.controller;
 
 import com.adamkorzeniak.masterdata.api.basic.service.ApiQueryService;
 import com.adamkorzeniak.masterdata.api.basic.service.ApiResponseService;
-import com.adamkorzeniak.masterdata.api.basic.select.SelectExpression;
+import com.adamkorzeniak.masterdata.api.basic.query.select.SelectExpression;
 import com.adamkorzeniak.masterdata.api.search.model.SearchResult;
 import com.adamkorzeniak.masterdata.api.search.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.features.user.model.dto;
+package com.adamkorzeniak.masterdata.api.auth.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
