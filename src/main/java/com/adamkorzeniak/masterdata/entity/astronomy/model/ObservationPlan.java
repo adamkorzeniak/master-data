@@ -1,11 +1,12 @@
 package com.adamkorzeniak.masterdata.entity.astronomy.model;
 
-import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
+import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Getter
@@ -27,6 +28,7 @@ public class ObservationPlan extends DatabaseEntity {
     @Column(name = "priority")
     private Integer priority;
 
+    @NotEmpty
     @Column(name = "comment")
     private String comment;
 

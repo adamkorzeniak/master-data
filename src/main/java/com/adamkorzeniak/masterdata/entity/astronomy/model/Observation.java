@@ -1,6 +1,6 @@
 package com.adamkorzeniak.masterdata.entity.astronomy.model;
 
-import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
+import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode(exclude = {"location"})
+@EqualsAndHashCode(exclude = {"items"})
 @Entity
 @Table(name = "observation", catalog = "astronomy")
 public class Observation extends DatabaseEntity {

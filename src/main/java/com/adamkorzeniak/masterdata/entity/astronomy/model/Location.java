@@ -1,18 +1,20 @@
 package com.adamkorzeniak.masterdata.entity.astronomy.model;
 
-import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
+import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"observations"})
+
 @Entity
 @Table(name = "location", catalog = "astronomy")
 public class Location extends DatabaseEntity {
@@ -22,12 +24,15 @@ public class Location extends DatabaseEntity {
     @Column(name = "id")
     protected Long id;
 
+    @NotEmpty
     @Column(name = "name")
     private String name;
 
+    @NotEmpty
     @Column(name = "comment")
     private String comment;
 
+    @NotEmpty
     @Column(name = "city")
     private String city;
 

@@ -1,6 +1,6 @@
 package com.adamkorzeniak.masterdata.entity.book.model;
 
-import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
+import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode(exclude = {"tags", "items", "plans", "reviews"})
+@EqualsAndHashCode(exclude = {"tags", "items", "plans", "reviews", "quotes"})
 @Entity
 @Table(name = "book", catalog = "book")
 public class Book extends DatabaseEntity {

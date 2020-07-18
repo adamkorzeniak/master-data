@@ -1,9 +1,10 @@
 package com.adamkorzeniak.masterdata.entity.astronomy.model;
 
-import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
+import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
@@ -19,12 +20,15 @@ public class Source extends DatabaseEntity {
     @Column(name = "id")
     protected Long id;
 
+    @NotEmpty
     @Column(name = "type")
     private String type;
 
+    @NotEmpty
     @Column(name = "location")
     private String location;
 
+    @NotEmpty
     @Column(name = "description")
     private String description;
 
