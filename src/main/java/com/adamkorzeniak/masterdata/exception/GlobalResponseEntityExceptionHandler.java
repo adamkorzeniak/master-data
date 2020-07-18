@@ -42,30 +42,20 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
     private static final String MEDIA_TYPE_NOT_SUPPORTED_CODE = "REQ004";
     private static final String MEDIA_TYPE_NOT_SUPPORTED_TITLE = "Media Type Not Supported";
 
-    private static final String INVALID_QUERY_PARAM_CODE = "REQ100";
-    private static final String INVALID_QUERY_PARAM_TITLE = "Invalid Query Param";
-    private static final String INVALID_QUERY_PARAM_VALUE_CODE = "REQ101";
-    private static final String INVALID_QUERY_PARAM_VALUE_TITLE = "Invalid Query Param Value";
-    private static final String FILTER_NOT_SUPPORTED_CODE = "REQ102";
-    private static final String FILTER_NOT_SUPPORTED_TITLE = "Filter Not Supported";
-    private static final String FIELD_FILTER_NOT_SUPPORTED_CODE = "REQ103";
-    private static final String FIELD_FILTER_NOT_SUPPORTED_TITLE = "Filter Field Not Supported";
-    private static final String PATCH_OPERATION_NOT_SUPPORTED_CODE = "REQ104";
-    private static final String PATCH_OPERATION_NOT_SUPPORTED_TITLE = "Patch Operation Not Supported";
+    private static final String INVALID_FILTER_EXPRESSION_TYPE_CODE = "REQ100";
+    private static final String INVALID_FILTER_EXPRESSION_TYPE_TITLE = "Invalid Filter Expression";
+    private static final String INVALID_ORDER_EXPRESSION_TYPE_CODE = "REQ101";
+    private static final String INVALID_ORDER_EXPRESSION_TYPE_TITLE = "Invalid Order Expression";
 
     private static final String DUPLICATE_ENTRY_CODE = "REQ200";
     private static final String DUPLICATE_ENTRY_TITLE = "Duplicate Entry";
 
     private static final String INTERNAL_SERVER_ERROR_CODE = "ERR000";
     private static final String INTERNAL_SERVER_ERROR_TITLE = "Unexpected Internal Server Error";
-    private static final String METADATA_RESOURCE_ERROR_CODE = "ERR001";
-    private static final String METADATA_RESOURCE_ERROR_TITLE = "Metadata Resource Failure";
-
-    private static final String ERROR_UNSUPPORTED_FUNCTION_MESSAGE_CODE = "ERR001";
-    private static final String ERROR_UNSUPPORTED_FUNCTION_MESSAGE_TITLE = "Function Unsupported Value Message Not Defined";
-
-    private static final String ERROR_SEARCH_PARAMS_NOT_INITIALIZED_CODE = "ERR002";
-    private static final String ERROR_SEARCH_PARAMS_NOT_INITIALIZED_TITLE = "Search Filter Params Not Initialized";
+    private static final String NOT_SUPPORTED_SEARCH_CLASS_CODE = "ERR001";
+    private static final String NOT_SUPPORTED_SEARCH_CLASS_TITLE = "Internal Server Error";
+    private static final String SQL_EXPRESSION_UNEXPECTED_TYPE_CODE = "ERR002";
+    private static final String SQL_EXPRESSION_UNEXPECTED_TYPE_TITLE = "Internal Server Error";
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exc,
@@ -115,61 +105,33 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
-    @ExceptionHandler(value = {InvalidQueryParamException.class})
-    protected ResponseEntity<Object> invalidQueryParamException(Exception exc, WebRequest request) {
-        ExceptionResponse bodyOfResponse = new ExceptionResponse(INVALID_QUERY_PARAM_CODE, INVALID_QUERY_PARAM_TITLE,
-                exc.getMessage());
+    @ExceptionHandler(value = {InvalidFilterExpressionTypeException.class})
+    protected ResponseEntity<Object> invalidFilterExpressionTypeException(Exception exc, WebRequest request) {
+        ExceptionResponse bodyOfResponse = new ExceptionResponse(INVALID_FILTER_EXPRESSION_TYPE_CODE,
+                INVALID_FILTER_EXPRESSION_TYPE_TITLE, exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
-    @ExceptionHandler(value = {InvalidQueryParamValueException.class})
-    protected ResponseEntity<Object> invalidQueryParamValueException(Exception exc, WebRequest request) {
-        ExceptionResponse bodyOfResponse = new ExceptionResponse(INVALID_QUERY_PARAM_VALUE_CODE,
-                INVALID_QUERY_PARAM_VALUE_TITLE, exc.getMessage());
-        return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    @ExceptionHandler(value = {InvalidOrderExpressionTypeException.class})
+    protected ResponseEntity<Object> invalidOrderExpressionTypeException(Exception exc, WebRequest request) {
+        ExceptionResponse bodyOfResponse = new ExceptionResponse(INVALID_ORDER_EXPRESSION_TYPE_CODE,
+                INVALID_ORDER_EXPRESSION_TYPE_TITLE, exc.getMessage());
+        return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST,
+                request);
     }
 
-    @ExceptionHandler(value = {SearchFilterParamNotSupportedException.class})
-    protected ResponseEntity<Object> filterNotSupportedException(Exception exc, WebRequest request) {
-        ExceptionResponse bodyOfResponse = new ExceptionResponse(FILTER_NOT_SUPPORTED_CODE, FILTER_NOT_SUPPORTED_TITLE,
-                exc.getMessage());
-        return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-    }
-
-    @ExceptionHandler(value = {FieldFilterNotSupportedException.class})
-    protected ResponseEntity<Object> filterFieldNotSupportedException(Exception exc, WebRequest request) {
-        ExceptionResponse bodyOfResponse = new ExceptionResponse(FIELD_FILTER_NOT_SUPPORTED_CODE,
-                FIELD_FILTER_NOT_SUPPORTED_TITLE, exc.getMessage());
-        return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-    }
-
-    @ExceptionHandler(value = {PatchOperationNotSupportedException.class})
-    protected ResponseEntity<Object> patchOperationNotSupportedException(Exception exc, WebRequest request) {
-        ExceptionResponse bodyOfResponse = new ExceptionResponse(PATCH_OPERATION_NOT_SUPPORTED_CODE,
-                PATCH_OPERATION_NOT_SUPPORTED_TITLE, exc.getMessage());
-        return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-    }
-
-    @ExceptionHandler(value = {FunctionUnsupportedValueMessageNotDefinedException.class})
-    protected ResponseEntity<Object> functionUnsupportedValueMessageNotDefined(Exception exc, WebRequest request) {
-        ExceptionResponse bodyOfResponse = new ExceptionResponse(ERROR_UNSUPPORTED_FUNCTION_MESSAGE_CODE,
-                ERROR_UNSUPPORTED_FUNCTION_MESSAGE_TITLE, exc.getMessage());
+    @ExceptionHandler(value = {NotSupportedSearchFieldClassException.class})
+    protected ResponseEntity<Object> notSupportedSearchFieldClass(Exception exc, WebRequest request) {
+        ExceptionResponse bodyOfResponse = new ExceptionResponse(NOT_SUPPORTED_SEARCH_CLASS_CODE,
+                NOT_SUPPORTED_SEARCH_CLASS_TITLE, exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
                 request);
     }
 
-    @ExceptionHandler(value = {SearchFilterParamsNotInitializedException.class})
-    protected ResponseEntity<Object> searchFilterParamsNotInitialized(Exception exc, WebRequest request) {
-        ExceptionResponse bodyOfResponse = new ExceptionResponse(ERROR_SEARCH_PARAMS_NOT_INITIALIZED_CODE,
-                ERROR_SEARCH_PARAMS_NOT_INITIALIZED_TITLE, exc.getMessage());
-        return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
-                request);
-    }
-
-    @ExceptionHandler(value = {MetadataResourceException.class})
-    protected ResponseEntity<Object> metadataResourceException(Exception exc, WebRequest request) {
-        ExceptionResponse bodyOfResponse = new ExceptionResponse(METADATA_RESOURCE_ERROR_CODE,
-                METADATA_RESOURCE_ERROR_TITLE, exc.getMessage());
+    @ExceptionHandler(value = {SQLExpressionUnexpectedTypeException.class})
+    protected ResponseEntity<Object> sqlExpressionUnexpectedTypeException(Exception exc, WebRequest request) {
+        ExceptionResponse bodyOfResponse = new ExceptionResponse(SQL_EXPRESSION_UNEXPECTED_TYPE_CODE,
+                SQL_EXPRESSION_UNEXPECTED_TYPE_TITLE, exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
                 request);
     }

@@ -12,26 +12,3 @@ logging:
 api:
   yaml:
     file: file:docs/api/master-data-swagger.json
-
-params:
-  movie:
-    movies:
-      MATCH: title
-      SEARCH: title,description,review,plotSummary
-      MIN: year,duration,rating,watchPriority
-      MAX: year,duration,rating,watchPriority
-      EXIST: rating,watchPriority,review,plotSummary
-      ORDER: title,year,duration,rating,watchPriority
-    genres:
-      MATCH: name
-      SEARCH: name
-      EXIST: name
-      ORDER: name
-  error:
-    errors:
-      MATCH: errorId,appId,name
-      SEARCH: errorId,appId,name,details,status,location
-      MIN: time
-      MAX: time
-      EXIST: details
-      ORDER: errorId,appId,name,time

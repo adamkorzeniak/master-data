@@ -30,8 +30,7 @@ public class ControllerLoggingAspect {
     }
 
     /**
-     * After request is received in controller it creates request uuid and logs
-     * details
+     * After request is received in controller it creates request uuid and logs details
      */
     @Before("PointcutDefinitions.controllers()")
     public void enteringController(JoinPoint joinPoint) {
