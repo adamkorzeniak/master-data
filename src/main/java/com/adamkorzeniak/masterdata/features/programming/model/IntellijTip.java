@@ -1,5 +1,6 @@
 package com.adamkorzeniak.masterdata.features.programming.model;
 
+import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,12 +13,12 @@ import javax.validation.constraints.NotEmpty;
 @EqualsAndHashCode
 @Entity
 @Table(name = "intellij_tip", catalog = "programming")
-public class IntellijTip {
+public class IntellijTip extends DatabaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    protected Long id;
 
     @NotEmpty
     @Column(name = "action")

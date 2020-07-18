@@ -1,5 +1,6 @@
 package com.adamkorzeniak.masterdata.features.diet.model;
 
+import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,12 +14,12 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"tags"})
 @Entity
 @Table(name = "recipe", catalog = "diet")
-public class Recipe {
+public class Recipe extends DatabaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    protected Long id;
 
     @NotEmpty
     @Column(name = "title")

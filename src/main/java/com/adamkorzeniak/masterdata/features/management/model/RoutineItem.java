@@ -1,5 +1,6 @@
 package com.adamkorzeniak.masterdata.features.management.model;
 
+import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,12 +13,12 @@ import javax.validation.constraints.NotEmpty;
 @EqualsAndHashCode
 @Entity
 @Table(name = "routine_item", catalog = "management")
-public class RoutineItem {
+public class RoutineItem extends DatabaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    protected Long id;
 
     @NotEmpty
     @Column(name = "description")

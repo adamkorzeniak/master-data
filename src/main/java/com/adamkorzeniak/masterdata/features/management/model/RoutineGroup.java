@@ -1,5 +1,6 @@
 package com.adamkorzeniak.masterdata.features.management.model;
 
+import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,12 +13,12 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"items"})
 @Entity
 @Table(name = "routine_group", catalog = "management")
-public class RoutineGroup {
+public class RoutineGroup extends DatabaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    protected Long id;
 
     @Column(name = "name")
     private String name;

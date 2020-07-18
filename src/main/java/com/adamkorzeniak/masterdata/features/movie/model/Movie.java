@@ -1,5 +1,6 @@
 package com.adamkorzeniak.masterdata.features.movie.model;
 
+import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,12 +17,12 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"genres", "reviews", "plans"})
 @Entity
 @Table(name = "movie", catalog = "movie")
-public class Movie {
+public class Movie extends DatabaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    protected Long id;
 
     @NotEmpty
     @Column(name = "title")

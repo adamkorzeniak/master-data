@@ -1,5 +1,6 @@
 package com.adamkorzeniak.masterdata.features.location.model;
 
+import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,12 +16,12 @@ import java.util.Set;
 @EqualsAndHashCode
 @Entity
 @Table(name = "place", catalog = "location")
-public class Place {
+public class Place extends DatabaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    protected Long id;
 
     @NotEmpty
     @Column(name = "name")

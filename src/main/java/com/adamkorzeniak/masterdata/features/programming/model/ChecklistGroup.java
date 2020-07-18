@@ -1,5 +1,6 @@
 package com.adamkorzeniak.masterdata.features.programming.model;
 
+import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,12 +13,12 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"items"})
 @Entity
 @Table(name = "checklist_group", catalog = "programming")
-public class ChecklistGroup {
+public class ChecklistGroup extends DatabaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    protected Long id;
 
     @Column(name = "group")
     private String group;

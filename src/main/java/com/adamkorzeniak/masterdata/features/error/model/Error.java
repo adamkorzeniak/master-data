@@ -1,5 +1,6 @@
 package com.adamkorzeniak.masterdata.features.error.model;
 
+import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,12 +13,12 @@ import javax.validation.constraints.NotEmpty;
 @EqualsAndHashCode
 @Entity
 @Table(name = "errors", catalog = "error")
-public class Error {
+public class Error extends DatabaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    protected Long id;
 
     @NotEmpty
     @Column(name = "error_id")

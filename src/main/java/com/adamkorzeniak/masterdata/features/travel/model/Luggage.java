@@ -1,5 +1,6 @@
 package com.adamkorzeniak.masterdata.features.travel.model;
 
+import com.adamkorzeniak.masterdata.api.basic.DatabaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,18 +13,14 @@ import javax.validation.constraints.NotEmpty;
 @EqualsAndHashCode
 @Entity
 @Table(name = "luggage", catalog = "travel")
-public class Luggage {
+public class Luggage extends DatabaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    protected Long id;
 
     @NotEmpty
     @Column(name = "name")
     private String name;
-
-    @NotEmpty
-    @Column(name = "description")
-    private String description;
 }

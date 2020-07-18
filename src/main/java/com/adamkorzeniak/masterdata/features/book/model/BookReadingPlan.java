@@ -19,7 +19,7 @@ public class BookReadingPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    protected Long id;
 
     @Min(0)
     @Max(100)
