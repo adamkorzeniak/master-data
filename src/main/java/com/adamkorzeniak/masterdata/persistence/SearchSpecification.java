@@ -1,6 +1,6 @@
 package com.adamkorzeniak.masterdata.persistence;
 
-import com.adamkorzeniak.masterdata.exception.exceptions.NotSupportedSearchFieldClass;
+import com.adamkorzeniak.masterdata.exception.exceptions.NotSupportedSearchFieldClassException;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
@@ -59,7 +59,7 @@ public class SearchSpecification<T> implements Specification<T> {
                 predicates.addAll(buildPredicates(cb, join, objectField));
             }
         } else {
-            throw new NotSupportedSearchFieldClass(fieldClass);
+            throw new NotSupportedSearchFieldClassException(fieldClass);
         }
         return predicates;
     }

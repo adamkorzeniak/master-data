@@ -52,10 +52,10 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 
     private static final String INTERNAL_SERVER_ERROR_CODE = "ERR000";
     private static final String INTERNAL_SERVER_ERROR_TITLE = "Unexpected Internal Server Error";
-    private static final String METADATA_RESOURCE_ERROR_CODE = "ERR001";
-    private static final String METADATA_RESOURCE_ERROR_TITLE = "Metadata Resource Failure";
-    private static final String NOT_SUPPORTED_SEARCH_CLASS_CODE = "ERR003";
+    private static final String NOT_SUPPORTED_SEARCH_CLASS_CODE = "ERR001";
     private static final String NOT_SUPPORTED_SEARCH_CLASS_TITLE = "Internal Server Error";
+    private static final String SQL_EXPRESSION_UNEXPECTED_TYPE_CODE = "ERR002";
+    private static final String SQL_EXPRESSION_UNEXPECTED_TYPE_TITLE = "Internal Server Error";
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exc,
@@ -105,14 +105,6 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
-    @ExceptionHandler(value = {MetadataResourceException.class})
-    protected ResponseEntity<Object> metadataResourceException(Exception exc, WebRequest request) {
-        ExceptionResponse bodyOfResponse = new ExceptionResponse(METADATA_RESOURCE_ERROR_CODE,
-                METADATA_RESOURCE_ERROR_TITLE, exc.getMessage());
-        return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
-                request);
-    }
-
     @ExceptionHandler(value = {InvalidFilterExpressionTypeException.class})
     protected ResponseEntity<Object> invalidFilterExpressionTypeException(Exception exc, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(INVALID_FILTER_EXPRESSION_TYPE_CODE,
@@ -128,10 +120,18 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
                 request);
     }
 
-    @ExceptionHandler(value = {NotSupportedSearchFieldClass.class})
+    @ExceptionHandler(value = {NotSupportedSearchFieldClassException.class})
     protected ResponseEntity<Object> notSupportedSearchFieldClass(Exception exc, WebRequest request) {
         ExceptionResponse bodyOfResponse = new ExceptionResponse(NOT_SUPPORTED_SEARCH_CLASS_CODE,
                 NOT_SUPPORTED_SEARCH_CLASS_TITLE, exc.getMessage());
+        return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
+                request);
+    }
+
+    @ExceptionHandler(value = {SQLExpressionUnexpectedTypeException.class})
+    protected ResponseEntity<Object> sqlExpressionUnexpectedTypeException(Exception exc, WebRequest request) {
+        ExceptionResponse bodyOfResponse = new ExceptionResponse(SQL_EXPRESSION_UNEXPECTED_TYPE_CODE,
+                SQL_EXPRESSION_UNEXPECTED_TYPE_TITLE, exc.getMessage());
         return handleExceptionInternal(exc, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
                 request);
     }
