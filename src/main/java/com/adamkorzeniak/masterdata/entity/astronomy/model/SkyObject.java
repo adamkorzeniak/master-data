@@ -13,8 +13,8 @@ import java.util.Set;
 @ToString
 @EqualsAndHashCode(exclude = {"items", "plans", "sources"})
 @Entity
-@Table(name = "object", catalog = "astronomy")
-public class Object extends DatabaseEntity {
+@Table(name = "sky_object", catalog = "astronomy")
+public class SkyObject extends DatabaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,15 +69,15 @@ public class Object extends DatabaseEntity {
     @Column(name = "details")
     private String details;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "object")
-    private ObjectLocation location;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "skyObject")
+    private SkyObjectLocation location;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "object")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "skyObject")
     private Set<ObservationItem> items;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "object")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "skyObject")
     private Set<ObservationPlan> plans;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "object")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "skyObject")
     private Set<Source> sources;
 }

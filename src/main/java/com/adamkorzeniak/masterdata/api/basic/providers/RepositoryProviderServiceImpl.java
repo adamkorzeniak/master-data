@@ -1,8 +1,8 @@
-package com.adamkorzeniak.masterdata.api.common.providers;
+package com.adamkorzeniak.masterdata.api.basic.providers;
 
 import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
 import com.adamkorzeniak.masterdata.entity.astronomy.model.*;
-import com.adamkorzeniak.masterdata.entity.astronomy.model.Object;
+import com.adamkorzeniak.masterdata.entity.astronomy.model.SkyObject;
 import com.adamkorzeniak.masterdata.entity.astronomy.repository.*;
 import com.adamkorzeniak.masterdata.entity.book.model.Book;
 import com.adamkorzeniak.masterdata.entity.book.model.BookTag;
@@ -104,7 +104,7 @@ public class RepositoryProviderServiceImpl implements RepositoryProviderService 
         this.repositories = new HashMap<>();
         //ASTRONOMY
         this.repositories.put(Location.class, locationRepository);
-        this.repositories.put(Object.class, objectRepository);
+        this.repositories.put(SkyObject.class, objectRepository);
         this.repositories.put(Observation.class, observationRepository);
         this.repositories.put(ObservationPlan.class, observationPlanRepository);
         this.repositories.put(Source.class, sourceRepository);

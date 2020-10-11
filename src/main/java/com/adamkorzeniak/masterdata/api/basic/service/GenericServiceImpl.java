@@ -1,7 +1,7 @@
 package com.adamkorzeniak.masterdata.api.basic.service;
 
 import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
-import com.adamkorzeniak.masterdata.api.common.providers.RepositoryProviderService;
+import com.adamkorzeniak.masterdata.api.basic.providers.RepositoryProviderService;
 import com.adamkorzeniak.masterdata.api.basic.query.filter.FilterExpression;
 import com.adamkorzeniak.masterdata.api.basic.query.order.OrderExpression;
 import com.adamkorzeniak.masterdata.persistence.GenericSpecification;

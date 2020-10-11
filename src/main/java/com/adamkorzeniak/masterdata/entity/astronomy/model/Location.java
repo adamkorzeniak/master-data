@@ -1,6 +1,7 @@
 package com.adamkorzeniak.masterdata.entity.astronomy.model;
 
 import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,8 +39,8 @@ public class Location extends DatabaseEntity {
 
     @Min(-180)
     @Max(180)
-    @Column(name = "lattitude")
-    private Double lattitude;
+    @Column(name = "latitude")
+    private Double latitude;
 
     @Min(-90)
     @Max(90)
@@ -60,5 +61,6 @@ public class Location extends DatabaseEntity {
     private Double lightRatio;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "location")
+    @JsonManagedReference
     private Set<Observation> observations;
 }

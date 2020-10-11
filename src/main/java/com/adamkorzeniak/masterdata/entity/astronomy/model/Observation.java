@@ -1,6 +1,8 @@
 package com.adamkorzeniak.masterdata.entity.astronomy.model;
 
 import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,6 +26,7 @@ public class Observation extends DatabaseEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
+    @JsonBackReference
     private Location location;
 
     @Column(name = "start")

@@ -1,9 +1,9 @@
-package com.adamkorzeniak.masterdata.api.common.providers;
+package com.adamkorzeniak.masterdata.api.basic.providers;
 
 import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
 import com.adamkorzeniak.masterdata.exception.exceptions.NotFoundException;
 import com.adamkorzeniak.masterdata.entity.astronomy.model.*;
-import com.adamkorzeniak.masterdata.entity.astronomy.model.Object;
+import com.adamkorzeniak.masterdata.entity.astronomy.model.SkyObject;
 import com.adamkorzeniak.masterdata.entity.book.model.Book;
 import com.adamkorzeniak.masterdata.entity.book.model.BookTag;
 import com.adamkorzeniak.masterdata.entity.diet.model.DietProduct;
@@ -12,8 +12,6 @@ import com.adamkorzeniak.masterdata.entity.diet.model.RecipeTag;
 import com.adamkorzeniak.masterdata.entity.error.model.Error;
 import com.adamkorzeniak.masterdata.entity.location.model.Country;
 import com.adamkorzeniak.masterdata.entity.location.model.Place;
-import com.adamkorzeniak.masterdata.entity.management.model.RoutineGroup;
-import com.adamkorzeniak.masterdata.entity.management.model.RoutineItem;
 import com.adamkorzeniak.masterdata.entity.movie.model.Genre;
 import com.adamkorzeniak.masterdata.entity.movie.model.Movie;
 import com.adamkorzeniak.masterdata.entity.people.model.Person;
@@ -52,9 +50,6 @@ public class ResourceClassProviderImpl implements ResourceClassProvider {
     private static final String LOCATION_FEATURE = "Location";
     private static final String LOCATION_COUNTRY_RESOURCE = "countries";
     private static final String LOCATION_PLACE_RESOURCE = "places";
-    private static final String MANAGEMENT_FEATURE = "Management";
-    private static final String ROUTINE_GROUP_RESOURCE = "routineGroups";
-    private static final String ROUTINE_ITEM_RESOURCE = "routineItems";
 
     private static final String MOVIE_FEATURE = "Movie";
     private static final String MOVIE_RESOURCE = "movies";
@@ -87,7 +82,7 @@ public class ResourceClassProviderImpl implements ResourceClassProvider {
                 return Location.class;
             }
             if (ASTRONOMY_OBJECT_RESOURCE.equals(resource)) {
-                return Object.class;
+                return SkyObject.class;
             }
             if (ASTRONOMY_OBSERVATION_RESOURCE.equals(resource)) {
                 return Observation.class;
@@ -129,14 +124,6 @@ public class ResourceClassProviderImpl implements ResourceClassProvider {
             }
             if (LOCATION_PLACE_RESOURCE.equals(resource)) {
                 return Place.class;
-            }
-        }
-        if (MANAGEMENT_FEATURE.equals(feature)) {
-            if (ROUTINE_GROUP_RESOURCE.equals(resource)) {
-                return RoutineGroup.class;
-            }
-            if (ROUTINE_ITEM_RESOURCE.equals(resource)) {
-                return RoutineItem.class;
             }
         }
         if (MOVIE_FEATURE.equals(feature)) {

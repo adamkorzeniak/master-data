@@ -57,4 +57,8 @@ public class Movie extends DatabaseEntity {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "movie_id")
     private Set<MovieWatchPlan> plans;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "movie_id")
+    private Set<MovieItem> items;
 }

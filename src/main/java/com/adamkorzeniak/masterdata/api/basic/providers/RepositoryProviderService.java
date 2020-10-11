@@ -1,4 +1,4 @@
-package com.adamkorzeniak.masterdata.api.common.providers;
+package com.adamkorzeniak.masterdata.api.basic.providers;
 
 import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

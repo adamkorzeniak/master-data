@@ -1,7 +1,7 @@
 package com.adamkorzeniak.masterdata.api.basic.controller;
 
 import com.adamkorzeniak.masterdata.entity.DatabaseEntity;
-import com.adamkorzeniak.masterdata.api.common.providers.ResourceClassProvider;
+import com.adamkorzeniak.masterdata.api.basic.providers.ResourceClassProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

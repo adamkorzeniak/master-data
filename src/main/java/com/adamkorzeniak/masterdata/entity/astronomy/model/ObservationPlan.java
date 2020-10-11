@@ -37,5 +37,5 @@ public class ObservationPlan extends DatabaseEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "object_id")
-    private Object object;
+    private SkyObject skyObject;
 }

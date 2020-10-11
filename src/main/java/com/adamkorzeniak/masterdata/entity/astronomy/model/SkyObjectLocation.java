@@ -12,10 +12,10 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode(exclude = {"object"})
+@EqualsAndHashCode(exclude = {"skyObject"})
 @Entity
-@Table(name = "object_location", catalog = "astronomy")
-public class ObjectLocation extends DatabaseEntity {
+@Table(name = "sky_object_location", catalog = "astronomy")
+public class SkyObjectLocation extends DatabaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class ObjectLocation extends DatabaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "object_id")
-    private Object object;
+    private SkyObject skyObject;
 
     @NotEmpty
     @Column(name = "constellation_en")
