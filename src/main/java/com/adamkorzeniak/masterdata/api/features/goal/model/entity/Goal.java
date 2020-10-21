@@ -52,7 +52,7 @@ public class Goal {
 
     public Optional<GoalRatingConfiguration> getRatingConfiguration(LocalDate date) {
         List<GoalRatingConfiguration> ratingConfList = goalRatingConfigurations.stream()
-                .filter(ratingConf -> GoalUtils.isDateValid(date, ratingConf.getValidFrom(), ratingConf.getValidTo()))
+//                .filter(ratingConf -> GoalUtils.isDateValid(date, ratingConf.getValidFrom(), ratingConf.getValidTo()))
                 .collect(Collectors.toList());
         if (ratingConfList.size() > 1) {
             throw new RuntimeException();

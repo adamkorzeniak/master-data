@@ -20,10 +20,6 @@ import com.adamkorzeniak.masterdata.entity.location.model.Country;
 import com.adamkorzeniak.masterdata.entity.location.model.Place;
 import com.adamkorzeniak.masterdata.entity.location.repository.CountryRepository;
 import com.adamkorzeniak.masterdata.entity.location.repository.PlaceRepository;
-import com.adamkorzeniak.masterdata.entity.management.model.RoutineGroup;
-import com.adamkorzeniak.masterdata.entity.management.model.RoutineItem;
-import com.adamkorzeniak.masterdata.entity.management.repository.RoutineGroupRepository;
-import com.adamkorzeniak.masterdata.entity.management.repository.RoutineItemRepository;
 import com.adamkorzeniak.masterdata.entity.movie.model.Genre;
 import com.adamkorzeniak.masterdata.entity.movie.model.Movie;
 import com.adamkorzeniak.masterdata.entity.movie.repository.GenreRepository;
@@ -80,9 +76,6 @@ public class RepositoryProviderServiceImpl implements RepositoryProviderService 
             //LOCATION
             CountryRepository countryRepository,
             PlaceRepository placeRepository,
-            //MANAGEMENT
-            RoutineGroupRepository routineGroupRepository,
-            RoutineItemRepository routineItemRepository,
             //MOVIE
             GenreRepository genreRepository,
             MovieRepository movieRepository,
@@ -120,9 +113,6 @@ public class RepositoryProviderServiceImpl implements RepositoryProviderService 
         //LOCATION
         this.repositories.put(Country.class, countryRepository);
         this.repositories.put(Place.class, placeRepository);
-        //MANAGEMENT
-        this.repositories.put(RoutineGroup.class, routineGroupRepository);
-        this.repositories.put(RoutineItem.class, routineItemRepository);
         //MOVIE
         this.repositories.put(Genre.class, genreRepository);
         this.repositories.put(Movie.class, movieRepository);
